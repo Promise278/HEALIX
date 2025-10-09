@@ -30,8 +30,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Image from "next/image";
-import PatientRegisterForm from "./Auth/PatientRegisterForm";
-import DoctorRegisterForm from "./Auth/DoctorRegisterForm";
 
 
 interface AuthDialogProps {
@@ -43,7 +41,6 @@ const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [userType, setUserType] = useState<"patient" | "doctor" | null>(null);
   const [doctorStep, setDoctorStep] = useState(1);
-  // const { toast } = useToast();
 
   // Auth form states
   const [email, setEmail] = useState("");
@@ -58,19 +55,19 @@ const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
   const [graduationYear, setGraduationYear] = useState("");
   const [yearsExperience, setYearsExperience] = useState("");
 
-  // const resetForm = () => {
-  //   setEmail("");
-  //   setPassword("");
-  //   setFullName("");
-  //   setUserType(null);
-  //   setDoctorStep(1);
-  //   setLicenseNumber("");
-  //   setLicenseCountry("");
-  //   setSpecialization("");
-  //   setMedicalSchool("");
-  //   setGraduationYear("");
-  //   setYearsExperience("");
-  // };
+  const resetForm = () => {
+    setEmail("");
+    setPassword("");
+    setFullName("");
+    setUserType(null);
+    setDoctorStep(1);
+    setLicenseNumber("");
+    setLicenseCountry("");
+    setSpecialization("");
+    setMedicalSchool("");
+    setGraduationYear("");
+    setYearsExperience("");
+  };
 
 const handlePatientSignup = async (e: React.FormEvent) => {
   e.preventDefault();
