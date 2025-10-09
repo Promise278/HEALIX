@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "Dr. Promise Obi",
+    "email": "doctor@healix.com",
+    "password": "$2b$10$3vcdnCeRCRd3u/Fmcf90BerZeHxHFjCqUbiNlhLPZj/mQugDV4av2",
+    "medicalLicenseNumber": "NMC-56432",
+    "specialty": "Cardiology",
+    "yearsOfExperience": 10,
+    "role": "doctor"
+  },
+  {
+    "id": 2,
+    "name": "John Doe",
+    "email": "john@healix.com",
+    "password": "$2b$10$AbW1e2SIcShgqDdmi.Acj.xanry5YeK1JZF0SPDT6Cyn5sCHsGw9C",
+    "role": "patient"
+  },
+  {
+    "id": 3,
+    "name": "phebe",
+    "email": "peheb@healix.com",
+    "password": "$2b$10$XaVFN10YfY8bUfAOCekL.OU5IKmxgvOcrM2VUnpgM2lLjFcqPNZES",
+    "role": "patient"
+  }
+]
