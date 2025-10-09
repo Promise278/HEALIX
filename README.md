@@ -77,17 +77,7 @@ Healix uses:
 
 2. Admin reviews and verifies details via [MDCN Portal](https://portal.mdcn.gov.ng/).  
 3. Once approved, the doctor’s account status changes to **“verified.”**  
-4. Verified doctors can then access Healix’s consultation and management tools.
-
----
-
-## 🧠 Future Improvements
-
-- 🧾 Integration with MDCN’s API for automatic license verification  
-- 🎥 In-app video consultation via WebRTC  
-- 💳 Payment gateway for consultations (Paystack / Flutterwave)  
-- 📱 Mobile app release on iOS & Play Store  
-- 🤖 AI symptom checker (powered by NLP)  
+4. Verified doctors can then access Healix’s consultation and management tools. 
 
 ---
 
@@ -104,7 +94,7 @@ In a world where access to healthcare can be limited by distance or time, **Heal
 **Promise Obi**  
 FullStack Developer | Mobile-App Developer | Node.js Enthusiast | Builder of Healix 💚  
 📧 [promiseobi2008@example.com](mailto:promiseobi2008@example.com)  
-🌐 [LinkedIn](#) | [GitHub](#) | [Portfolio](#)
+🌐 [LinkedIn](https://www.linkedin.com/in/promise-obi-9a6878328/) | [GitHub](https://github.com/Promise278) | [https://my-new-portfolio-website-rmjl.vercel.app/](https://my-new-portfolio-website-rmjl.vercel.app/)
 
 ---
 
