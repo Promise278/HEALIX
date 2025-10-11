@@ -1,83 +1,118 @@
 import { useState } from "react";
-import { Text, View, Image, TextInput, TouchableOpacity } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
+import { Text, View, Image, TextInput, TouchableOpacity, ActivityIndicator } from "react-native";
 import { router } from "expo-router";
+import { FontAwesome, Feather } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 
-export default function SignIn() {
+export default function Signin() {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-   const handleLogin = () => {
-    if (!email || !password) {
-      alert("Please fill all fields");
-      return;
-    }
+  const [isLoading, setIsLoading] = useState(false);
+  // const handleRegister = () => {
+  //   if (!name || !email || !password ) {
+  //     alert("Please fill all fields");
+  //     return;
+  //   }
 
-    fetch("https://test.blockfuselabs.com/api/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-      }),
-    }).then((res) => 
-      res.json().then((data) => {
-        if (res.ok) {
-          alert("Login successful!");
-          router.replace("/(tabs)");
-        } else {
-          alert(data.message || "Something went wrong");
-        }
-      })
-    )
-    .catch(() => {
-      alert("Network error, please try again.");
-    });
-  }
+  //   fetch("https://test.blockfuselabs.com/api/register", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       name: name,
+  //       email: email,
+  //       password: password,
+  //     }),
+  //   })
+  //     .then((res) =>
+  //       res.json().then((data) => {
+  //         if (res.ok) {
+  //           alert("Registration successful!");
+  //           router.replace("/signin");
+  //         } else {
+  //           alert(data.message || "Something went wrong");
+  //         }
+  //       })
+  //     )
+  //     .catch(() => {
+  //       alert("Network error, please try again.");
+  //     });
+  // };
   return (
-    <View className="flex-1 items-center">
+    <View className="flex-1 items-center px-4">
       <Image
-        source={require("../../assets/images/signuplogo.png")}
+        source={require("../../assets/images/healix-logo.png")}
         style={{
-          width: 250,
-          height: 250,
+          width: 230,
+          height: 230,
           resizeMode: "contain",
         }}
+        className="mt-20"
       />
-      <View className="gap-y-12 -mt-8">
-        <TextInput
-          className="w-[340px] border-b-2 border-[#989898]"
-          placeholder="Email"
-          keyboardType="email-address"
-          value={email}
-          onChangeText={setEmail}
-        />
-        <TextInput
-          className="w-[340px] border-b-2 border-gray-400 text-lg px-2"
-          placeholder="Password"
-          placeholderTextColor="#999"
-          secureTextEntry
-          value={password}
-          onChangeText={setPassword}
-        />
-        <Text className="text-2xl font-bold text-[#001F3F] text-center">Forgot Password?</Text>
-        <TouchableOpacity onPress={handleLogin} className="bg-[#001F3F] rounded-full px-2 py-6">
-          <Text className="text-white text-xl text-center">Sign in</Text>
-        </TouchableOpacity>
-        <View className="flex-row items-center -mt-4">
-          <View className="flex-1 h-[2px] bg-gray-400" />
-          <Text className="mx-3 text-gray-500">Or sign in with</Text>
-          <View className="flex-1 h-[2px] bg-gray-400" />
+      <Text className="-mt-6">Your trusted telemedicine platform</Text>
+        <View className="mt-10 w-[320px] gap-y-8">
+          {/* Email */}
+          <View>
+            <Text className="text-gray-700 mb-1">Email</Text>
+            <View className="flex-row items-center border border-gray-300 rounded-lg px-3 py-2">
+              <Feather name="mail" size={18} color="#888" />
+              <TextInput
+                placeholder="your@email.com"
+                keyboardType="email-address"
+                className="flex-1 ml-2"
+                value={email}
+                onChangeText={setEmail}
+              />
+            </View>
+          </View>
+          {/* Password */}
+          <View>
+            <Text className="text-gray-700 mb-1">Password</Text>
+            <View className="flex-row items-center border border-gray-300 rounded-lg px-3 py-2">
+              <Feather name="lock" size={18} color="#888" />
+              <TextInput
+                placeholder="••••••••"
+                secureTextEntry
+                className="flex-1 ml-2"
+                value={password}
+                onChangeText={setPassword}
+              />
+            </View>
+          </View>
+          {/* Gradient Button */}
+          <TouchableOpacity
+            disabled={isLoading}
+            onPress={() => router.push('/(tabs)')}
+            className="rounded-full w-72 ml-10 mb-2 overflow-hidden mt-4"
+          >
+            <LinearGradient
+              colors={["#19c3ee", "#0cd660"]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+              className="py-3"
+            >
+              {isLoading ? (
+                <ActivityIndicator color="#fff" />
+              ) : (
+                <Text className="text-center text-white font-semibold text-lg">
+                  Sign in
+                </Text>
+              )}
+            </LinearGradient>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity className="bg-gray-400 shadow-md rounded-full py-5 flex-row items-center justify-center">
-          <FontAwesome name="google" size={26} color="#DB4437" />
-          <Text className="text-2xl text-center pl-2">
-            Continue with Google
-          </Text>
-        </TouchableOpacity>
+        
+      <View className="mt-4 flex-row justify-center items-center">
+        <Text className="text-lg text-gray-600">Dont have an account? </Text>
+        <Text
+          onPress={() => router.push("/signup")}
+          className="text-[#19c3ee] font-semibold text-base underline"
+        >
+          Sign Up
+        </Text>
       </View>
-      <Text className="text-2xl mt-4">Don’t have an acoount?<Text onPress={() => router.push("/signup")} className="font-bold text-lg">Register</Text></Text>
     </View>
   );
 }

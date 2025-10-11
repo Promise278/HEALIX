@@ -39,7 +39,7 @@ const Navbar = () => {
             >
               Home
             </Link>
-            <Link 
+            {/* <Link 
               href="/doctors" 
               className={`text-sm font-medium transition-colors hover:text-[#5fc1e0] ${
                 isActive("/doctor") ? "text-[#5fc1e0]" : "text-foreground"
@@ -54,7 +54,7 @@ const Navbar = () => {
               }`}
             >
               Dashboard
-            </Link>
+            </Link> */}
             <button 
               className="bg-gradient-to-r from-[#19c3ee] to-[#0cd660] w-32 h-10 rounded-md text-white hover:opacity-90"
               onClick={() => setAuthDialogOpen(true)}
