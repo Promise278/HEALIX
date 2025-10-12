@@ -16,18 +16,18 @@ Healix aims to make healthcare **accessible, secure, and personal** — empoweri
 ## ✨ Key Features
 
 ### 👨‍⚕️ For Patients
-- 🩺 **Consult verified doctors** via chat or video
-- 🕒 **Book appointments** seamlessly
-- 💊 **Access prescriptions** online
-- 🔔 **Receive medical reminders** and follow-up alerts
-- 🔐 **Data privacy and security** ensured through JWT authentication and encryption
+- **Consult verified doctors** via chat or video
+- **Book appointments** seamlessly
+- **Access prescriptions** online
+- **Receive medical reminders** and follow-up alerts
+- **Data privacy and security** ensured through JWT authentication and encryption
 
 ### 🧑‍⚕️ For Doctors
-- ✅ **License verification** through the Medical and Dental Council of Nigeria (MDCN)
-- 🗓 **Manage appointments** and patient requests
-- 💬 **Secure communication** with patients
-- 🧾 **Digital prescriptions and medical notes**
-- 📈 **Analytics dashboard** to monitor consultations
+- **License verification** through the Medical and Dental Council of Nigeria (MDCN)
+- **Manage appointments** and patient requests
+- **Secure communication** with patients
+- **Digital prescriptions and medical notes**
+- **Analytics dashboard** to monitor consultations
 
 ---
 
@@ -35,11 +35,11 @@ Healix aims to make healthcare **accessible, secure, and personal** — empoweri
 
 | Layer | Technologies |
 |-------|---------------|
-| **Frontend** | React / React Native / Expo |
+| **Frontend** | Nextjs / React Native / Expo |
 | **Backend** | Node.js, Express.js |
 | **Database** | MySql or JSON-based local storage (for testing) |
 | **Authentication** | Bycrpt, JWT (JSON Web Tokens) |
-| **Hosting** | Vercel / Render / AWS (depending on environment) |
+| **Hosting** | Vercel |
 | **Version Control** | Git & GitHub |
 
 ---
@@ -49,21 +49,7 @@ Healix aims to make healthcare **accessible, secure, and personal** — empoweri
 Healix uses:
 - **JWT-based authentication** for secure sessions  
 - **bcrypt** for password hashing  
-- **Role-based access control (RBAC)** to separate doctors, patients, and admins  
 - **Admin approval** system for doctor verification before activation
-
----
-
-## 🧩 API Endpoints (Sample)
-
-| Method | Endpoint | Description |
-|--------|-----------|-------------|
-| `POST` | `/api/auth/signup` | Register new user (doctor/patient) |
-| `POST` | `/api/auth/login` | Login and receive JWT token |
-| `POST` | `/api/products/generate_products` | Add product (for e-commerce features) |
-| `GET` | `/api/products/seeAllproducts` | Retrieve all products |
-| `DELETE` | `/api/products/deleteProducts/:id` | Delete product |
-| `GET` | `/api/doctors/verify/:licenseNumber` | Verify doctor’s license |
 
 ---
 
