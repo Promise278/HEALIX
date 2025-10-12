@@ -39,7 +39,7 @@ Healix aims to make healthcare **accessible, secure, and personal** — empoweri
 | **Backend** | Node.js, Express.js |
 | **Database** | MySql or JSON-based local storage (for testing) |
 | **Authentication** | Bycrpt, JWT (JSON Web Tokens) |
-| **Hosting** | Vercel |
+| **Hosting** | Vercel / Render |
 | **Version Control** | Git & GitHub |
 
 ---
