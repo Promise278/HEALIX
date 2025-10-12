@@ -79,46 +79,6 @@ const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
     setShowDoctorPassword(false);
   };
 
-  // const handlePatientSignup = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-
-  //   if (!email || !patientpassword || !fullName) {
-  //     alert("Please fill in all fields");
-  //     return;
-  //   }
-
-  //   setIsLoading(true);
-  //   try {
-  //     const res = await fetch(
-  //       `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/patientregister`,
-  //       {
-  //         method: "POST",
-  //         headers: { "Content-Type": "application/json" },
-  //         body: JSON.stringify({
-  //           name: fullName,
-  //           email,
-  //           password: patientpassword,
-  //           role: "patient",
-  //         }),
-  //       }
-  //     );
-
-  //     const data = await res.json();
-
-  //     if (!res.ok) throw new Error(data.message || "Registration failed");
-  //     alert("✅ Patient registered successfully!");
-  //     onOpenChange(false);
-  //   } catch (err: unknown) {
-  //     if (err instanceof Error) {
-  //       alert(err.message);
-  //     } else {
-  //       alert("An unknown error occurred");
-  //     }
-  //   } finally {
-  //   setIsLoading(false);
-  // }
-  // };
-
   const handlePatientSignup = async (e: React.FormEvent) => {
   e.preventDefault();
 
