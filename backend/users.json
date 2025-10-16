@@ -1,26 +1,23 @@
 [
   {
     "id": 1,
-    "name": "Dr. Promise Obi",
-    "email": "doctor@gmail.com",
-    "password": "$2b$10$3vcdnCeRCRd3u/Fmcf90BerZeHxHFjCqUbiNlhLPZj/mQugDV4av2",
-    "medicalLicenseNumber": "NMC-56432",
-    "specialty": "Cardiology",
-    "yearsOfExperience": 10,
-    "role": "doctor"
-  },
-  {
-    "id": 2,
     "name": "phebe",
     "email": "phebe@gmail.com",
     "password": "$2b$10$XaVFN10YfY8bUfAOCekL.OU5IKmxgvOcrM2VUnpgM2lLjFcqPNZES",
     "role": "patient"
   },
   {
-    "id": 3,
+    "id": 2,
     "name": "Promise Obi",
     "email": "promiseobi2008@gmail.com",
-    "password": "$2b$10$oBT8DYzMI5mC/ScUNR7Kj.6p.zgYD6heTKXJOEVlG4PnnwhH5p2MC",
+    "password": "$2b$10$mNhxSv1KR9vqjq2xj37iDuxQKM2w6zqQCamoOxouQ5TAT7OjaHpYO",
+    "role": "patient"
+  },
+  {
+    "id": 3,
+    "name": "Praise O",
+    "email": "praisedami1996@gmail.com",
+    "password": "$2b$10$nvSWnVEsi.BNn9l4zuFgdupqDmJzHb6e0AbytncFflPr09SCFHAsu",
     "role": "patient"
   }
 ]

@@ -1,5 +1,7 @@
 @import "tailwindcss";
 /* @import "tw-animate-css"; */
+/* @import "leaflet/dist/leaflet.css"; */
+
 
 @custom-variant dark (&:is(.dark *));
 
@@ -164,4 +166,9 @@
 
     --gradient-hero: linear-gradient(90deg, #1E3A8A, #0EA5E9);
   }
+}
+
+.leaflet-container {
+  width: 100%;
+  height: 100%;
 }

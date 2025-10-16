@@ -1,25 +1,106 @@
 "use client"
-import { Button } from "@/components/ui/button";
+import { Menu, X } from "lucide-react";
+import { useState } from "react";
+import healixLogo from "@/public/healix-logo.png";
 import { Card } from "@/components/ui/card";
 import { Video, MessageSquare, Calendar, Shield, Clock, Users, Star, CheckCircle, Award, TrendingUp, Heart, User, } from "lucide-react";
-import { useState } from "react";
 import heroImage from "@/public/hero-doctor.jpg";
-import AuthDialog from "@/components/AuthDialog";
 import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import Navbar from "@/components/Navbar";
-// import UserLocationMap from "@/components/useMapLocation";
 const UserLocationMap = dynamic(() => import("@/components/useMapLocation"), {
   ssr: false,
 });
 
-const Index = () => {
+const Home = () => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
+    
+  const isActive = (path: string) => location.pathname === path;
 
   return (
-    <>
-    <Navbar />
+  <>
+     <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border">
+       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+         <div className="flex justify-between items-center h-16">
+           <Link href="/" className="flex items-center gap-3 group">
+             <Image
+                 src={healixLogo}
+                 alt="HEALIX Logo"
+                 width={40}
+                 height={40}
+                 className="group-hover:scale-110 transition-transform rounded-md"
+             />
+             <span className="text-xl font-bold text-foreground">
+               HEALIX
+             </span>
+           </Link>
+           <div className="hidden md:flex items-center gap-8">
+             <Link 
+               href="/pages/home" 
+               className={`text-sm font-medium transition-colors hover:text-[#5fc1e0] ${
+                 isActive("/pages/home") ? "text-[#5fc1e0]" : "text-foreground"
+               }`}
+             >
+               Home
+             </Link>
+             <Link 
+               href="/pages/doctors" 
+               className={`text-sm font-medium transition-colors hover:text-[#5fc1e0] ${
+                 isActive("/pages/doctor") ? "text-[#5fc1e0]" : "text-foreground"
+               }`}
+             >
+               Find Doctors
+             </Link>
+             <Link 
+               href="/pages/dashboard" 
+               className={`text-sm font-medium transition-colors hover:text-[#5fc1e0] ${
+                 isActive("/pages/dashboard") ? "text-[#5fc1e0]" : "text-foreground"
+               }`}
+             >
+               Dashboard
+             </Link>
+           </div>
+           <button
+             className="md:hidden"
+             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+           >
+             {mobileMenuOpen ? (
+               <X className="w-6 h-6" />
+             ) : (
+               <Menu className="w-6 h-6" />
+             )}
+           </button>
+         </div>
+         {mobileMenuOpen && (
+           <div className="md:hidden py-4 animate-slide-in">
+             <div className="flex flex-col gap-4">
+               <Link 
+                 href="/pages/home" 
+                 className="text-sm font-medium hover:text-primary transition-colors"
+                 onClick={() => setMobileMenuOpen(false)}
+               >
+                 Home
+               </Link>
+               <Link 
+                 href="/pages/doctors" 
+                 className="text-sm font-medium hover:text-primary transition-colors"
+                 onClick={() => setMobileMenuOpen(false)}
+               >
+                 Find Doctors
+               </Link>
+               <Link 
+                 href="/pages/dashboard" 
+                 className="text-sm font-medium hover:text-primary transition-colors"
+                 onClick={() => setMobileMenuOpen(false)}
+               >
+                 Dashboard
+               </Link>
+             </div>
+           </div>
+         )}
+       </div>
+     </nav>
     <div className="min-h-screen bg-white">
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-[#22f3f3] opacity-10" />
@@ -48,7 +129,6 @@ const Index = () => {
                 </Link>
                 <button
                   className="border cursor-pointer border-[#12a7d7] text-[#12a7d7] w-38 h-12 rounded-md"
-                  onClick={() => setAuthDialogOpen(true)}
                 >
                   Get Started
                 </button>
@@ -83,9 +163,6 @@ const Index = () => {
           </div>
         </div>
       </section>
-      <div className="relative w-full h-[500px]">
-      <UserLocationMap />
-      </div>
 
       {/* Features Section */}
       <section className="py-20 bg-gray-50">
@@ -217,139 +294,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-              What Our Patients Say
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Real stories from people who trust HEALIX for their healthcare
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            <Card className="p-6 bg-white border-gray-200">
-              <div className="flex items-center gap-1 mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <Star
-                    key={i}
-                    className="w-5 h-5 fill-orange-400 text-orange-400"
-                  />
-                ))}
-              </div>
-              <p className="text-gray-600 mb-4">
-                HEALIX made healthcare so accessible. I consulted with a
-                specialist from home and got my prescription within hours. Truly
-                revolutionary!
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center">
-                  <User className="w-5 h-5 text-blue-600" />
-                </div>
-                <div>
-                  <div className="font-semibold">Sarah Johnson</div>
-                  <div className="text-sm text-gray-600">
-                    Patient since 2023
-                  </div>
-                </div>
-              </div>
-            </Card>
-
-            <Card className="p-6 bg-white border-gray-200">
-              <div className="flex items-center gap-1 mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <Star
-                    key={i}
-                    className="w-5 h-5 fill-orange-400 text-orange-400"
-                  />
-                ))}
-              </div>
-              <p className="text-gray-600 mb-4">
-                As a busy professional, I cant always make it to the clinic.
-                HEALIXs video consultations saved me so much time while
-                providing excellent care.
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-emerald-50 rounded-full flex items-center justify-center">
-                  <User className="w-5 h-5 text-emerald-600" />
-                </div>
-                <div>
-                  <div className="font-semibold">Michael Chen</div>
-                  <div className="text-sm text-gray-600">
-                    Patient since 2024
-                  </div>
-                </div>
-              </div>
-            </Card>
-
-            <Card className="p-6 bg-white border-gray-200">
-              <div className="flex items-center gap-1 mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <Star
-                    key={i}
-                    className="w-5 h-5 fill-orange-400 text-orange-400"
-                  />
-                ))}
-              </div>
-              <p className="text-gray-600 mb-4">
-                The doctors are incredibly professional and the platform is so
-                easy to use. I love that I can message them anytime with
-                questions!
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-purple-50 rounded-full flex items-center justify-center">
-                  <User className="w-5 h-5 text-purple-600" />
-                </div>
-                <div>
-                  <div className="font-semibold">Emily Rodriguez</div>
-                  <div className="text-sm text-gray-600">
-                    Patient since 2023
-                  </div>
-                </div>
-              </div>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Stats Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-4 gap-8 text-center">
-            <div className="space-y-2">
-              <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users className="w-8 h-8 text-blue-600" />
-              </div>
-              <div className="text-4xl font-bold text-blue-600">50K+</div>
-              <div className="text-gray-600">Active Patients</div>
-            </div>
-            <div className="space-y-2">
-              <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Award className="w-8 h-8 text-emerald-600" />
-              </div>
-              <div className="text-4xl font-bold text-emerald-600">500+</div>
-              <div className="text-gray-600">Expert Doctors</div>
-            </div>
-            <div className="space-y-2">
-              <div className="w-16 h-16 bg-purple-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                <TrendingUp className="w-8 h-8 text-purple-600" />
-              </div>
-              <div className="text-4xl font-bold text-purple-600">200K+</div>
-              <div className="text-gray-600">Consultations</div>
-            </div>
-            <div className="space-y-2">
-              <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Heart className="w-8 h-8 text-blue-600" />
-              </div>
-              <div className="text-4xl font-bold text-blue-600">98%</div>
-              <div className="text-gray-600">Satisfaction Rate</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Specialties Section */}
       <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -386,10 +330,9 @@ const Index = () => {
           </div>
         </div>
       </section>
-      <AuthDialog open={authDialogOpen} onOpenChange={setAuthDialogOpen} />
     </div>
     </>
   );
 };
 
-export default Index;
+export default Home;

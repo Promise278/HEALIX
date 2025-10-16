@@ -1,11 +1,14 @@
+"use client"
 import Navbar from "@/components/Navbar";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-// import { Badge } from "@/components/ui/badge";
 import { Search, Star, Video, MessageSquare, MapPin } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
+import { Menu, X } from "lucide-react";
+import healixLogo from "@/public/healix-logo.png";
+import Image from "next/image";
 
 const Doctors = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -90,6 +93,9 @@ const Doctors = () => {
   ];
 
   const [selectedSpecialty, setSelectedSpecialty] = useState("All Specialties");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  const isActive = (path: string) => location.pathname === path;
 
   const filteredDoctors = doctors.filter((doctor) => {
     const matchesSearch = doctor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -99,6 +105,92 @@ const Doctors = () => {
   });
 
   return (
+    <>
+     <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          <Link href="/" className="flex items-center gap-3 group">
+            <Image
+                src={healixLogo}
+                alt="HEALIX Logo"
+                width={40}
+                height={40}
+                className="group-hover:scale-110 transition-transform rounded-md"
+            />
+
+            <span className="text-xl font-bold text-foreground">
+              HEALIX
+            </span>
+          </Link>
+
+          <div className="hidden md:flex items-center gap-8">
+            <Link 
+              href="/pages/home" 
+              className={`text-sm font-medium transition-colors hover:text-[#5fc1e0] ${
+                isActive("/pages/home") ? "text-[#5fc1e0]" : "text-foreground"
+              }`}
+            >
+              Home
+            </Link>
+            <Link 
+              href="/pages/doctors" 
+              className={`text-sm font-medium transition-colors hover:text-[#5fc1e0] ${
+                isActive("/pages/doctor") ? "text-[#5fc1e0]" : "text-foreground"
+              }`}
+            >
+              Find Doctors
+            </Link>
+            <Link 
+              href="/pages/dashboard" 
+              className={`text-sm font-medium transition-colors hover:text-[#5fc1e0] ${
+                isActive("/pages/dashboard") ? "text-[#5fc1e0]" : "text-foreground"
+              }`}
+            >
+              Dashboard
+            </Link>
+          </div>
+
+          <button
+            className="md:hidden"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
+          </button>
+        </div>
+
+        {mobileMenuOpen && (
+          <div className="md:hidden py-4 animate-slide-in">
+            <div className="flex flex-col gap-4">
+              <Link 
+                href="/pages/home" 
+                className="text-sm font-medium hover:text-primary transition-colors"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Home
+              </Link>
+              <Link 
+                href="/pages/doctors" 
+                className="text-sm font-medium hover:text-primary transition-colors"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Find Doctors
+              </Link>
+              <Link 
+                href="/pages/dashboard" 
+                className="text-sm font-medium hover:text-primary transition-colors"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Dashboard
+              </Link>
+            </div>
+          </div>
+        )}
+      </div>
+    </nav>
     <div className="min-h-screen bg-white">
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -127,7 +219,7 @@ const Doctors = () => {
                 variant={selectedSpecialty === specialty ? "default" : "outline"}
                 size="sm"
                 onClick={() => setSelectedSpecialty(specialty)}
-                className={selectedSpecialty === specialty ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white" : ""}
+                className={selectedSpecialty === specialty ? "bg-gradient-to-r from-[#19c3ee] to-[#0cd660] text-white" : ""}
               >
                 {specialty}
               </Button>
@@ -147,7 +239,7 @@ const Doctors = () => {
           {filteredDoctors.map((doctor) => (
             <Card key={doctor.id} className="p-6 hover:shadow-lg transition-all bg-white border-gray-200">
               <div className="flex items-start gap-4 mb-4">
-                <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center text-2xl font-bold text-white flex-shrink-0">
+                <div className="w-16 h-16 bg-gradient-to-r from-[#19c3ee] to-[#0cd660] rounded-full flex items-center justify-center text-2xl font-bold text-white flex-shrink-0">
                   {doctor.name.split(' ')[1][0]}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -155,7 +247,7 @@ const Doctors = () => {
                   <p className="text-sm text-gray-600">{doctor.specialty}</p>
                   <div className="flex items-center gap-2 mt-1">
                     <div className="flex items-center gap-1">
-                      <Star className="w-4 h-4 fill-purple-600 text-purple-600" />
+                      <Star className="w-4 h-4 fill-[#0cd660] text-[#0cd660]" />
                       <span className="text-sm font-medium">{doctor.rating}</span>
                     </div>
                     <span className="text-sm text-gray-600">({doctor.reviews} reviews)</span>
@@ -164,16 +256,13 @@ const Doctors = () => {
               </div>
 
               <div className="space-y-2 mb-4 text-sm">
-                <div className="flex items-center gap-2 text-gray-600">
-                  <MapPin className="w-4 h-4" />
-                  <span>{doctor.location}</span>
-                </div>
-                {/* <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between gap-2 text-gray-600">
+                  <div className="flex gap-2">
+                    <MapPin className="w-4 h-4" />
+                    <span>{doctor.location}</span>
+                  </div>
                   <span className="text-gray-600">{doctor.experience} experience</span>
-                  <Badge variant="secondary" className="bg-emerald-50 text-emerald-600 border-emerald-200">
-                    {doctor.availability}
-                  </Badge>
-                </div> */}
+                </div>
                 <div className="flex items-center justify-between font-semibold">
                   <span>Consultation Fee</span>
                   <span className="text-blue-600">{doctor.fee}</span>
@@ -182,13 +271,13 @@ const Doctors = () => {
 
               <div className="flex gap-2">
                 <Link href={`/video-call/${doctor.id}`} className="flex-1">
-                  <Button className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800">
+                  <Button className="w-full bg-gradient-to-r from-[#19c3ee] to-[#0cd660] text-white hover:from-[#011414] hover:to-[#f4f803]">
                     <Video className="w-4 h-4 mr-2" />
                     Video Call
                   </Button>
                 </Link>
                 <Link href={`/chat/${doctor.id}`}>
-                  <Button variant="outline" size="icon" className="border-blue-600 text-blue-600 hover:bg-blue-50">
+                  <Button variant="outline" size="icon" className="border-[#0cd660] text-[#0cd660] hover:bg-blue-50">
                     <MessageSquare className="w-4 h-4" />
                   </Button>
                 </Link>
@@ -204,6 +293,7 @@ const Doctors = () => {
         )}
       </div>
     </div>
+    </>
   );
 };
 

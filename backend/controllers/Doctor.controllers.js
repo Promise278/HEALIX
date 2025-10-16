@@ -2,7 +2,7 @@ const fs = require("fs");
 const bcrypt = require("bcrypt");
 
 const users = [];
-const USERS_FILE = "users.json";
+const USERS_FILE = "doctors.json";
 
 function loadUsers() {
   if (!fs.existsSync(USERS_FILE)) {

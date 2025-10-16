@@ -5,9 +5,17 @@ import { useState } from "react";
 import AuthDialog from "@/components/AuthDialog";
 import healixLogo from "@/public/healix-logo.png";
 import Image from "next/image";
+import { usePathname } from 'next/navigation';
 
 function Footer() {
+  const pathname = usePathname();
     const [authDialogOpen, setAuthDialogOpen] = useState(false);
+    const handleGetStarted = () => {
+    if (pathname === '/' || pathname === '/home' || pathname === '/doctors' || pathname === '/dashboard') {
+      return;
+    }
+    setAuthDialogOpen(true);
+  };
   return (
     <>
     <div>
@@ -20,12 +28,14 @@ function Footer() {
           <p className="text-lg text-primary-foreground/90 mb-8 max-w-2xl mx-auto">
             Join thousands of patients who trust HEALIX for their healthcare needs
           </p>
+          {!(pathname === '/pages/home' || pathname === '/pages/doctors' || pathname === '/pages/dashboard') && (
           <button
             className="shadow-lg hover:scale-105 bg-[#42d799] rounded-md text-white w-40 h-12 transition-transform"
             onClick={() => setAuthDialogOpen(true)}
           >
             Get Started Now
           </button>
+          )}
         </div>
       </section>
 

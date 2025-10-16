@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "name": "Dr. Promise",
+    "email": "promiseobi2008@gmail.com",
+    "password": "$2b$10$HCUmUWgmyBJsEW.Ay32EsOmZT9AMMKXLnSbLKNvyVWXjYqpJ4rk26",
+    "medicalLicenseNumber": "Abc45234",
+    "specialty": "cardiology",
+    "yearsOfExperience": 3,
+    "role": "doctor"
+  }
+]

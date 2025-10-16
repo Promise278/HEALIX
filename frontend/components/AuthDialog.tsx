@@ -32,6 +32,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface AuthDialogProps {
   open: boolean;
@@ -45,6 +46,7 @@ const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showPatientPassword, setShowPatientPassword] = useState(false);
   const [showDoctorPassword, setShowDoctorPassword] = useState(false);
+  const router = useRouter();
 
   // Auth form states
   const [email, setEmail] = useState("");
@@ -88,6 +90,7 @@ const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
   }
 
   setIsLoading(true);
+
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/patientregister`,
@@ -183,43 +186,89 @@ const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
     }
   };
 
+  // const handleLogin = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+
+  //   if (!email || !password) {
+  //     alert("Please enter your email and password");
+  //     return;
+  //   }
+
+  //   setIsLoading(true);
+  //   try {
+  //     const res = await fetch(
+  //       `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/patientlogin`,
+  //       {
+  //         method: "POST",
+  //         headers: { "Content-Type": "application/json" },
+  //         body: JSON.stringify({ email, password }),
+  //       }
+  //     );
+
+  //     const data = await res.json();
+
+  //     if (!res.ok) throw new Error(data.message || "Login failed");
+
+  //     localStorage.setItem("token", data.token);
+  //     alert("✅ Login successful!");
+  //     resetForm();
+  //     onOpenChange(false);
+  //     router.push("/home");
+  //   } catch (err: unknown) {
+  //     if (err instanceof Error) {
+  //       alert(err.message);
+  //     } else {
+  //       alert("An unknown error occurred");
+  //     }
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!email || !password) {
-      alert("Please enter your email and password");
-      return;
+  e.preventDefault();
+  if (!email || !password) {
+    alert("Please enter your email and password");
+    return;
+  }
+  setIsLoading(true);
+  try {
+    let url = "";
+    if (userType === "patient") {
+      url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/patientlogin`;
+    } else if (userType === "doctor") {
+      url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/doctorlogin`;
     }
+    const res = await fetch(url, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({ email, password }),
+});
 
-    setIsLoading(true);
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/patientlogin`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
-        }
-      );
+if (!res.ok) {
+  console.error(`Error ${res.status}: ${res.statusText}`);
+  const errorText = await res.text();
+  console.error(errorText);
+  throw new Error(`Error ${res.status}: ${res.statusText}`);
+}
 
-      const data = await res.json();
-
-      if (!res.ok) throw new Error(data.message || "Login failed");
-
-      localStorage.setItem("token", data.token);
-      alert("✅ Login successful!");
-      resetForm();
-      onOpenChange(false);
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        alert(err.message);
-      } else {
-        alert("An unknown error occurred");
-      }
-    } finally {
-      setIsLoading(false);
+const data = await res.json();
+    localStorage.setItem("token", data.token);
+    alert("Login successful!");
+    resetForm();
+    onOpenChange(false);
+    router.push("/pages/home");
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      alert(err.message);
+    } else {
+      alert("An unknown error occurred");
     }
-  };
+  } finally {
+    setIsLoading(false);
+  }
+};
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
@@ -251,7 +300,7 @@ const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
             </TabsList>
 
             {/* Login Tab */}
-            <TabsContent value="login" className="space-y-4 animate-fade-in">
+            {/* <TabsContent value="login" className="space-y-4 animate-fade-in">
               <form onSubmit={handleLogin} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="login-email">Email</Label>
@@ -304,7 +353,99 @@ const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
                   {isLoading ? "Logging in..." : "Login"}
                 </Button>
               </form>
-            </TabsContent>
+            </TabsContent> */}
+            <TabsContent value="login" className="space-y-4 animate-fade-in">
+  {!userType && (
+    <div className="space-y-4">
+      <p className="text-sm text-muted-foreground text-center">
+        Login as:
+      </p>
+      <div className="grid grid-cols-2 gap-4">
+        <Button
+          variant="outline"
+          className="h-24 flex flex-col gap-2"
+          onClick={() => setUserType("patient")}
+        >
+          <User className="w-8 h-8 text-[#19c3ee]" />
+          <span>Patient</span>
+        </Button>
+        <Button
+          variant="outline"
+          className="h-24 flex flex-col gap-2"
+          onClick={() => setUserType("doctor")}
+        >
+          <FileText className="w-8 h-8 text-[#0cd660]" />
+          <span>Doctor</span>
+        </Button>
+      </div>
+    </div>
+  )}
+  {userType && (
+    <form onSubmit={handleLogin} className="space-y-4">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-lg font-semibold">
+          {userType === "patient" ? "Patient" : "Doctor"} Login
+        </h3>
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          onClick={() => setUserType(null)}
+        >
+          Change
+        </Button>
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="login-email">Email</Label>
+        <div className="relative">
+          <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+          <Input
+            id="login-email"
+            type="email"
+            placeholder="your@email.com"
+            className="pl-10"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="login-password">Password</Label>
+        <div className="relative">
+          <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+          <Input
+            id="login-password"
+            type={showPassword ? "text" : "password"}
+            placeholder="••••••••"
+            className="pl-10"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-2.5 text-gray-500 hover:text-gray-700"
+          >
+            {showPassword ? (
+              <EyeOff className="h-4 w-4" />
+            ) : (
+              <Eye className="h-4 w-4" />
+            )}
+          </button>
+        </div>
+      </div>
+      <Button
+        type="submit"
+        className="w-full bg-gradient-to-r from-[#19c3ee] to-[#0cd660] hover:opacity-90"
+        disabled={isLoading}
+      >
+        {isLoading ? "Logging in..." : "Login"}
+      </Button>
+    </form>
+  )}
+</TabsContent>
 
             {/* Signup Tab */}
             <TabsContent value="signup" className="space-y-4 animate-fade-in">
