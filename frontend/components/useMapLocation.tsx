@@ -49,7 +49,7 @@ export default function UserLiveLocationMap() {
         setAccuracy(pos.coords.accuracy);
       },
       (err) => {
-        console.error(err);
+        console.log(err);
         setError("Unable to retrieve your location.");
       },
       {
@@ -66,7 +66,7 @@ export default function UserLiveLocationMap() {
         setAccuracy(pos.coords.accuracy);
       },
       (err) => {
-        console.error(err);
+        console.log(err);
         setError("Please enable location permission to view your position.");
       },
       {

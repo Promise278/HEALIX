@@ -60,10 +60,18 @@ function Footer() {
             </div>
             <div>
               <h4 className="font-semibold mb-4">Platform</h4>
+            {(pathname === '/pages/home' || pathname === '/pages/doctors' || pathname === '/pages/dashboard') && (
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><Link href="/doctors" className="hover:text-primary transition-colors">Find Doctors</Link></li>
-                <li><Link href="/dashboard" className="hover:text-primary transition-colors">Dashboard</Link></li>
+                <li><Link href="/pages/doctors" className="hover:text-primary transition-colors">Find Doctors</Link></li>
+                <li><Link href="/pages/dashboard" className="hover:text-primary transition-colors">Dashboard</Link></li>
               </ul>
+            )}
+             {(pathname === '/') && (
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><Link href="#" className="hover:text-primary transition-colors">Find Doctors</Link></li>
+                <li><Link href="#" className="hover:text-primary transition-colors">Dashboard</Link></li>
+              </ul>
+            )}
             </div>
             <div>
               <h4 className="font-semibold mb-4">Company</h4>
