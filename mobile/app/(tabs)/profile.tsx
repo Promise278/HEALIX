@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, TouchableOpacity, FlatList } from "react-native";
 import { User, Mail, Phone, MapPin, Settings, LogOut } from "lucide-react-native";
+import { router } from "expo-router";
 
 const Profile = () => {
   const menuItems = [
@@ -43,28 +44,17 @@ const Profile = () => {
       </View>
 
       {/* Settings & Logout */}
-      <FlatList
-        data={menuItems}
-        keyExtractor={(item) => item.label}
-        contentContainerStyle={{ gap: 12 }}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            onPress={item.action}
-            activeOpacity={0.8}
-            className={`w-full flex-row items-center gap-3 h-14 px-4 rounded-xl border 
-              ${item.destructive ? "border-red-200 bg-red-50" : "border-gray-200 bg-white"}`}
-          >
-            <item.icon size={22} color={item.destructive ? "#ef4444" : "#374151"} />
-            <Text
-              className={`text-base ${
-                item.destructive ? "text-red-500 font-medium" : "text-gray-800"
-              }`}
-            >
-              {item.label}
-            </Text>
-          </TouchableOpacity>
-        )}
-      />
+      <TouchableOpacity className="w-full flex-row items-center gap-3 h-14 px-4 mt-4 rounded-xl border border-black">
+          <Settings size={20} color="#000"/>
+        <Text className="text-black">Settings</Text>
+      </TouchableOpacity>
+
+      {/* logout */}
+      <TouchableOpacity onPress={() => router.push('/signin')} className="w-full flex-row items-center gap-3 h-14 px-4 mt-4 rounded-xl border border-red-200 bg-red-50">
+          <LogOut size={20} color="#d93526"/>
+        <Text className="text-red-500">Logout</Text>
+      </TouchableOpacity>
+      
     </View>
   );
 };

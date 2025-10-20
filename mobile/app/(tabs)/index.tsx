@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
+import { router } from "expo-router";
 
 const HomeScreen = () => {
   const doctors = [
@@ -99,13 +100,13 @@ const HomeScreen = () => {
           Quick Actions
         </Text>
         <View className="flex-row justify-between">
-          <TouchableOpacity className="items-center bg-[#2ac9de] rounded-2xl p-3 flex-1 mx-1">
+          <TouchableOpacity onPress={() => router.push('/(tabs)/appointments')} className="items-center bg-[#2ac9de] rounded-2xl p-3 flex-1 mx-1">
             <Feather name={"video"} size={20} color="#d5fcfe" />
             <Text className="text-[#d5fcfe] text-sm font-medium mt-1">
               {"Video Call"}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity className="items-center bg-[#2ac9de] rounded-2xl p-3 flex-1 mx-1">
+          <TouchableOpacity onPress={() => router.push('/(tabs)/appointments')} className="items-center bg-[#2ac9de] rounded-2xl p-3 flex-1 mx-1">
             <Feather name={"calendar"} size={20} color="#d5fcfe" />
             <Text className="text-[#d5fcfe] text-sm font-medium mt-1">
               {"Book"}
@@ -113,13 +114,13 @@ const HomeScreen = () => {
           </TouchableOpacity>
         </View>
         <View className="flex-row justify-between mt-2">
-          <TouchableOpacity className="items-center bg-[#2ac9de] rounded-2xl p-3 flex-1 mx-1">
+          <TouchableOpacity onPress={() => router.push('/(tabs)/chat')} className="items-center bg-[#2ac9de] rounded-2xl p-3 flex-1 mx-1">
             <Feather name={"message-circle"} size={20} color="#d5fcfe" />
             <Text className="text-[#d5fcfe] text-sm font-medium mt-1">
               {"Chat"}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity className="items-center bg-[#2ac9de] rounded-2xl p-3 flex-1 mx-1">
+          <TouchableOpacity onPress={() => router.push('/(tabs)/records')} className="items-center bg-[#2ac9de] rounded-2xl p-3 flex-1 mx-1">
             <Feather name={"file-text"} size={20} color="#d5fcfe" />
             <Text className="text-[#d5fcfe] text-sm font-medium mt-1">
               {"Records"}
