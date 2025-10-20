@@ -1,5 +1,5 @@
 const express = require("express")
-const { patientregister, patientlogin } = require("../controllers/auth.controllers")
+const { patientregister, patientlogin } = require("../controllers/auth.controller")
 const router = express.Router()
 
 router.post("/patientregister", patientregister)

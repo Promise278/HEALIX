@@ -5,7 +5,7 @@ import { Image, Text, TouchableOpacity, View } from "react-native";
 export default function Welcome() {
   return (
     <LinearGradient
-      colors={["#4ade80", "#4ade"]}
+      colors={["#3da5", "#3da5"]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       className="flex-1 px-6"
@@ -16,7 +16,7 @@ export default function Welcome() {
           source={require("../assets/images/healix-logo-removebg-preview.png")}
           className="w-64 h-72 mb-8 rounded-2xl"
         />
-        <Text className="text-5xl font-extrabold text-black mb-3">HEALIX</Text>
+        {/* <Text className="text-5xl font-extrabold text-black mb-3">HEALIX</Text> */}
         <Text className="text-center text-black text-base mb-8 leading-6">
           Healing through linking - quality healthcare at home{'\n'}
           Your health, our priority. Connect with top doctors anytime, anywhere.
@@ -34,7 +34,7 @@ export default function Welcome() {
 
         {/* Sign In link */}
         <TouchableOpacity onPress={() => router.push("/signin")}>
-          <Text className="text-white text-lg font-semibold underline">
+          <Text className="text-blue-800 text-lg font-semibold underline">
             Already have an account?
           </Text>
         </TouchableOpacity>

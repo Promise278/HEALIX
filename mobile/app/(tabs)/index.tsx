@@ -1,158 +1,173 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, ScrollView } from "react-native";
-import { Bell, Menu, Search, Video, MessageSquare, Calendar, Activity, Clock, Home, User } from "lucide-react-native";
-import { LinearGradient } from "expo-linear-gradient";
+import React from "react";
+import {
+  View,
+  Text,
+  ScrollView,
+  Image,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
+import { Feather } from "@expo/vector-icons";
 
-export default function Dashboard() {
-  const [currentScreen, setCurrentScreen] = useState("home");
-
+const HomeScreen = () => {
   const doctors = [
-    { id: 1, image: "👨‍⚕️", name: "Dr. James Carter", specialty: "Dermatologist", rating: "4.9", available: true, nextSlot: "3:00 PM" },
-    { id: 2, image: "👩‍⚕️", name: "Dr. Sarah Chen", specialty: "Cardiologist", rating: "4.8", available: false, nextSlot: "5:00 PM" },
+    {
+      name: "Dr. Sarah Johnson",
+      specialty: "Cardiologist",
+      rating: 4.9,
+      distance: "2.5 km",
+      icon: "user",
+      available: true,
+    },
+    {
+      name: "Dr. Michael Chen",
+      specialty: "General Physician",
+      rating: 4.8,
+      distance: "1.8 km",
+      icon: "user",
+      available: true,
+    },
+    {
+      name: "Dr. Emily Roberts",
+      specialty: "Dermatologist",
+      rating: 4.7,
+      distance: "3.2 km",
+      icon: "user",
+      available: false,
+    },
   ];
 
   return (
-    <View className="flex-1 bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {/* Header */}
-        <LinearGradient
-          colors={["#2563eb", "#7c3aed"]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          className="rounded-b-3xl px-6 pt-12 pb-8 shadow-lg"
-        >
-          <View className="flex-row justify-between items-center mb-6">
-            <View>
-              <Text className="text-blue-100 text-sm">Welcome back,</Text>
-              <Text className="text-white text-2xl font-bold">John Doe</Text>
-            </View>
+    <ScrollView className="flex-1 bg-background mt-8">
+      {/* Header */}
+      <View className="bg-card px-5 pt-6 pb-6 shadow-md flex-row items-center justify-between">
+        <View>
+          <Text className="text-2xl font-bold text-gray-900">Hello, User</Text>
+          <Text className="text-sm text-muted">How are you feeling today?</Text>
+        </View>
+        <TouchableOpacity className="relative p-2 rounded-full bg-blue-300">
+          <Feather name="bell" size={20} color="#333" />
+          <View className="absolute top-1 right-1 w-2 h-2 bg-destructive rounded-full" />
+        </TouchableOpacity>
+      </View>
 
-            <View className="flex-row gap-3">
-              <TouchableOpacity className="bg-white/20 backdrop-blur p-2.5 rounded-full">
-                <Bell color="white" size={20} />
-              </TouchableOpacity>
-              <TouchableOpacity className="bg-white/20 backdrop-blur p-2.5 rounded-full">
-                <Menu color="white" size={20} />
-              </TouchableOpacity>
+      {/* Search Bar */}
+      <View className="relative mt-4 px-5">
+        <Feather
+          name="search"
+          size={18}
+          color="#6c7d92"
+          style={{
+            position: "absolute",
+            left: 25,
+            top: 12,
+            zIndex: 10,
+          }}
+        />
+        <TextInput
+          placeholder="Search doctors, specialties..."
+          placeholderTextColor="#888"
+          className="pl-10 pr-4 h-12 bg-[#ceddf0] rounded-xl border border-[#ceddf0] text-gray-900"
+        />
+      </View>
+
+      {/* Hero Section */}
+      <View className="px-5 mt-6 bg-[#23a9ba] rounded-md overflow-hidden">
+        <View className="relative h-40">
+          <Image
+            source={require("../../assets/images/hero-medical.jpg")}
+            className="w-full h-full"
+            resizeMode="cover"
+            style={{ opacity: 0.4 }}
+          />
+          <View className="absolute inset-0 bg-primary/80 flex justify-center px-6">
+            <View className="max-w-[65%]">
+              <Text className="text-white text-xl font-semibold mb-1">
+                24/7 Medical Care
+              </Text>
+              <Text className="text-gray-100 text-sm opacity-90">
+                Consult with specialists anytime
+              </Text>
             </View>
           </View>
+        </View>
+      </View>
 
-          {/* Search Bar */}
-          <View className="bg-white/95 backdrop-blur rounded-2xl p-4 flex-row items-center gap-3 shadow-lg">
-            <Search color="#9ca3af" size={20} />
-            <TextInput
-              placeholder="Search doctors, specialties..."
-              placeholderTextColor="#9ca3af"
-              className="flex-1 text-gray-700 bg-transparent"
+      {/* Quick Actions */}
+      <View className="mt-8 px-5">
+        <Text className="text-lg font-semibold mb-3 text-gray-900">
+          Quick Actions
+        </Text>
+        <View className="flex-row justify-between">
+          <TouchableOpacity className="items-center bg-[#2ac9de] rounded-2xl p-3 flex-1 mx-1">
+            <Feather name={"video"} size={20} color="#d5fcfe" />
+            <Text className="text-[#d5fcfe] text-sm font-medium mt-1">
+              {"Video Call"}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity className="items-center bg-[#2ac9de] rounded-2xl p-3 flex-1 mx-1">
+            <Feather name={"calendar"} size={20} color="#d5fcfe" />
+            <Text className="text-[#d5fcfe] text-sm font-medium mt-1">
+              {"Book"}
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View className="flex-row justify-between mt-2">
+          <TouchableOpacity className="items-center bg-[#2ac9de] rounded-2xl p-3 flex-1 mx-1">
+            <Feather name={"message-circle"} size={20} color="#d5fcfe" />
+            <Text className="text-[#d5fcfe] text-sm font-medium mt-1">
+              {"Chat"}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity className="items-center bg-[#2ac9de] rounded-2xl p-3 flex-1 mx-1">
+            <Feather name={"file-text"} size={20} color="#d5fcfe" />
+            <Text className="text-[#d5fcfe] text-sm font-medium mt-1">
+              {"Records"}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      {/* Doctors List */}
+      <View className="mt-8 px-5 mb-10">
+        <View className="flex-row justify-between items-center mb-3">
+          <Text className="text-lg font-semibold text-gray-900">
+            Available Doctors
+          </Text>
+          <TouchableOpacity>
+            <Text className="text-[#23a9ba] text-sm font-medium">See All</Text>
+          </TouchableOpacity>
+        </View>
+
+        {doctors.map((doctor) => (
+          <View
+            key={doctor.name}
+            className="flex-row items-center bg-white rounded-2xl p-3 mb-3 shadow-sm"
+          >
+              <View className="w-14 h-14 rounded-full bg-[#eaf7fb] justify-center items-center mr-4">
+                <Feather name="user" size={24} color="#23a9ba" />
+              </View>
+
+            <View className="flex-1">
+              <Text className="text-base font-semibold text-gray-900">
+                {doctor.name}
+              </Text>
+              <Text className="text-sm text-gray-600">{doctor.specialty}</Text>
+              <Text className="text-xs text-gray-500">
+                ⭐ {doctor.rating} · {doctor.distance}
+              </Text>
+            </View>
+
+            <View
+              className={`w-3 h-3 rounded-full ${
+                doctor.available ? "bg-green-400" : "bg-gray-300"
+              }`}
             />
           </View>
-        </LinearGradient>
-
-        {/* Quick Actions */}
-        <View className="px-6 py-6">
-          <View className="flex-row flex-wrap justify-between rounded-md">
-            {[
-              { icon: Video, label: "Video Call", colors: ["#3b82f6", "#2563eb"] },
-              { icon: MessageSquare, label: "Chat", colors: ["#22c55e", "#16a34a"] },
-              { icon: Calendar, label: "Schedule", colors: ["#a855f7", "#7e22ce"] },
-              { icon: Activity, label: "Records", colors: ["#ec4899", "#db2777"] },
-            ].map((action, idx) => (
-              <TouchableOpacity key={idx} className="items-center w-[22%] mb-4">
-                <LinearGradient
-                  // colors={action.colors}
-                  colors={["#19c3ee", "#0cd660"]}
-                  className="p-4 rounded-2xl shadow-md mb-2"
-                >
-                  <action.icon color="white" size={24} />
-                </LinearGradient>
-                <Text className="text-xs text-gray-600 font-medium">{action.label}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View>
-
-        {/* Upcoming Section */}
-        <View className="px-6 mb-6">
-          <View className="flex-row justify-between items-center mb-4">
-            <Text className="text-lg font-bold text-gray-800">Upcoming</Text>
-            <TouchableOpacity>
-              <Text className="text-blue-600 text-sm font-semibold">See All</Text>
-            </TouchableOpacity>
-          </View>
-
-          <LinearGradient
-            colors={["#2563eb", "#7c3aed"]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            className="rounded-md p-5 shadow-lg"
-          >
-            <View className="flex-row justify-between mb-4">
-              <View className="flex-row gap-4">
-                <Text className="text-5xl">👩‍⚕️</Text>
-                <View>
-                  <Text className="text-white font-bold text-lg">Dr. Sarah Chen</Text>
-                  <Text className="text-blue-100 text-sm">Cardiology Checkup</Text>
-                </View>
-              </View>
-              <View className="bg-white/20 px-3 py-3 rounded-full">
-                <Text className="text-white text-md font-semibold">TODAY</Text>
-              </View>
-            </View>
-
-            <View className="flex-row justify-between items-center">
-              <View className="flex-row items-center gap-2">
-                <Clock color="white" size={16} />
-                <Text className="text-sm font-medium text-white">2:00 PM - 2:30 PM</Text>
-              </View>
-              <TouchableOpacity className="bg-white px-4 py-2 rounded-full">
-                <Text className="text-blue-600 text-sm font-semibold">Join Now</Text>
-              </TouchableOpacity>
-            </View>
-          </LinearGradient>
-        </View>
-
-        {/* Available Now Section */}
-        <View className="px-6 pb-24">
-          <View className="flex-row justify-between items-center mb-4">
-            <Text className="text-lg font-bold text-gray-800">Available Now</Text>
-            <TouchableOpacity onPress={() => setCurrentScreen("doctors")}>
-              <Text className="text-blue-600 text-sm font-semibold">View All</Text>
-            </TouchableOpacity>
-          </View>
-
-          <View className="gap-y-4">
-            {doctors.map((doctor) => (
-              <TouchableOpacity
-                key={doctor.id}
-                onPress={() => setCurrentScreen("doctorDetail")}
-                className="bg-white rounded-2xl p-4 shadow-md"
-              >
-                <View className="flex-row items-center gap-4">
-                  <Text className="text-4xl">{doctor.image}</Text>
-                  <View className="flex-1">
-                    <Text className="font-bold text-gray-800">{doctor.name}</Text>
-                    <Text className="text-gray-500 text-sm">{doctor.specialty}</Text>
-                    <View className="flex-row items-center mt-1">
-                      <Text className="text-yellow-500 text-sm">⭐</Text>
-                      <Text className="text-gray-600 text-sm font-medium ml-1">
-                        {doctor.rating}
-                      </Text>
-                    </View>
-                  </View>
-                  <View className="items-end">
-                    {doctor.available && (
-                      <View className="bg-green-100 px-3 py-1 rounded-full mb-1">
-                        <Text className="text-green-700 text-xs font-semibold">Available</Text>
-                      </View>
-                    )}
-                    <Text className="text-gray-400 text-xs">{doctor.nextSlot}</Text>
-                  </View>
-                </View>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View>
-      </ScrollView>
-    </View>
+        ))}
+      </View>
+    </ScrollView>
   );
-}
+};
+
+export default HomeScreen;
