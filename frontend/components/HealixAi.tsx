@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { MessageCircle, Send, X } from "lucide-react";
+import { MessageCircle, Send, X, Paperclip, Mic } from "lucide-react";
 import { motion } from "framer-motion";
 
 const HealixChatbot = () => {
@@ -108,6 +108,19 @@ const HealixChatbot = () => {
 
           {/* Input Area */}
           <div className="flex items-center border-t border-gray-200">
+            <label
+              htmlFor="fileUpload"
+              className="p-3 text-[#19c3ee] hover:text-[#0cd660] cursor-pointer"
+              title="Upload health document"
+            >
+              <Paperclip className="w-5 h-5" />
+            </label>
+            <input
+              type="file"
+              id="fileUpload"
+              accept=".pdf,.jpg,.jpeg,.png"
+              className="hidden"
+            />
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
@@ -115,6 +128,13 @@ const HealixChatbot = () => {
               className="flex-1 p-3 outline-none text-sm"
               onKeyDown={(e) => e.key === "Enter" && handleSend()}
             />
+              <button
+                className={`p-3 "text-red-500" : "text-[#19c3ee]"
+                } hover:text-[#0cd660]"`}
+                disabled={loading}
+              >
+                <Mic className="w-5 h-5" />
+              </button>
             <button
               onClick={handleSend}
               className="p-3 text-[#19c3ee] hover:text-[#0cd660]"

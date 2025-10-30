@@ -386,7 +386,6 @@ const Index = () => {
           </div>
         </div>
       </section>
-      <HealixChatbot />
       <AuthDialog open={authDialogOpen} onOpenChange={setAuthDialogOpen} />
     </div>
     </>
