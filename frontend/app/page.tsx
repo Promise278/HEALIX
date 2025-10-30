@@ -8,6 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import Navbar from "@/components/Navbar";
+import HealixChatbot from "@/components/HealixAi";
 // import UserLocationMap from "@/components/useMapLocation";
 const UserLocationMap = dynamic(() => import("@/components/useMapLocation"), {
   ssr: false,
@@ -385,6 +386,7 @@ const Index = () => {
           </div>
         </div>
       </section>
+      <HealixChatbot />
       <AuthDialog open={authDialogOpen} onOpenChange={setAuthDialogOpen} />
     </div>
     </>

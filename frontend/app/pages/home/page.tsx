@@ -15,6 +15,7 @@ import {
 import heroImage from "@/public/hero-doctor.jpg";
 import Image from "next/image";
 import Link from "next/link";
+import HealixChatbot from "@/components/HealixAi";
 
 const Home = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -359,6 +360,7 @@ const Home = () => {
             </div>
           </div>
         </section>
+        <HealixChatbot />
       </div>
     </>
   );

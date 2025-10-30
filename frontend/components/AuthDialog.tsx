@@ -1,36 +1,13 @@
 "use client";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Mail,
-  Lock,
-  User,
-  FileText,
-  GraduationCap,
-  Calendar,
-  Award,
-  Building,
-  Eye,
-  EyeOff,
-} from "lucide-react";
+import { Mail, Lock, User, FileText, GraduationCap, Calendar, Award, Building, Eye, EyeOff, } from "lucide-react";
 import healixLogo from "@/public/healix-logo.png";
 import { useState } from "react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -48,15 +25,15 @@ const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
   const [showDoctorPassword, setShowDoctorPassword] = useState(false);
   const router = useRouter();
 
-  // Auth form states
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [patientpassword, setPatientpassword] = useState("");
-  const [doctorpassword, setDoctorpassword] = useState("");
-  const [fullName, setFullName] = useState("");
+  // PATIENT form states
+  const [patientName, setPatientName] = useState("");
+  const [patientEmail, setPatientEmail] = useState("");
+  const [patientPassword, setPatientPassword] = useState("");
 
-  // Doctor verification states
-  const [docsemail, setDocsemail] = useState("");
+  // DOCTOR form states
+  const [doctorName, setDoctorName] = useState("");
+  const [doctorEmail, setDoctorEmail] = useState("");
+  const [doctorPassword, setDoctorPassword] = useState("");
   const [licenseNumber, setLicenseNumber] = useState("");
   const [licenseCountry, setLicenseCountry] = useState("");
   const [specialization, setSpecialization] = useState("");
@@ -64,13 +41,19 @@ const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
   const [graduationYear, setGraduationYear] = useState("");
   const [yearsExperience, setYearsExperience] = useState("");
 
+  // Auth form states
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [activeTab, setActiveTab] = useState("login");
+
   const resetForm = () => {
     setEmail("");
     setPassword("");
     setFullName("");
     setUserType(null);
     setDoctorStep(1);
-    setDoctorpassword("");
+    setDoctorPassword("");
     setLicenseNumber("");
     setLicenseCountry("");
     setSpecialization("");
@@ -85,7 +68,7 @@ const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
   const handlePatientSignup = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!email || !patientpassword || !fullName) {
+    if (!patientEmail || !patientPassword || !patientName) {
       alert("Please fill in all fields");
       return;
     }
@@ -99,18 +82,20 @@ const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            name: fullName,
-            email,
-            password: patientpassword,
+            name: patientName,
+            email: patientEmail,
+            password: patientPassword,
             role: "patient",
           }),
         }
       );
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Registration failed");
-      alert("✅ Patient registered successfully!");
+      alert("Patient registered successfully!");
       resetForm();
-      onOpenChange(false);
+      // onOpenChange(false);
+      setActiveTab("login");
+      setUserType("patient");
     } catch (err: unknown) {
       if (err instanceof Error) {
         alert(err.message);
@@ -124,7 +109,7 @@ const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
 
   const handleDoctorStep1 = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !doctorpassword || !fullName) {
+    if (!doctorEmail || !doctorPassword || !doctorName) {
       alert("Please fill in all fields");
       return;
     }
@@ -154,9 +139,9 @@ const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            name: fullName,
-            email,
-            password: doctorpassword,
+            name: doctorName,
+            email: doctorEmail,
+            password: doctorPassword,
             role: "doctor",
             medicalLicenseNumber: licenseNumber,
             yearsOfExperience: parseInt(yearsExperience),
@@ -171,7 +156,7 @@ const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
       const data = await res.json();
 
       if (!res.ok) throw new Error(data.message || "Registration failed");
-      alert("✅ Doctor registration submitted successfully!");
+      alert("Doctor registration submitted successfully!");
       resetForm();
       onOpenChange(false);
     } catch (err: unknown) {
@@ -198,7 +183,7 @@ const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
       if (userType === "patient") {
         url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/patientlogin`;
       } else if (userType === "doctor") {
-        url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/doctorlogin`;
+        url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/doctorlogin`;
       }
       const res = await fetch(url, {
         method: "POST",
@@ -216,7 +201,9 @@ const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
       }
 
       const data = await res.json();
-      localStorage.setItem("token", data.token);
+      sessionStorage.setItem("token", data.token);
+      sessionStorage.setItem("email", email);
+      sessionStorage.setItem("userType", userType || "");
       alert("Login successful!");
       resetForm();
       onOpenChange(false);
@@ -255,7 +242,7 @@ const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
             </DialogHeader>
           </div>
 
-          <Tabs defaultValue="login" className="w-full">
+          <Tabs defaultValue="login" value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="grid w-full grid-cols-2 mb-6">
               <TabsTrigger value="login">Login</TabsTrigger>
               <TabsTrigger value="signup">Sign Up</TabsTrigger>
@@ -407,8 +394,8 @@ const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
                         id="patient-name"
                         placeholder="John Doe"
                         className="pl-10"
-                        value={fullName}
-                        onChange={(e) => setFullName(e.target.value)}
+                        value={patientName}
+                        onChange={(e) => setPatientName(e.target.value)}
                         required
                       />
                     </div>
@@ -423,8 +410,8 @@ const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
                         type="email"
                         placeholder="your@email.com"
                         className="pl-10"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        value={patientEmail}
+                        onChange={(e) => setPatientEmail(e.target.value)}
                         required
                       />
                     </div>
@@ -439,8 +426,8 @@ const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
                         type={showPatientPassword ? "text" : "password"}
                         placeholder="••••••••"
                         className="pl-10"
-                        value={patientpassword}
-                        onChange={(e) => setPatientpassword(e.target.value)}
+                        value={patientPassword}
+                        onChange={(e) => setPatientPassword(e.target.value)}
                         required
                       />
                       <button
@@ -499,8 +486,8 @@ const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
                         id="doctor-name"
                         placeholder="Dr. John Smith"
                         className="pl-10"
-                        value={fullName}
-                        onChange={(e) => setFullName(e.target.value)}
+                        value={doctorName}
+                        onChange={(e) => setDoctorName(e.target.value)}
                         required
                       />
                     </div>
@@ -515,8 +502,8 @@ const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
                         type="email"
                         placeholder="doctor@hospital.com"
                         className="pl-10"
-                        value={docsemail}
-                        onChange={(e) => setDocsemail(e.target.value)}
+                        value={doctorEmail}
+                        onChange={(e) => setDoctorEmail(e.target.value)}
                         required
                       />
                     </div>
@@ -531,8 +518,8 @@ const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
                         type={showDoctorPassword ? "text" : "password"}
                         placeholder="••••••••"
                         className="pl-10"
-                        value={doctorpassword}
-                        onChange={(e) => setDoctorpassword(e.target.value)}
+                        value={doctorPassword}
+                        onChange={(e) => setDoctorPassword(e.target.value)}
                         required
                       />
                       <button

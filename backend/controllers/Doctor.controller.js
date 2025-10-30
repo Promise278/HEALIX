@@ -1,8 +1,11 @@
 const fs = require("fs");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+require('dotenv').config();
+const sendWelcomeEmail = require("../utils/sendMailDoc");
 
-const users = [];
 const USERS_FILE = "doctors.json";
+const JWT_SECRET = process.env.JWT_SECRET;
 
 function loadUsers() {
   if (!fs.existsSync(USERS_FILE)) {
@@ -16,7 +19,7 @@ function saveUsers(users) {
   fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
 }
 
-function doctorregister(req, res) {
+async function doctorregister(req, res) {
   const { name, email, password, role, medicalLicenseNumber, specialty, yearsOfExperience, } = req.body;
 
   if ( !name || !email || !password || !role || !medicalLicenseNumber || !specialty || !yearsOfExperience ) {
@@ -71,10 +74,16 @@ function doctorregister(req, res) {
   users.push(newDoctor);
   saveUsers(users);
 
+  try {
+    await sendWelcomeEmail(name, email);
+  } catch (err) {
+    console.error("Failed to send welcome email:", err);
+  }
+
   return res.status(201).json({
     success: true,
     data: newDoctor,
-    message: "Doctor Registered successfully",
+    message: "Doctor Registered successfully. Check your email for a welcome message!",
   });
 }
 
@@ -113,11 +122,13 @@ function doctorlogin(req, res) {
     time: Date.now(),
   };
 
-  const token = btoa(JSON.stringify(payload));
+  const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "12h" });
+  
 
   return res.status(200).json({
     success: true,
     token,
+    user: payload,
     message: "Doctor Login successfully",
   });
 }

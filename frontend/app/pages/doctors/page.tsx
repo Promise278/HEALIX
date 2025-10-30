@@ -8,6 +8,7 @@ import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import healixLogo from "@/public/healix-logo.png";
 import Image from "next/image";
+import HealixChatbot from "@/components/HealixAi";
 
 const Doctors = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -341,6 +342,7 @@ const Doctors = () => {
           )}
         </div>
       </div>
+      <HealixChatbot />
     </>
   );
 };

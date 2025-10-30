@@ -69,16 +69,14 @@ async function patientregister(req, res) {
   users.push(newUser);
   saveUsers(users);
 
-  try {
-    await sendWelcomeEmail(name, email);
-  } catch (err) {
-    console.error("Failed to send welcome email:", err);
-  }
+  sendWelcomeEmail(name, email)
+  .then(() => console.log(`✅ Welcome email sent to ${email}`))
+  .catch((err) => console.error("❌ Failed to send welcome email:", err));
 
   return res.status(201).json({
     success: true,
     data: newUser,
-    message: "User Registered successfully",
+    message: "Patient Registered successfully. Check your email for a welcome message!",
   });
 }
 
@@ -117,13 +115,13 @@ function patientlogin(req, res) {
     time: Date.now(),
   };
 
-  const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "7h" });
+  const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "12h" });
 
   return res.status(200).json({
     success: true,
     token,
     user: payload,
-    message: "User Login successfully",
+    message: "Patient Login successfully",
   });
 }
 

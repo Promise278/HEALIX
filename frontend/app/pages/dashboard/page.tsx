@@ -9,6 +9,7 @@ import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, Video, MessageSquare, FileText, Clock, Activity } from "lucide-react";
+import HealixChatbot from "@/components/HealixAi";
 
 function Dashboard() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -320,6 +321,7 @@ function Dashboard() {
         </div>
       </div>
     </div>
+    <HealixChatbot />
     </>
   );
 }

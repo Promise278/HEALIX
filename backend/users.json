@@ -1,23 +1,30 @@
 [
   {
     "id": 1,
-    "name": "phebe",
-    "email": "phebe@gmail.com",
-    "password": "$2b$10$XaVFN10YfY8bUfAOCekL.OU5IKmxgvOcrM2VUnpgM2lLjFcqPNZES",
-    "role": "patient"
-  },
-  {
-    "id": 2,
-    "name": "Promise Obi",
-    "email": "promiseobi2008@gmail.com",
-    "password": "$2b$10$mNhxSv1KR9vqjq2xj37iDuxQKM2w6zqQCamoOxouQ5TAT7OjaHpYO",
+    "name": "Phebe Obi",
+    "email": "obipiusphebe@gmail.com",
+    "password": "$2b$10$Dl5HwsgRcNJ1U1T29hMS5.76AQ/RzgxhN1KR0GhxvqAlCL60d/94O",
     "role": "patient"
   },
   {
     "id": 3,
-    "name": "Praise O",
-    "email": "praisedami1996@gmail.com",
-    "password": "$2b$10$nvSWnVEsi.BNn9l4zuFgdupqDmJzHb6e0AbytncFflPr09SCFHAsu",
+    "name": "timothy pius",
+    "email": "timothypius@gmail.com",
+    "password": "$2b$10$o.d9.F0MAWj4IGxbad.rQ.gol2mYH/qvf3/F7who51MCGt0bJlZCG",
+    "role": "patient"
+  },
+  {
+    "id": 4,
+    "name": "Grace Pius Obi",
+    "email": "piuosgraceobi20@gmail.com",
+    "password": "$2b$10$.WSPvCdkwns3.qjVqrEuB.jhr2/htQ6.V1uQyfRfP/P0YAh4HDWrO",
+    "role": "patient"
+  },
+  {
+    "id": 4,
+    "name": "Promise Obi",
+    "email": "promiseobi2008@gmail.com",
+    "password": "$2b$10$qpVnYFvYIjkXHeefrzpmMuw2RUrySzACGXX8F2DYxKEcse7z5138W",
     "role": "patient"
   }
 ]

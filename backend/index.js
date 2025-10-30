@@ -4,6 +4,7 @@ const app = express();
 const cors = require('cors')
 const authRoutes = require("./routes/Doctor.routes")
 const apiRouthes = require("./routes/auth.routes")
+const AiHealth = require("./routes/ai.routes")
 
 app.use(express.json())
 app.use(cors());
@@ -17,6 +18,7 @@ app.get('/',(req, res) => {
 
 app.use('/api', apiRouthes)
 app.use('/auth', authRoutes)
+app.use('/api', AiHealth)
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
