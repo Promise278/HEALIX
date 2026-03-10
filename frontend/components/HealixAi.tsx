@@ -50,7 +50,7 @@ const HealixChatbot = () => {
       console.error("Error:", error);
       setMessages((prev) => [
         ...prev,
-        { sender: "bot", text: "❌ Connection error. Please try again later." },
+        { sender: "bot", text: "Connection error. Please try again later." },
       ]);
     } finally {
       setLoading(false);
@@ -75,7 +75,7 @@ const HealixChatbot = () => {
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
-          className="fixed bottom-6 right-6 w-[430px] h-[600px] max-h-[90vh] bg-white shadow-2xl rounded-2xl overflow-hidden border border-gray-200 z-50 flex flex-col"
+          className="fixed bottom-6 right-6 md:w-[430px] w-96 md:h-[600px] h-96 max-h-[90vh] bg-white shadow-2xl rounded-2xl overflow-hidden border border-gray-200 z-50 flex flex-col"
         >
           {/* Header */}
           <div className="bg-gradient-to-r from-[#19c3ee] to-[#0cd660] text-white px-4 py-3 flex justify-between items-center">

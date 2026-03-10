@@ -79,7 +79,7 @@ async function sendWelcomeEmail(name, email) {
 
   try {
     await client.sendTransacEmail(sendSmtpEmail);
-    console.log(`✅ Welcome email sent to ${email}`);
+    console.log(`Welcome email sent to ${email}`);
   } catch (error) {
     console.error("❌ Error sending email:", error);
   }

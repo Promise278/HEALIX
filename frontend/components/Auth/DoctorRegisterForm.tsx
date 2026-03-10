@@ -18,7 +18,6 @@ interface Props {
 export default function DoctorRegisterForm({ onClose }: Props) {
   const [doctorStep, setDoctorStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const [userType, setUserType] = useState<"patient" | "doctor" | null>(null);
 
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -81,19 +80,9 @@ export default function DoctorRegisterForm({ onClose }: Props) {
     <>
       {doctorStep === 1 ? (
         <form onSubmit={handleStep1} className="space-y-4">
-            <div className="flex justify-between">
-          <h3 className="text-lg font-semibold">
+          <h1 className="text-lg font-semibold">
             Doctor Registration - Step 1
-          </h3>
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            onClick={() => setUserType(null)}
-          >
-            Change
-          </Button>
-          </div>
+          </h1>
 
           <div className="space-y-2">
             <Label>Full Name</Label>

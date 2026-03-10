@@ -41,7 +41,7 @@ export default async function handler(req, res) {
     const answer = response.choices[0].message.content;
     res.json({ role: "assistant", content: answer });
   } catch (error) {
-    console.error("❌ Healix AI Error:", error);
+    console.error("Healix AI Error:", error);
     res.status(500).json({ error: "Error connecting to Healix AI" });
   }
 }

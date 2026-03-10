@@ -14,7 +14,7 @@ export default function PatientRegisterForm({ onClose }: Props) {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [userType, setUserType] = useState<"patient" | "doctor" | null>(null);
+  const [, setUserType] = useState<"patient" | "doctor" | null>(null);
 
   const handlePatientSignup = async (e: React.FormEvent) => {
     e.preventDefault();

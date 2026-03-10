@@ -10,12 +10,10 @@ import { usePathname } from 'next/navigation';
 function Footer() {
   const pathname = usePathname();
     const [authDialogOpen, setAuthDialogOpen] = useState(false);
-    const handleGetStarted = () => {
     if (pathname === '/' || pathname === '/home' || pathname === '/doctors' || pathname === '/dashboard') {
-      return;
+      return; 
     }
     setAuthDialogOpen(true);
-  };
   return (
     <>
     <div>
@@ -68,16 +66,20 @@ function Footer() {
             )}
              {(pathname === '/') && (
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><Link href="#" className="hover:text-primary transition-colors">Find Doctors</Link></li>
-                <li><Link href="#" className="hover:text-primary transition-colors">Dashboard</Link></li>
+                <li><Link href="" className="hover:text-primary transition-colors">Find Doctors</Link></li>
+                <li><Link href="" className="hover:text-primary transition-colors">Dashboard</Link></li>
               </ul>
             )}
             </div>
             <div>
               <h4 className="font-semibold mb-4">Company</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><a href="#" className="hover:text-primary transition-colors">About Us</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Contact</a></li>
+                <li><a 
+                  onClick={() => setAuthDialogOpen(true)}
+                 className="hover:text-primary transition-colors">About Us</a></li>
+                <li><a 
+                  onClick={() => setAuthDialogOpen(true)}
+                 className="hover:text-primary transition-colors">Contact</a></li>
               </ul>
             </div>
             <div>

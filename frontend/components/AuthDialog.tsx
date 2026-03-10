@@ -10,13 +10,15 @@ import { useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 interface AuthDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  initialTab?: "login" | "signup";
 }
 
-const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
+const AuthDialog = ({ open, onOpenChange, initialTab = "login" }: AuthDialogProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [userType, setUserType] = useState<"patient" | "doctor" | null>(null);
   const [doctorStep, setDoctorStep] = useState(1);
@@ -27,6 +29,7 @@ const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
 
   // PATIENT form states
   const [patientName, setPatientName] = useState("");
+  const [patientUsername, setPatientUsername] = useState("");
   const [patientEmail, setPatientEmail] = useState("");
   const [patientPassword, setPatientPassword] = useState("");
 
@@ -44,13 +47,11 @@ const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
   // Auth form states
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [activeTab, setActiveTab] = useState("login");
+  const [activeTab, setActiveTab] = useState<string>(initialTab);
 
   const resetForm = () => {
     setEmail("");
     setPassword("");
-    setFullName("");
     setUserType(null);
     setDoctorStep(1);
     setDoctorPassword("");
@@ -68,8 +69,8 @@ const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
   const handlePatientSignup = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!patientEmail || !patientPassword || !patientName) {
-      alert("Please fill in all fields");
+    if (!patientEmail || !patientPassword || !patientName || !patientUsername) {
+      toast.error("Please fill in all fields");
       return;
     }
 
@@ -82,25 +83,25 @@ const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            name: patientName,
+            fullname: patientName,
+            username: patientUsername,
             email: patientEmail,
             password: patientPassword,
-            role: "patient",
           }),
         }
       );
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Registration failed");
-      alert("Patient registered successfully!");
+      toast.success("Patient registered successfully!");
       resetForm();
       // onOpenChange(false);
       setActiveTab("login");
       setUserType("patient");
     } catch (err: unknown) {
       if (err instanceof Error) {
-        alert(err.message);
+        toast.error(err.message);
       } else {
-        alert("An unknown error occurred");
+        toast.error("An unknown error occurred");
       }
     } finally {
       setIsLoading(false);
@@ -110,7 +111,7 @@ const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
   const handleDoctorStep1 = (e: React.FormEvent) => {
     e.preventDefault();
     if (!doctorEmail || !doctorPassword || !doctorName) {
-      alert("Please fill in all fields");
+      toast.error("Please fill in all fields");
       return;
     }
     setDoctorStep(2);
@@ -127,7 +128,7 @@ const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
       !graduationYear ||
       !yearsExperience
     ) {
-      alert("Please fill all verification fields");
+      toast.error("Please fill all verification fields");
       return;
     }
 
@@ -139,16 +140,13 @@ const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            name: doctorName,
+            fullname: doctorName,
             email: doctorEmail,
             password: doctorPassword,
-            role: "doctor",
-            medicalLicenseNumber: licenseNumber,
-            yearsOfExperience: parseInt(yearsExperience),
-            specialty: specialization,
-            medicalSchool,
-            licenseCountry,
-            graduationYear: parseInt(graduationYear),
+            medicallicensenumber: licenseNumber,
+            yearsofexperience: parseInt(yearsExperience),
+            specialization: specialization,
+            bio: `Medicall School: ${medicalSchool}, Issued Country: ${licenseCountry}, Graduation Year: ${graduationYear}`,
           }),
         }
       );
@@ -156,14 +154,14 @@ const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
       const data = await res.json();
 
       if (!res.ok) throw new Error(data.message || "Registration failed");
-      alert("Doctor registration submitted successfully!");
+      toast.success("Doctor registration submitted successfully!");
       resetForm();
       onOpenChange(false);
     } catch (err: unknown) {
       if (err instanceof Error) {
-        alert(err.message);
+        toast.error(err.message);
       } else {
-        alert("An unknown error occurred");
+        toast.error("An unknown error occurred");
       }
       console.log("Signup error:", err);
     } finally {
@@ -174,7 +172,7 @@ const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
-      alert("Please enter your email and password");
+      toast.error("Please enter your email and password");
       return;
     }
     setIsLoading(true);
@@ -195,24 +193,32 @@ const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
 
       if (!res.ok) {
         console.error(`Error ${res.status}: ${res.statusText}`);
-        const errorText = await res.text();
-        console.error(errorText);
-        throw new Error(`Error ${res.status}: ${res.statusText}`);
+        const data = await res.json();
+        throw new Error(data.message || `Error ${res.status}: ${res.statusText}`);
       }
 
       const data = await res.json();
       sessionStorage.setItem("token", data.token);
       sessionStorage.setItem("email", email);
       sessionStorage.setItem("userType", userType || "");
-      alert("Login successful!");
+      localStorage.setItem("user", JSON.stringify(data.user));
+      toast.success("Login successful!");
       resetForm();
       onOpenChange(false);
-      router.push("/pages/home");
+      // redirect based on role
+      if (userType === "patient") {
+        router.push("/pages/dashboard");
+      } else if (userType === "doctor") {
+        router.push("/pages/docsdashboard");
+      } else {
+        // fallback to generic home
+        router.push("/pages/home");
+      }
     } catch (err: unknown) {
       if (err instanceof Error) {
-        alert(err.message);
+        toast.error(err.message);
       } else {
-        alert("An unknown error occurred");
+        toast.error("An unknown error occurred");
       }
     } finally {
       setIsLoading(false);
@@ -396,6 +402,21 @@ const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
                         className="pl-10"
                         value={patientName}
                         onChange={(e) => setPatientName(e.target.value)}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="patient-username">Username</Label>
+                    <div className="relative">
+                      <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        id="patient-username"
+                        placeholder="johndoe123"
+                        className="pl-10"
+                        value={patientUsername}
+                        onChange={(e) => setPatientUsername(e.target.value)}
                         required
                       />
                     </div>

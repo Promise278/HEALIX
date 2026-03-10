@@ -20,14 +20,13 @@ import { useRouter } from "next/navigation";
 const Home = () => {
   const router = useRouter();
 
-  // if user is already logged in, send them to the proper landing page
   React.useEffect(() => {
     if (typeof window === "undefined") return;
     const type = sessionStorage.getItem("userType");
-    if (type === "patient") {
+    // only doctors should see this page
+    if (type && type !== "doctor") {
+      // redirect patients or unauthenticated users to patient home
       router.push("/pages/dashboard");
-    } else if (type === "doctor") {
-      router.push("/pages/docsdashboard");
     }
   }, [router]);
 

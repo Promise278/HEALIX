@@ -1,8 +1,18 @@
-const express = require("express")
-const { doctorregister, doctorlogin } = require("../controllers/Doctor.controller")
-const router = express.Router()
+const express = require("express");
+const {
+  register,
+  login,
+  addConsultationFee,
+} = require("../controllers/Doctor.controller");
+const router = express.Router();
+const verifyToken = require("../middleware/auth.middleware")
+const { getalldoctors, getdocbyId } = require("../controllers/Doctor.controller")
 
-router.post("/doctorregister", doctorregister)
-router.post("/doctorlogin", doctorlogin)
 
-module.exports = router
+router.post("/doctorregister", register);
+router.post("/doctorlogin", login);
+router.put("/fee", addConsultationFee);
+router.get("/seedoctor/:id", verifyToken, getdocbyId)
+router.get("/seedoctors", verifyToken, getalldoctors)
+
+module.exports = router;

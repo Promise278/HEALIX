@@ -6,23 +6,17 @@ import heroImage from "@/public/hero-doctor.jpg";
 import AuthDialog from "@/components/AuthDialog";
 import Image from "next/image";
 import Link from "next/link";
-import dynamic from "next/dynamic";
-import Navbar from "@/components/Navbar";
-import HealixChatbot from "@/components/HealixAi";
-// import UserLocationMap from "@/components/useMapLocation";
-const UserLocationMap = dynamic(() => import("@/components/useMapLocation"), {
-  ssr: false,
-});
+import HealthcareJourney from "@/components/ChooseHealth";
 
 const Index = () => {
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
 
   return (
     <>
-    <Navbar />
+    
     <div className="min-h-screen bg-white">
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-[#22f3f3] opacity-10" />
+      <section className="relative overflow-hidden min-h-screen pt-12">
+        <div className="absolute inset-0  bg-[#22f3f3] opacity-10" />
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-8 animate-fade-in">
@@ -38,8 +32,8 @@ const Index = () => {
                 instantly. Get consultations, prescriptions, and personalized
                 care from the comfort of your home.
               </p>
-              <div className="flex flex-wrap gap-4">
-                <Link href="/doctors">
+              <div className="flex flex-cols gap-4">
+                <Link href="/pages/doctors">
                   <button
                     className="cursor-pointer bg-gradient-to-r from-[#19c3ee] to-[#0cd660] text-white w-38 h-12 shadow-md rounded-md"
                   >
@@ -83,9 +77,7 @@ const Index = () => {
           </div>
         </div>
       </section>
-      <div className="relative w-full h-[500px]">
-      <UserLocationMap />
-      </div>
+      {/* Map Removed from landing page */}
 
       {/* Features Section */}
       <section className="py-20 bg-gray-50">
@@ -216,6 +208,8 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      <HealthcareJourney />
 
       {/* Testimonials Section */}
       <section className="py-20 bg-gray-50">
@@ -387,6 +381,7 @@ const Index = () => {
         </div>
       </section>
       <AuthDialog open={authDialogOpen} onOpenChange={setAuthDialogOpen} />
+    {/* <DoctorDashboardPage /> */}
     </div>
     </>
   );

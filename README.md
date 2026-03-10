@@ -37,8 +37,7 @@ Healix aims to make healthcare **accessible, secure, and personal** — empoweri
 |-------|---------------|
 | **Frontend** | Nextjs / React Native / Expo |
 | **Backend** | Node.js, Express.js |
-| **Database** | MySql or JSON-based local storage (for testing) |
-| **Authentication** | Bycrpt, JWT (JSON Web Tokens) |
+| **Database** | Postgres |
 | **Hosting** | Vercel / Render |
 | **Version Control** | Git & GitHub |
 
@@ -61,7 +60,7 @@ Healix uses:
    - Medical council (MDCN)  
    - Certificate upload  
 
-2. Admin reviews and verifies details via [MDCN Portal](https://portal.mdcn.gov.ng/).  
+2. Admin reviews and verifies doctors details
 3. Once approved, the doctor’s account status changes to **“verified.”**  
 4. Verified doctors can then access Healix’s consultation and management tools. 
 
@@ -78,7 +77,7 @@ In a world where access to healthcare can be limited by distance or time, **Heal
 ## 👨‍💻 Author
 
 **Promise Obi**  
-FullStack Developer | Mobile-App Developer | Builder of Healix 💚  
+FullStack Developer | Mobile-App Developer | Builder of Healix 
 📧 [promiseobi2008@example.com](mailto:promiseobi2008@example.com)  
 🌐 [LinkedIn](https://www.linkedin.com/in/promise-obi-9a6878328/) | [GitHub](https://github.com/Promise278) | [https://my-new-portfolio-website-rmjl.vercel.app/](https://my-new-portfolio-website-rmjl.vercel.app/)
 
@@ -90,4 +89,4 @@ This project is licensed under the **MIT License** — feel free to use and buil
 
 ---
 
-### ⭐ If you believe in accessible healthcare for everyone, give Healix a star on GitHub!
+### If you believe in accessible healthcare for everyone, give Healix a star on GitHub!

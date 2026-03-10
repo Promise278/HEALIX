@@ -9,8 +9,7 @@ import Image from "next/image";
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
-  
-  const isActive = (path: string) => location.pathname === path;
+  const [initialTab, setInitialTab] = useState<"login" | "signup">("login");
 
   return (
     <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border">
@@ -30,34 +29,22 @@ const Navbar = () => {
             </span>
           </Link>
 
-          <div className="hidden md:flex items-center gap-8">
-            <Link 
-              href="/" 
-              className={`text-sm font-medium transition-colors hover:text-[#5fc1e0] ${
-                isActive("/") ? "text-[#5fc1e0]" : "text-foreground"
-              }`}
-            >
-              Home
-            </Link>
-            {/* <Link 
-              href="/doctors" 
-              className={`text-sm font-medium transition-colors hover:text-[#5fc1e0] ${
-                isActive("/doctor") ? "text-[#5fc1e0]" : "text-foreground"
-              }`}
-            >
-              Find Doctors
-            </Link>
-            <Link 
-              href="/dashboard" 
-              className={`text-sm font-medium transition-colors hover:text-[#5fc1e0] ${
-                isActive("/dashboard") ? "text-[#5fc1e0]" : "text-foreground"
-              }`}
-            >
-              Dashboard
-            </Link> */}
+          <div className="hidden md:flex items-center gap-4">
             <button 
-              className="bg-gradient-to-r from-[#19c3ee] to-[#0cd660] w-32 h-10 rounded-md text-white hover:opacity-90"
-              onClick={() => setAuthDialogOpen(true)}
+              className="text-sm font-medium text-foreground hover:text-[#5fc1e0] transition-colors"
+              onClick={() => {
+                setInitialTab("login");
+                setAuthDialogOpen(true);
+              }}
+            >
+              Sign In
+            </button>
+            <button 
+              className="bg-gradient-to-r from-[#19c3ee] to-[#0cd660] px-6 h-10 rounded-md text-white hover:opacity-90 font-medium"
+              onClick={() => {
+                setInitialTab("signup");
+                setAuthDialogOpen(true);
+              }}
             >
               Get Started
             </button>
@@ -79,21 +66,21 @@ const Navbar = () => {
           <div className="md:hidden py-4 animate-slide-in">
             <div className="flex flex-col gap-4">
               <Link 
-                href="/" 
+                href="/pages/home" 
                 className="text-sm font-medium hover:text-primary transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Home
               </Link>
               <Link 
-                href="/doctors" 
+                href="/pages/doctors" 
                 className="text-sm font-medium hover:text-primary transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Find Doctors
               </Link>
               <Link 
-                href="/dashboard" 
+                href="/pages/dashboard" 
                 className="text-sm font-medium hover:text-primary transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
               >
@@ -102,6 +89,7 @@ const Navbar = () => {
               <button 
                 className="bg-gradient-to-r from-[#19c3ee] to-[#0cd660] w-32 h-10 rounded-md text-white"
                 onClick={() => {
+                  setInitialTab("signup");
                   setMobileMenuOpen(false);
                   setAuthDialogOpen(true);
                 }}
@@ -113,7 +101,7 @@ const Navbar = () => {
         )}
       </div>
 
-      <AuthDialog open={authDialogOpen} onOpenChange={setAuthDialogOpen} />
+      <AuthDialog key={initialTab} open={authDialogOpen} onOpenChange={setAuthDialogOpen} initialTab={initialTab} />
     </nav>
   );
 };
