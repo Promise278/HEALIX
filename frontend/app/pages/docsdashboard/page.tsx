@@ -321,8 +321,27 @@
 // }
 "use client";
 import React, { useState, useEffect } from "react";
-import { Users, Calendar, DollarSign, Heart, Video, FileText, FolderOpen, Clock, TrendingUp, ArrowRight, } from "lucide-react";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
+import {
+  Users,
+  Calendar,
+  DollarSign,
+  Heart,
+  Video,
+  FileText,
+  FolderOpen,
+  Clock,
+  TrendingUp,
+  ArrowRight,
+} from "lucide-react";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  CartesianGrid,
+} from "recharts";
 import { useRouter } from "next/navigation";
 
 interface Appointment {
@@ -365,7 +384,7 @@ export default function DoctorDashboard() {
   }, [router]);
 
   const [activeTab, setActiveTab] = useState<"revenue" | "consultations">(
-    "revenue"
+    "revenue",
   );
 
   const stats: StatCard[] = [
@@ -609,7 +628,7 @@ export default function DoctorDashboard() {
                         </div>
                         <span
                           className={`px-4 py-2 rounded-lg text-sm font-semibold ${getStatusColor(
-                            appointment.status
+                            appointment.status,
                           )}`}
                         >
                           {appointment.status === "in-progress"
@@ -686,11 +705,13 @@ export default function DoctorDashboard() {
                       />
                       <YAxis tick={{ fontSize: 12, fill: "#4B5563" }} />
                       <Tooltip
-                        formatter={(value: number) =>
-                          `$${value.toLocaleString()}`
+                        formatter={(value) =>
+                          typeof value === "number"
+                            ? `$${value.toLocaleString()}`
+                            : String(value ?? "")
                         }
                       />
-                       <Bar
+                      <Bar
                         dataKey="value"
                         fill="#3B82F6"
                         radius={[6, 6, 0, 0]}
@@ -927,15 +948,15 @@ export default function DoctorDashboard() {
                         </div>
                         <span
                           className={`text-xs font-semibold ${getStatusColor(
-                            patient.status
+                            patient.status,
                           )}`}
                         >
                           ●{" "}
                           {patient.status === "stable"
                             ? "stable"
                             : patient.status === "improving"
-                            ? "improving"
-                            : "needs attention"}
+                              ? "improving"
+                              : "needs attention"}
                         </span>
                       </div>
                       <div className="flex items-center justify-between text-xs text-gray-600 ml-13">
