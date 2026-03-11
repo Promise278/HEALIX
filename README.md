@@ -79,7 +79,7 @@ In a world where access to healthcare can be limited by distance or time, **Heal
 **Promise Obi**  
 FullStack Developer | Mobile-App Developer | Builder of Healix 
 📧 [promiseobi2008@example.com](mailto:promiseobi2008@example.com)  
-🌐 [LinkedIn](https://www.linkedin.com/in/promise-obi-9a6878328/) | [GitHub](https://github.com/Promise278) | [https://my-new-portfolio-website-rmjl.vercel.app/](https://my-new-portfolio-website-rmjl.vercel.app/)
+🌐 [LinkedIn](https://www.linkedin.com/in/promise-obi-9a6878328/) | [GitHub](https://github.com/Promise278) | [https://promotexdev.vercel.app/](https://promotexdev.vercel.app/)
 
 ---
 
