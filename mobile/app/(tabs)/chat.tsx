@@ -9,10 +9,10 @@ import {
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { User } from "lucide-react-native";
-// import { useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 
 const Chat = () => {
-  // const router = useRouter();
+  const router = useRouter();
 
   const conversations = [
     {
@@ -74,7 +74,7 @@ const Chat = () => {
           <TouchableOpacity
             key={chat.id}
             className="flex-row items-start bg-white p-4 rounded-2xl shadow-sm border border-gray-100"
-            // onPress={() => router.push(`/chat/${chat.id}`)}
+            onPress={() => router.push(`/chat/${chat.id}`)}
             activeOpacity={0.7}
           >
             <View className="relative mr-3">

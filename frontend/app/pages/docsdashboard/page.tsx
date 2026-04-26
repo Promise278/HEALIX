@@ -1,379 +1,45 @@
-// import type { Metadata } from 'next';
-// // import Header from '@/components/common/Header';
-// // import DoctorDashboardInteractive from './components/DoctorDashboardInteractive';
-
-// // export const metadata: Metadata = {
-// //   title: 'Doctor Dashboard - Healix',
-// //   description: 'Comprehensive healthcare provider dashboard for managing appointments, patient records, consultations, revenue analytics, and medical practice administration.'
-// // };
-
-// export default function DoctorDashboardPage() {
-//   // Mock dashboard statistics
-//   const mockStats = [
-//   {
-//     id: 'patients',
-//     title: 'Total Patients',
-//     value: '1,247',
-//     change: '+12%',
-//     changeType: 'increase' as const,
-//     icon: 'UserGroupIcon',
-//     color: 'bg-primary'
-//   },
-//   {
-//     id: 'appointments',
-//     title: "Today\'s Appointments",
-//     value: '18',
-//     change: '+3',
-//     changeType: 'increase' as const,
-//     icon: 'CalendarIcon',
-//     color: 'bg-healing'
-//   },
-//   {
-//     id: 'revenue',
-//     title: 'Monthly Revenue',
-//     value: '$24,580',
-//     change: '+8.2%',
-//     changeType: 'increase' as const,
-//     icon: 'CurrencyDollarIcon',
-//     color: 'bg-success'
-//   },
-//   {
-//     id: 'satisfaction',
-//     title: 'Patient Satisfaction',
-//     value: '94.2%',
-//     change: '+2.1%',
-//     changeType: 'increase' as const,
-//     icon: 'HeartIcon',
-//     color: 'bg-accent'
-//   }];
-
-//   // Mock appointments data
-//   const mockAppointments = [
-//   {
-//     id: '1',
-//     patientName: 'Sarah Johnson',
-//     patientImage: "https://img.rocket.new/generatedImages/rocket_gen_img_10c75be77-1762273997956.png",
-//     patientImageAlt: 'Professional headshot of young woman with brown hair and warm smile in business attire',
-//     time: '9:00 AM',
-//     type: 'video' as const,
-//     status: 'upcoming' as const,
-//     duration: '30 min',
-//     reason: 'Follow-up consultation'
-//   },
-//   {
-//     id: '2',
-//     patientName: 'Michael Chen',
-//     patientImage: "https://img.rocket.new/generatedImages/rocket_gen_img_1ba2d3fac-1762248835751.png",
-//     patientImageAlt: 'Professional portrait of Asian man in navy suit with confident expression',
-//     time: '10:30 AM',
-//     type: 'in-person' as const,
-//     status: 'in-progress' as const,
-//     duration: '45 min',
-//     reason: 'Annual physical exam'
-//   },
-//   {
-//     id: '3',
-//     patientName: 'Emily Rodriguez',
-//     patientImage: "https://img.rocket.new/generatedImages/rocket_gen_img_190332ac2-1762273805567.png",
-//     patientImageAlt: 'Friendly portrait of Hispanic woman with long dark hair and professional appearance',
-//     time: '2:00 PM',
-//     type: 'phone' as const,
-//     status: 'upcoming' as const,
-//     duration: '20 min',
-//     reason: 'Prescription refill'
-//   },
-//   {
-//     id: '4',
-//     patientName: 'David Thompson',
-//     patientImage: "https://img.rocket.new/generatedImages/rocket_gen_img_191238284-1762273981321.png",
-//     patientImageAlt: 'Professional headshot of middle-aged man with beard wearing dark shirt',
-//     time: '3:30 PM',
-//     type: 'video' as const,
-//     status: 'upcoming' as const,
-//     duration: '30 min',
-//     reason: 'Diabetes management'
-//   }];
-
-//   // Mock revenue data
-//   const mockRevenueData = [
-//   { month: 'Jul', revenue: 18500, consultations: 142, patients: 89 },
-//   { month: 'Aug', revenue: 21200, consultations: 156, patients: 94 },
-//   { month: 'Sep', revenue: 19800, consultations: 148, patients: 87 },
-//   { month: 'Oct', revenue: 23400, consultations: 167, patients: 102 },
-//   { month: 'Nov', revenue: 22100, consultations: 159, patients: 96 },
-//   { month: 'Dec', revenue: 24580, consultations: 174, patients: 108 }];
-
-//   // Mock patient outcomes
-//   const mockOutcomes = [
-//   {
-//     id: 'recovery',
-//     title: 'Recovery Rate',
-//     value: '92.4%',
-//     percentage: 92,
-//     trend: 'up' as const,
-//     icon: 'HeartIcon',
-//     color: 'bg-success'
-//   },
-//   {
-//     id: 'satisfaction',
-//     title: 'Patient Satisfaction',
-//     value: '94.2%',
-//     percentage: 94,
-//     trend: 'up' as const,
-//     icon: 'FaceSmileIcon',
-//     color: 'bg-primary'
-//   },
-//   {
-//     id: 'adherence',
-//     title: 'Treatment Adherence',
-//     value: '87.6%',
-//     percentage: 88,
-//     trend: 'stable' as const,
-//     icon: 'ClipboardDocumentCheckIcon',
-//     color: 'bg-healing'
-//   },
-//   {
-//     id: 'readmission',
-//     title: 'Readmission Rate',
-//     value: '3.2%',
-//     percentage: 97,
-//     trend: 'down' as const,
-//     icon: 'ShieldCheckIcon',
-//     color: 'bg-accent'
-//   }];
-
-//   // Mock quick actions
-//   const mockQuickActions = [
-//   {
-//     id: 'new-appointment',
-//     title: 'New Appointment',
-//     description: 'Schedule patient consultation',
-//     icon: 'CalendarPlusIcon',
-//     color: 'bg-primary',
-//     href: '/appointment-booking'
-//   },
-//   {
-//     id: 'video-call',
-//     title: 'Start Video Call',
-//     description: 'Begin patient consultation',
-//     icon: 'VideoCameraIcon',
-//     color: 'bg-healing',
-//     href: '/video-consultation-platform'
-//   },
-//   {
-//     id: 'prescriptions',
-//     title: 'Write Prescription',
-//     description: 'Create new prescription',
-//     icon: 'DocumentTextIcon',
-//     color: 'bg-success',
-//     href: '/prescriptions',
-//     badge: '3'
-//   },
-//   {
-//     id: 'patient-records',
-//     title: 'Patient Records',
-//     description: 'Access medical history',
-//     icon: 'FolderOpenIcon',
-//     color: 'bg-accent',
-//     href: '/patient-records'
-//   }];
-
-//   // Mock recent patients
-//   const mockRecentPatients = [
-//   {
-//     id: '1',
-//     name: 'Sarah Johnson',
-//     image: "https://img.rocket.new/generatedImages/rocket_gen_img_10c75be77-1762273997956.png",
-//     imageAlt: 'Professional headshot of young woman with brown hair and warm smile in business attire',
-//     lastVisit: 'Nov 8, 2024',
-//     condition: 'Hypertension Management',
-//     status: 'stable' as const,
-//     nextAppointment: 'Dec 15, 2024'
-//   },
-//   {
-//     id: '2',
-//     name: 'Michael Chen',
-//     image: "https://img.rocket.new/generatedImages/rocket_gen_img_1ba2d3fac-1762248835751.png",
-//     imageAlt: 'Professional portrait of Asian man in navy suit with confident expression',
-//     lastVisit: 'Nov 9, 2024',
-//     condition: 'Diabetes Type 2',
-//     status: 'improving' as const,
-//     nextAppointment: 'Nov 23, 2024'
-//   },
-//   {
-//     id: '3',
-//     name: 'Emily Rodriguez',
-//     image: "https://img.rocket.new/generatedImages/rocket_gen_img_190332ac2-1762273805567.png",
-//     imageAlt: 'Friendly portrait of Hispanic woman with long dark hair and professional appearance',
-//     lastVisit: 'Nov 7, 2024',
-//     condition: 'Anxiety Disorder',
-//     status: 'needs-attention' as const,
-//     nextAppointment: 'Nov 14, 2024'
-//   },
-//   {
-//     id: '4',
-//     name: 'Robert Wilson',
-//     image: "https://img.rocket.new/generatedImages/rocket_gen_img_110f7eb3a-1762249140544.png",
-//     imageAlt: 'Professional headshot of older gentleman with gray hair and glasses in business suit',
-//     lastVisit: 'Nov 5, 2024',
-//     condition: 'Cardiac Monitoring',
-//     status: 'critical' as const,
-//     nextAppointment: 'Nov 12, 2024'
-//   },
-//   {
-//     id: '5',
-//     name: 'Lisa Anderson',
-//     image: "https://images.unsplash.com/photo-1684262855358-88f296a2cfc2",
-//     imageAlt: 'Professional portrait of blonde woman in white blazer with confident smile',
-//     lastVisit: 'Nov 6, 2024',
-//     condition: 'Preventive Care',
-//     status: 'stable' as const
-//   }];
-
-//   // Mock CME data
-//   const mockCMEData = {
-//     courses: [
-//     {
-//       id: '1',
-//       title: 'Advanced Cardiac Care Protocols',
-//       provider: 'American Heart Association',
-//       credits: 4,
-//       progress: 75,
-//       deadline: 'Dec 31, 2024',
-//       category: 'Cardiology',
-//       status: 'in-progress' as const
-//     },
-//     {
-//       id: '2',
-//       title: 'Digital Health Technologies',
-//       provider: 'Healthcare Innovation Institute',
-//       credits: 3,
-//       progress: 0,
-//       deadline: 'Jan 15, 2025',
-//       category: 'Technology',
-//       status: 'not-started' as const
-//     },
-//     {
-//       id: '3',
-//       title: 'Patient Safety and Quality Improvement',
-//       provider: 'Joint Commission',
-//       credits: 2,
-//       progress: 100,
-//       deadline: 'Nov 30, 2024',
-//       category: 'Quality',
-//       status: 'completed' as const
-//     }],
-
-//     totalCreditsRequired: 50,
-//     creditsEarned: 32
-//   };
-
-//   const dashboardData = {
-//     stats: mockStats,
-//     appointments: mockAppointments,
-//     revenueData: mockRevenueData,
-//     outcomes: mockOutcomes,
-//     quickActions: mockQuickActions,
-//     recentPatients: mockRecentPatients,
-//     cmeData: mockCMEData
-//   };
-
-//   return (
-//     <div className="min-h-screen bg-background">
-//       {/* <Header /> */}
-
-//       <main className="pt-16">
-//         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-//           {/* Page Header */}
-//           <div className="mb-8">
-//             <div className="flex items-center justify-between">
-//               <div>
-//                 <h1 className="text-3xl font-bold text-text-primary">Doctor Dashboard</h1>
-//                 <p className="text-text-secondary mt-2">
-//                   Welcome back, Dr. Smith. Heres your practice overview for today.
-//                 </p>
-//               </div>
-//               <div className="text-right">
-//                 <p className="text-sm text-text-secondary">
-//                   {new Date().toLocaleDateString('en-US', {
-//                     weekday: 'long',
-//                     year: 'numeric',
-//                     month: 'long',
-//                     day: 'numeric'
-//                   })}
-//                 </p>
-//                 <p className="text-lg font-semibold text-text-primary">
-//                   {new Date().toLocaleTimeString('en-US', {
-//                     hour: '2-digit',
-//                     minute: '2-digit'
-//                   })}
-//                 </p>
-//               </div>
-//             </div>
-//           </div>
-
-//           {/* Dashboard Content */}
-//           {/* <DoctorDashboardInteractive data={dashboardData} /> */}
-//         </div>
-//       </main>
-//     </div>
-//     )
-// }
 "use client";
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import {
+  Calendar as CalendarIcon,
+  MessageSquare,
   Users,
-  Calendar,
-  DollarSign,
-  Heart,
-  Video,
-  FileText,
-  FolderOpen,
   Clock,
+  Search,
+  Bell,
+  LogOut,
+  LayoutDashboard,
+  FileText,
+  Star,
+  CalendarDays,
   TrendingUp,
-  ArrowRight,
+  UserPlus,
+  ArrowUpRight,
+  CheckCircle2,
+  Activity,
+  User,
 } from "lucide-react";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  CartesianGrid,
-} from "recharts";
 import { useRouter } from "next/navigation";
+import {
+  GlassCard,
+  SidebarItem,
+  StatCard,
+  SectionHeader,
+} from "@/components/Dashboard/DashboardComponents";
+import { motion } from "framer-motion";
 
-interface Appointment {
-  id: number;
-  patientName: string;
-  patientImage: string;
-  type: string;
-  time: string;
-  duration: string;
-  status: "upcoming" | "in-progress" | "completed";
-}
-
-interface RecentPatient {
-  id: number;
-  name: string;
-  image: string;
-  condition: string;
-  lastVisit: string;
-  nextVisit: string;
-  status: "stable" | "improving" | "needs attention";
-}
-
-interface StatCard {
-  icon: React.ReactNode;
-  value: string;
-  label: string;
-  change: string;
-  color: string;
+interface User {
+  fullname?: string;
+  username?: string;
+  email: string;
 }
 
 export default function DoctorDashboard() {
   const router = useRouter();
+  const [user, setUser] = useState<User | null>(null);
+
   useEffect(() => {
     if (typeof window === "undefined") return;
     const type = sessionStorage.getItem("userType");
@@ -381,648 +47,302 @@ export default function DoctorDashboard() {
     if (!token || type !== "doctor") {
       router.push("/");
     }
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
   }, [router]);
 
-  const [activeTab, setActiveTab] = useState<"revenue" | "consultations">(
-    "revenue",
-  );
-
-  const stats: StatCard[] = [
-    {
-      icon: <Users className="w-6 h-6" />,
-      value: "1,247",
-      label: "Total Patients",
-      change: "+12%",
-      color: "bg-blue-500",
-    },
-    {
-      icon: <Calendar className="w-6 h-6" />,
-      value: "18",
-      label: "Today's Appointments",
-      change: "+3",
-      color: "bg-green-500",
-    },
-    {
-      icon: <DollarSign className="w-6 h-6" />,
-      value: "$24,580",
-      label: "Monthly Revenue",
-      change: "+8.2%",
-      color: "bg-emerald-600",
-    },
-    {
-      icon: <Heart className="w-6 h-6" />,
-      value: "94.2%",
-      label: "Patient Satisfaction",
-      change: "+2.1%",
-      color: "bg-yellow-500",
-    },
-  ];
-
-  const appointments: Appointment[] = [
-    {
-      id: 1,
-      patientName: "Sarah Johnson",
-      patientImage: "👩‍⚕️",
-      type: "Follow-up consultation",
-      time: "9:00 AM",
-      duration: "30 min",
-      status: "upcoming",
-    },
-    {
-      id: 2,
-      patientName: "Michael Chen",
-      patientImage: "👨‍💼",
-      type: "Annual physical exam",
-      time: "10:30 AM",
-      duration: "45 min",
-      status: "in-progress",
-    },
-    {
-      id: 3,
-      patientName: "Emily Rodriguez",
-      patientImage: "👩",
-      type: "Prescription refill",
-      time: "2:00 PM",
-      duration: "20 min",
-      status: "upcoming",
-    },
-    {
-      id: 4,
-      patientName: "David Thompson",
-      patientImage: "👨",
-      type: "Diabetes management",
-      time: "3:30 PM",
-      duration: "30 min",
-      status: "upcoming",
-    },
-  ];
-
-  const recentPatients: RecentPatient[] = [
-    {
-      id: 1,
-      name: "Sarah Johnson",
-      image: "👩‍⚕️",
-      condition: "Hypertension Management",
-      lastVisit: "Nov 8, 2024",
-      nextVisit: "Dec 15, 2024",
-      status: "stable",
-    },
-    {
-      id: 2,
-      name: "Michael Chen",
-      image: "👨‍💼",
-      condition: "Diabetes Type 2",
-      lastVisit: "Nov 9, 2024",
-      nextVisit: "Nov 23, 2024",
-      status: "improving",
-    },
-    {
-      id: 3,
-      name: "Emily Rodriguez",
-      image: "👩",
-      condition: "Anxiety Disorder",
-      lastVisit: "Nov 7, 2024",
-      nextVisit: "Nov 14, 2024",
-      status: "needs attention",
-    },
-  ];
-
-  const revenueData = [
-    { month: "Jul", value: 18000 },
-    { month: "Aug", value: 21000 },
-    { month: "Sep", value: 20000 },
-    { month: "Oct", value: 24000 },
-    { month: "Nov", value: 22000 },
-    { month: "Dec", value: 25000 },
-  ];
-
-  //   const maxRevenue = Math.max(...revenueData.map((d) => d.value));
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "upcoming":
-        return "bg-blue-100 text-blue-600";
-      case "in-progress":
-        return "bg-yellow-100 text-yellow-600";
-      case "stable":
-        return "text-teal-600";
-      case "improving":
-        return "text-green-600";
-      case "needs attention":
-        return "text-orange-600";
-      default:
-        return "bg-gray-100 text-gray-600";
-    }
+  const handleLogout = () => {
+    sessionStorage.clear();
+    localStorage.clear();
+    router.push("/");
   };
-  const [currentDate, setCurrentDate] = useState(new Date());
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentDate(new Date());
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
+  const navItems = [
+    {
+      label: "Overview",
+      icon: LayoutDashboard,
+      path: "/pages/docsdashboard",
+      active: true,
+    },
+    {
+      label: "Schedule",
+      icon: CalendarIcon,
+      path: "/pages/docsdashboard",
+      active: false,
+    },
+    {
+      label: "Patients",
+      icon: Users,
+      path: "/pages/docsdashboard",
+      active: false,
+    },
+    {
+      label: "Consultations",
+      icon: FileText,
+      path: "/pages/docsdashboard",
+      active: false,
+    },
+    {
+      label: "Messages",
+      icon: MessageSquare,
+      path: "/pages/chat",
+      active: false,
+    },
+  ];
 
   return (
-    <>
-      <div className="min-h-screen bg-gray-50 p-6">
-        <div className="max-w-7xl mx-auto">
-          {/* Header */}
-          <div className="flex items-start justify-between mb-8">
+    <div className="flex h-screen bg-[#fbfcfd] overflow-hidden font-sans text-slate-800">
+      {/* Sidebar */}
+      <aside className="w-64 bg-[#f8fafc] flex flex-col h-full z-20 border-r border-slate-100">
+        <div className="p-6">
+          <Link href="/pages/homedocs" className="flex items-center gap-2.5">
+            <div className="w-8 h-8 bg-[#0d9488] rounded-md flex items-center justify-center text-white font-black text-sm">
+              Hx
+            </div>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                Doctor Dashboard
+              <h2 className="font-bold text-base text-slate-800 tracking-tight leading-none mb-0.5">
+                HeaLix
+              </h2>
+              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
+                Expert Console
+              </p>
+            </div>
+          </Link>
+        </div>
+
+        <nav className="flex-1 px-3 mt-6 space-y-1">
+          {navItems.map((item, index) => (
+            <SidebarItem
+              key={index}
+              label={item.label}
+              icon={item.icon}
+              href={item.path}
+              active={item.active}
+            />
+          ))}
+        </nav>
+
+        <div className="p-4 border-t border-slate-100">
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-3 px-4 py-2 w-full text-slate-400 hover:text-red-500 rounded-lg transition-all duration-200 font-bold text-[10px] uppercase tracking-widest"
+          >
+            <LogOut className="w-3.5 h-3.5" />
+            Sign Out
+          </button>
+        </div>
+      </aside>
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col h-full overflow-hidden">
+        {/* Top Header */}
+        <header className="bg-white px-8 py-4 items-center justify-between border-b border-slate-100 flex h-16">
+          <div className="relative w-64">
+            <Search className="w-3.5 h-3.5 text-slate-300 absolute left-3 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              placeholder="Search..."
+              className="w-full pl-9 pr-4 py-1.5 bg-[#f8fafc] border-none rounded-md text-[11px] placeholder:text-slate-300 focus:ring-1 focus:ring-teal-500/10 outline-none transition-all"
+            />
+          </div>
+          
+          <div className="flex items-center gap-5">
+            <button className="relative w-8 h-8 flex items-center justify-center text-slate-300 hover:text-teal-600 transition-all">
+              <Bell className="w-4 h-4" />
+              <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-red-400 rounded-full border border-white"></span>
+            </button>
+            <div className="flex items-center gap-3 pl-5 border-l border-slate-100">
+              <div className="text-right">
+                <p className="text-[11px] font-bold text-slate-700 leading-tight">
+                  Dr. {user?.fullname || user?.username || "Specialist"}
+                </p>
+                <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest leading-none">
+                  Medical Admin
+                </p>
+              </div>
+              <div className="w-8 h-8 rounded-full bg-teal-50 flex items-center justify-center font-black text-teal-600 text-[10px] border border-teal-100 uppercase">
+                {user?.fullname?.[0] || user?.username?.[0] || "D"}
+              </div>
+            </div>
+          </div>
+        </header>
+
+        {/* Dashboard Body */}
+        <main className="flex-1 overflow-y-auto px-10 py-8 scrollbar-hide">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-8 gap-4">
+            <div>
+              <h1 className="text-[22px] font-bold text-slate-800 tracking-tight mb-1">
+                Clinical Overview
               </h1>
-              <p className="text-gray-600">
-                Welcome back, Dr. Smith. Heres your practice overview for today.
-              </p>
+              <p className="text-slate-400 text-[11px] font-medium tracking-tight">Manage patient cases and daily schedule</p>
             </div>
-            <div className="text-right">
-              {/* Format date */}
-              <p className="text-sm text-gray-600">
-                {currentDate.toLocaleDateString("en-US", {
-                  weekday: "long",
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </p>
-
-              {/* Format time */}
-              <p className="text-2xl font-bold text-gray-900">
-                {currentDate.toLocaleTimeString("en-US", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  second: "2-digit",
-                })}
-              </p>
+            
+            <div className="flex gap-2.5">
+              <Link href="/pages/docsdashboard">
+                <Button className="bg-[#0d9488] hover:bg-[#0f766e] text-white shadow-xs rounded-md px-5 h-9 font-bold text-[11px] transition-all">
+                  New Entry
+                </Button>
+              </Link>
             </div>
           </div>
 
-          {/* Stats Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-            {stats.map((stat, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-xl p-6 shadow-sm border border-gray-100"
-              >
-                <div className="flex items-start justify-between mb-4">
-                  <div className={`${stat.color} rounded-xl p-3 text-white`}>
-                    {stat.icon}
-                  </div>
-                  <span className="text-sm font-semibold text-green-600 flex items-center">
-                    <TrendingUp className="w-4 h-4 mr-1" />
-                    {stat.change}
-                  </span>
-                </div>
-                <div className="text-3xl font-bold text-gray-900 mb-1">
-                  {stat.value}
-                </div>
-                <div className="text-sm text-gray-600">{stat.label}</div>
-              </div>
-            ))}
+          {/* Top Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <StatCard 
+              label="Consultations" 
+              value="12" 
+              icon={User} 
+              trend="+2 today" 
+              color="teal"
+              delay={0.1}
+            />
+            <StatCard 
+              label="Earning" 
+              value="$1,240" 
+              icon={TrendingUp} 
+              trend="+8%" 
+              color="blue"
+              delay={0.2}
+            />
+            <StatCard 
+              label="Efficiency" 
+              value="94%" 
+              icon={Activity} 
+              trend="Optimal" 
+              color="purple"
+              delay={0.3}
+            />
+             <StatCard 
+              label="Patients" 
+              value="1.2k" 
+              icon={UserPlus} 
+              trend="+12%" 
+              color="amber"
+              delay={0.4}
+            />
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Left Column */}
-            <div className="lg:col-span-2 space-y-6">
-              {/* Today's Appointments */}
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-bold text-gray-900">
-                    Todays Appointments
-                  </h2>
-                  <span className="text-sm text-gray-600">
-                    {appointments.length} appointments
-                  </span>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div className="lg:col-span-8 space-y-6">
+              {/* Patient List Section */}
+              <section>
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
+                    <User className="w-4 h-4 text-teal-600" />
+                    Pending Consultations
+                  </h3>
                 </div>
-
+                
                 <div className="space-y-4">
-                  {appointments.map((appointment) => (
-                    <div
-                      key={appointment.id}
-                      className="flex items-center justify-between p-4 hover:bg-gray-50 rounded-lg transition-colors"
-                    >
-                      <div className="flex items-center space-x-4">
-                        <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center text-2xl">
-                          {appointment.patientImage}
-                        </div>
-                        <div>
-                          <h3 className="font-semibold text-gray-900">
-                            {appointment.patientName}
-                          </h3>
-                          <p className="text-sm text-gray-600">
-                            {appointment.type}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-4">
-                        <div className="text-right">
-                          <p className="font-semibold text-gray-900">
-                            {appointment.time}
-                          </p>
-                          <p className="text-sm text-gray-600">
-                            {appointment.duration}
-                          </p>
-                        </div>
-                        <span
-                          className={`px-4 py-2 rounded-lg text-sm font-semibold ${getStatusColor(
-                            appointment.status,
-                          )}`}
-                        >
-                          {appointment.status === "in-progress"
-                            ? "In-progress"
-                            : "Upcoming"}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Revenue Analytics */}
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-bold text-gray-900">
-                    Revenue Analytics
-                  </h2>
-                  <div className="flex space-x-2">
-                    <button
-                      onClick={() => setActiveTab("revenue")}
-                      className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${
-                        activeTab === "revenue"
-                          ? "bg-blue-600 text-white"
-                          : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                      }`}
-                    >
-                      Revenue
-                    </button>
-                    <button
-                      onClick={() => setActiveTab("consultations")}
-                      className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${
-                        activeTab === "consultations"
-                          ? "bg-blue-600 text-white"
-                          : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                      }`}
-                    >
-                      Consultations
-                    </button>
-                  </div>
-                </div>
-
-                {/* Chart */}
-                {/* <div className="mb-6">
-                <div className="flex items-end justify-between h-64 space-x-4">
-                  {revenueData.map((item, index) => (
-                    <div
-                      key={index}
-                      className="flex-1 flex flex-col items-center"
-                    >
-                      <div
-                        className="w-full bg-blue-600 rounded-t-lg transition-all hover:bg-blue-700"
-                        style={{
-                          height: `${(item.value / maxRevenue) * 100}%`,
-                        }}
-                      ></div>
-                      <span className="text-xs text-gray-600 mt-2">
-                        {item.month}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div> */}
-                <div className="mb-6 h-64">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart
-                      data={revenueData}
-                      margin={{ top: 20, right: 20, left: 0, bottom: 0 }}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis
-                        dataKey="month"
-                        tick={{ fontSize: 12, fill: "#4B5563" }}
-                      />
-                      <YAxis tick={{ fontSize: 12, fill: "#4B5563" }} />
-                      <Tooltip
-                        formatter={(value) =>
-                          typeof value === "number"
-                            ? `$${value.toLocaleString()}`
-                            : String(value ?? "")
-                        }
-                      />
-                      <Bar
-                        dataKey="value"
-                        fill="#3B82F6"
-                        radius={[6, 6, 0, 0]}
-                      />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-
-                {/* Stats Row */}
-                <div className="grid grid-cols-3 gap-4 pt-6 border-t border-gray-100">
-                  <div className="text-center">
-                    <div className="flex items-center justify-center mb-2">
-                      <DollarSign className="w-5 h-5 text-teal-600 mr-1" />
-                      <span className="text-sm text-gray-600">
-                        Total Revenue
-                      </span>
-                    </div>
-                    <p className="text-2xl font-bold text-gray-900">$129,580</p>
-                  </div>
-                  <div className="text-center">
-                    <div className="flex items-center justify-center mb-2">
-                      <Video className="w-5 h-5 text-blue-600 mr-1" />
-                      <span className="text-sm text-gray-600">
-                        Consultations
-                      </span>
-                    </div>
-                    <p className="text-2xl font-bold text-gray-900">946</p>
-                  </div>
-                  <div className="text-center">
-                    <div className="flex items-center justify-center mb-2">
-                      <Users className="w-5 h-5 text-yellow-600 mr-1" />
-                      <span className="text-sm text-gray-600">Patients</span>
-                    </div>
-                    <p className="text-2xl font-bold text-gray-900">576</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Patient Outcomes */}
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-bold text-gray-900">
-                    Patient Outcomes
-                  </h2>
-                </div>
-
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-4">
-                      <div className="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center">
-                        <Heart className="w-6 h-6 text-white" />
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-600">Recovery Rate</p>
-                        <p className="text-2xl font-bold text-gray-900">
-                          92.4%
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <span className="text-sm font-semibold text-green-600">
-                        ↗ 92%
-                      </span>
-                      <div className="w-32 bg-gray-200 rounded-full h-2">
-                        <div
-                          className="bg-green-500 h-2 rounded-full"
-                          style={{ width: "92%" }}
-                        ></div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-4">
-                      <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center">
-                        <Users className="w-6 h-6 text-white" />
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-600">
-                          Patient Satisfaction
-                        </p>
-                        <p className="text-2xl font-bold text-gray-900">
-                          94.2%
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <span className="text-sm font-semibold text-blue-600">
-                        ↗ 94%
-                      </span>
-                      <div className="w-32 bg-gray-200 rounded-full h-2">
-                        <div
-                          className="bg-blue-500 h-2 rounded-full"
-                          style={{ width: "94%" }}
-                        ></div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-4">
-                      <div className="w-12 h-12 bg-teal-500 rounded-xl flex items-center justify-center">
-                        <FileText className="w-6 h-6 text-white" />
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-600">
-                          Treatment Adherence
-                        </p>
-                        <p className="text-2xl font-bold text-gray-900">
-                          87.6%
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <span className="text-sm font-semibold text-gray-600">
-                        — 88%
-                      </span>
-                      <div className="w-32 bg-gray-200 rounded-full h-2">
-                        <div
-                          className="bg-teal-500 h-2 rounded-full"
-                          style={{ width: "88%" }}
-                        ></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Column */}
-            <div className="space-y-6">
-              {/* Quick Actions */}
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                <h2 className="text-xl font-bold text-gray-900 mb-4">
-                  Quick Actions
-                </h2>
-
-                <div className="grid grid-cols-2 gap-3">
-                  <button className="flex flex-col items-start p-4 bg-blue-50 hover:bg-blue-100 rounded-xl transition-colors">
-                    <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center mb-3">
-                      <Calendar className="w-5 h-5 text-white" />
-                    </div>
-                    <span className="font-semibold text-gray-900 text-sm">
-                      New Appointment
-                    </span>
-                    <span className="text-xs text-gray-600 mt-1">
-                      Schedule patient...
-                    </span>
-                  </button>
-
-                  <button className="flex flex-col items-start p-4 bg-green-50 hover:bg-green-100 rounded-xl transition-colors">
-                    <div className="w-10 h-10 bg-green-600 rounded-xl flex items-center justify-center mb-3">
-                      <Video className="w-5 h-5 text-white" />
-                    </div>
-                    <span className="font-semibold text-gray-900 text-sm">
-                      Start Video Call
-                    </span>
-                    <span className="text-xs text-gray-600 mt-1">
-                      Begin patient consultation
-                    </span>
-                  </button>
-
-                  <button className="flex flex-col items-start p-4 bg-emerald-50 hover:bg-emerald-100 rounded-xl transition-colors relative">
-                    <div className="absolute top-2 right-2 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center">
-                      <span className="text-xs text-white font-bold">3</span>
-                    </div>
-                    <div className="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center mb-3">
-                      <FileText className="w-5 h-5 text-white" />
-                    </div>
-                    <span className="font-semibold text-gray-900 text-sm">
-                      Write Prescription
-                    </span>
-                    <span className="text-xs text-gray-600 mt-1">
-                      Create new prescription
-                    </span>
-                  </button>
-
-                  <button className="flex flex-col items-start p-4 bg-yellow-50 hover:bg-yellow-100 rounded-xl transition-colors">
-                    <div className="w-10 h-10 bg-yellow-600 rounded-xl flex items-center justify-center mb-3">
-                      <FolderOpen className="w-5 h-5 text-white" />
-                    </div>
-                    <span className="font-semibold text-gray-900 text-sm">
-                      Patient Records
-                    </span>
-                    <span className="text-xs text-gray-600 mt-1">
-                      Access medical...
-                    </span>
-                  </button>
-                </div>
-
-                <div className="mt-4 p-3 bg-gray-50 rounded-lg flex items-center justify-between">
-                  <div className="flex items-center">
-                    <Clock className="w-4 h-4 text-gray-600 mr-2" />
-                    <span className="text-sm text-gray-600">
-                      Next appointment in 15 minutes
-                    </span>
-                  </div>
-                  <button className="text-sm text-blue-600 font-semibold hover:text-blue-700 flex items-center">
-                    Join Now <ArrowRight className="w-4 h-4 ml-1" />
-                  </button>
-                </div>
-              </div>
-
-              {/* Recent Patients */}
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-xl font-bold text-gray-900">
-                    Recent Patients
-                  </h2>
-                  <span className="text-sm text-gray-600">
-                    {recentPatients.length} patients
-                  </span>
-                </div>
-
-                <div className="space-y-4 max-h-96 overflow-y-auto">
-                  {recentPatients.map((patient) => (
-                    <div
-                      key={patient.id}
-                      className="p-4 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer"
-                    >
-                      <div className="flex items-start justify-between mb-2">
-                        <div className="flex items-center space-x-3">
-                          <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center text-xl">
-                            {patient.image}
+                  {[1, 2].map((i) => (
+                    <GlassCard key={i} className="p-0 border-slate-100 shadow-xs">
+                      <div className="bg-white p-5 flex flex-col sm:flex-row items-center justify-between gap-6">
+                        <div className="flex items-center gap-4">
+                          <div className="w-12 h-12 bg-slate-50 rounded-md flex items-center justify-center font-black text-slate-300 border border-slate-100 italic">
+                             Hx
                           </div>
                           <div>
-                            <h3 className="font-semibold text-gray-900">
-                              {patient.name}
+                            <h3 className="font-bold text-slate-800 text-base tracking-tight mb-0.5">
+                              {i === 1 ? "Promise John" : "Sarah Connor"}
                             </h3>
-                            <p className="text-xs text-gray-600">
-                              {patient.condition}
+                            <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">
+                              {i === 1 ? "HLX-ID: #829P" : "HLX-ID: #992S"}
                             </p>
                           </div>
                         </div>
-                        <span
-                          className={`text-xs font-semibold ${getStatusColor(
-                            patient.status,
-                          )}`}
-                        >
-                          ●{" "}
-                          {patient.status === "stable"
-                            ? "stable"
-                            : patient.status === "improving"
-                              ? "improving"
-                              : "needs attention"}
-                        </span>
+                        <div className="flex items-center gap-5">
+                          <div className="text-right hidden sm:block">
+                            <p className="text-[11px] font-bold text-slate-800">15:30 - 16:00</p>
+                            <p className="text-[9px] text-[#0d9488] font-bold uppercase tracking-widest">Session Start</p>
+                          </div>
+                          <Link href={`/pages/chat/${i}`}>
+                            <Button className="bg-[#0d9488] hover:bg-[#0f766e] text-white rounded-md h-8 px-5 font-bold text-[10px] uppercase tracking-wider transition-all">
+                              Open File
+                            </Button>
+                          </Link>
+                        </div>
                       </div>
-                      <div className="flex items-center justify-between text-xs text-gray-600 ml-13">
-                        <span>Last visit: {patient.lastVisit}</span>
-                        <span>Next: {patient.nextVisit}</span>
+                    </GlassCard>
+                  ))}
+                </div>
+              </section>
+
+              {/* History Table */}
+              <section className="bg-white border border-slate-100 rounded-lg overflow-hidden shadow-xs">
+                <div className="px-6 py-4 border-b border-slate-50 flex justify-between items-center">
+                   <h3 className="text-sm font-bold text-slate-800">System Logs</h3>
+                   <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Recent Activity</span>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="bg-[#f8fafc] border-b border-slate-50">
+                      <tr>
+                        <th className="px-6 py-3 text-left text-[9px] font-black text-slate-400 uppercase tracking-widest">Target</th>
+                        <th className="px-6 py-3 text-left text-[9px] font-black text-slate-400 uppercase tracking-widest">Context</th>
+                        <th className="px-6 py-3 text-right text-[9px] font-black text-slate-400 uppercase tracking-widest">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-50">
+                      {[1, 2, 3].map((i) => (
+                        <tr key={i} className="hover:bg-[#f8fafc] transition-colors group">
+                          <td className="px-6 py-4">
+                            <div className="flex items-center gap-2.5">
+                              <div className="w-7 h-7 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center font-black text-[10px] border border-teal-100">
+                                P
+                              </div>
+                              <span className="text-[11px] font-bold text-slate-700">Patient Registry #{102 + i}</span>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 text-[10px] font-medium text-slate-500 truncate max-w-[200px]">
+                            VERIFIED DIAGNOSTICS • HLX RECORD
+                          </td>
+                          <td className="px-6 py-4 text-right">
+                            <button className="text-slate-300 hover:text-teal-600 transition-colors">
+                              <ArrowUpRight className="w-3.5 h-3.5 ml-auto" />
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+            </div>
+
+            {/* Right Column */}
+            <div className="lg:col-span-4 space-y-6">
+              <section>
+                <SectionHeader title="Clinical Tools" />
+                <GlassCard className="p-4 space-y-2 rounded-lg">
+                  <Button variant="outline" className="w-full justify-between h-9 rounded-md border-slate-100 text-slate-600 font-bold text-[10px] uppercase tracking-wider px-3 hover:bg-slate-50 transition-all">
+                    System Metrics <Activity className="w-3.5 h-3.5 text-slate-300" />
+                  </Button>
+                   <Button variant="outline" className="w-full justify-between h-9 rounded-md border-slate-100 text-slate-600 font-bold text-[10px] uppercase tracking-wider px-3 hover:bg-slate-50 transition-all">
+                    Medical Hub <Search className="w-3.5 h-3.5 text-slate-300" />
+                  </Button>
+                </GlassCard>
+              </section>
+
+              <section>
+                <SectionHeader title="Platform Status" />
+                <div className="space-y-3">
+                   {[1, 2].map(i => (
+                    <div key={i} className="flex gap-3 p-3 rounded-lg bg-white border border-slate-100">
+                      <div className="w-1 bg-[#0d9488] rounded-full h-auto" />
+                      <div>
+                        <h4 className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Active State</h4>
+                        <p className="text-[11px] font-bold text-slate-700 leading-snug">Service Status: Online</p>
                       </div>
                     </div>
                   ))}
                 </div>
-
-                <button className="w-full mt-4 text-sm text-blue-600 font-semibold hover:text-blue-700 flex items-center justify-center py-2">
-                  View All Patients <ArrowRight className="w-4 h-4 ml-1" />
-                </button>
-              </div>
-
-              {/* CME Credits */}
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                <h2 className="text-xl font-bold text-gray-900 mb-4">
-                  CME Credits
-                </h2>
-
-                <div className="mb-6">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-semibold text-gray-900">
-                      Annual Progress
-                    </span>
-                    <span className="text-sm text-gray-600">
-                      32 / 50 credits
-                    </span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-3">
-                    <div
-                      className="bg-gradient-to-r from-blue-500 to-green-500 h-3 rounded-full"
-                      style={{ width: "64%" }}
-                    ></div>
-                  </div>
-                  <div className="flex items-center justify-between mt-1">
-                    <span className="text-xs text-gray-600">0</span>
-                    <span className="text-xs text-blue-600 font-semibold">
-                      64.0% Complete
-                    </span>
-                    <span className="text-xs text-gray-600">50</span>
-                  </div>
-                </div>
-
-                <div>
-                  <h3 className="font-semibold text-gray-900 mb-3">
-                    Recommended Courses
-                  </h3>
-                  <div className="p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors cursor-pointer">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="font-semibold text-gray-900 text-sm">
-                        Advanced Cardiac Care
-                      </span>
-                      <span className="text-xs text-gray-600">4 credits</span>
-                    </div>
-                    <span className="text-xs bg-blue-200 text-blue-700 px-2 py-1 rounded-full font-semibold">
-                      in progress
-                    </span>
-                  </div>
-                </div>
-              </div>
+              </section>
             </div>
           </div>
-        </div>
+        </main>
       </div>
-    </>
+    </div>
   );
 }

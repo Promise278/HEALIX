@@ -40,7 +40,7 @@ const Navbar = () => {
               Sign In
             </button>
             <button 
-              className="bg-gradient-to-r from-[#19c3ee] to-[#0cd660] px-6 h-10 rounded-md text-white hover:opacity-90 font-medium"
+              className="bg-linear-to-r from-[#19c3ee] to-[#0cd660] px-6 h-10 rounded-md text-white hover:opacity-90 font-medium"
               onClick={() => {
                 setInitialTab("signup");
                 setAuthDialogOpen(true);
@@ -87,7 +87,7 @@ const Navbar = () => {
                 Dashboard
               </Link>
               <button 
-                className="bg-gradient-to-r from-[#19c3ee] to-[#0cd660] w-32 h-10 rounded-md text-white"
+                className="bg-linear-to-r from-[#19c3ee] to-[#0cd660] w-32 h-10 rounded-md text-white"
                 onClick={() => {
                   setInitialTab("signup");
                   setMobileMenuOpen(false);

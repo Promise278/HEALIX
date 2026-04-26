@@ -28,6 +28,7 @@ export default function DoctorRegisterForm({ onClose }: Props) {
   const [medicalSchool, setMedicalSchool] = useState("");
   const [graduationYear, setGraduationYear] = useState("");
   const [yearsExperience, setYearsExperience] = useState("");
+  const [consultationFee, setConsultationFee] = useState("");
 
   const handleStep1 = (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,7 +44,7 @@ export default function DoctorRegisterForm({ onClose }: Props) {
 
     setIsLoading(true);
     try {
-      const res = await fetch("http://10.252.178.237:5000/api/register", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/doctors/doctorregister`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -57,6 +58,7 @@ export default function DoctorRegisterForm({ onClose }: Props) {
           medicalSchool,
           licenseCountry,
           graduationYear: parseInt(graduationYear),
+          consultationfee: parseFloat(consultationFee),
         }),
       });
 
@@ -192,6 +194,17 @@ export default function DoctorRegisterForm({ onClose }: Props) {
                 required
               />
             </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label>Consultation Fee ($)</Label>
+            <Input
+              type="number"
+              placeholder="50"
+              value={consultationFee}
+              onChange={(e) => setConsultationFee(e.target.value)}
+              required
+            />
           </div>
 
           <div className="flex justify-between">

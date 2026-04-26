@@ -1,45 +1,58 @@
 import { useState } from "react";
-import { Text, View, Image, TextInput, TouchableOpacity, ActivityIndicator } from "react-native";
+import { Text, View, Image, TextInput, TouchableOpacity, ActivityIndicator, Alert } from "react-native";
 import { router } from "expo-router";
-import { FontAwesome, Feather } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Config } from "../../constants/Config";
 
 export default function Signin() {
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  // const handleRegister = () => {
-  //   if (!name || !email || !password ) {
-  //     alert("Please fill all fields");
-  //     return;
-  //   }
+  const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert("Error", "Please enter your email and password");
+      return;
+    }
 
-  //   fetch("https://test.blockfuselabs.com/api/register", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({
-  //       name: name,
-  //       email: email,
-  //       password: password,
-  //     }),
-  //   })
-  //     .then((res) =>
-  //       res.json().then((data) => {
-  //         if (res.ok) {
-  //           alert("Registration successful!");
-  //           router.replace("/signin");
-  //         } else {
-  //           alert(data.message || "Something went wrong");
-  //         }
-  //       })
-  //     )
-  //     .catch(() => {
-  //       alert("Network error, please try again.");
-  //     });
-  // };
+    setIsLoading(true);
+    try {
+      const response = await fetch(`${Config.API_URL}/api/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Login failed");
+      }
+
+      await AsyncStorage.setItem("token", data.token);
+      await AsyncStorage.setItem("user", JSON.stringify(data.user));
+      await AsyncStorage.setItem("userType", data.user.role);
+
+      Alert.alert("Success", data.message || "Login successful!");
+      
+      if (data.user.role === "patient") {
+        router.replace("/(tabs)");
+      } else if (data.user.role === "doctor") {
+        router.replace("/docsdashboard" as any); // Assuming this route exists
+      } else if (data.user.role === "admin") {
+        router.replace("/admin" as any); // Assuming this route exists
+      } else {
+        router.replace("/(tabs)");
+      }
+    } catch (error: any) {
+      Alert.alert("Login Error", error.message || "An unexpected error occurred");
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <View className="flex-1 items-center px-4">
       <Image
@@ -84,7 +97,7 @@ export default function Signin() {
           {/* Gradient Button */}
           <TouchableOpacity
             disabled={isLoading}
-            onPress={() => router.push('/(tabs)')}
+            onPress={handleLogin}
             className="rounded-full w-72 ml-10 mb-2 overflow-hidden mt-4"
           >
             <LinearGradient

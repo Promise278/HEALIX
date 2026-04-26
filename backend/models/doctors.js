@@ -26,6 +26,10 @@ module.exports = (sequelize, DataTypes) => {
       yearsofexperience: DataTypes.NUMBER,
       bio: DataTypes.STRING,
       consultationfee: DataTypes.NUMBER,
+      isVerified: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
     },
     {
       sequelize,

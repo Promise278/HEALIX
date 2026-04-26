@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,37 +6,53 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
+import { Config } from "../../constants/Config";
 
 const HomeScreen = () => {
-  const doctors = [
-    {
-      name: "Dr. Sarah Johnson",
-      specialty: "Cardiologist",
-      rating: 4.9,
-      distance: "2.5 km",
-      icon: "user",
-      available: true,
-    },
-    {
-      name: "Dr. Michael Chen",
-      specialty: "General Physician",
-      rating: 4.8,
-      distance: "1.8 km",
-      icon: "user",
-      available: true,
-    },
-    {
-      name: "Dr. Emily Roberts",
-      specialty: "Dermatologist",
-      rating: 4.7,
-      distance: "3.2 km",
-      icon: "user",
-      available: false,
-    },
+  const [doctors, setDoctors] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedSpecialty, setSelectedSpecialty] = useState("");
+
+  const specialties = [
+    "All",
+    "General Medicine",
+    "Pediatrics",
+    "Dermatology",
+    "Mental Health",
+    "Cardiology",
+    "Gynecology",
+    "Orthopedics",
+    "Nutrition",
+    "Dentist",
+    "Eye",
   ];
+
+  const fetchDoctors = async () => {
+    setLoading(true);
+    try {
+      const url = selectedSpecialty && selectedSpecialty !== "All"
+        ? `${Config.API_URL}/api/doctors/getalldoctors?specialization=${selectedSpecialty}`
+        : `${Config.API_URL}/api/doctors/getalldoctors`;
+
+      const response = await fetch(url);
+      const data = await response.json();
+      if (data.success) {
+        setDoctors(data.data);
+      }
+    } catch (error) {
+      console.error("Error fetching doctors:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchDoctors();
+  }, [selectedSpecialty]);
 
   return (
     <ScrollView className="flex-1 bg-background mt-8">
@@ -72,8 +88,39 @@ const HomeScreen = () => {
         />
       </View>
 
+      {/* Specialty Filter */}
+      <View className="mt-6">
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ paddingHorizontal: 20 }}
+        >
+          {specialties.map((specialty) => (
+            <TouchableOpacity
+              key={specialty}
+              onPress={() => setSelectedSpecialty(specialty)}
+              className={`mr-3 px-4 py-2 rounded-full ${
+                (selectedSpecialty === specialty || (specialty === "All" && !selectedSpecialty))
+                  ? "bg-[#23a9ba]"
+                  : "bg-gray-100"
+              }`}
+            >
+              <Text
+                className={`${
+                  (selectedSpecialty === specialty || (specialty === "All" && !selectedSpecialty))
+                    ? "text-white"
+                    : "text-gray-600"
+                } font-medium`}
+              >
+                {specialty}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
+
       {/* Hero Section */}
-      <View className="px-5 mt-6 bg-[#23a9ba] rounded-md overflow-hidden">
+      <View className="px-5 mt-6 bg-[#23a9ba] rounded-md overflow-hidden mx-5">
         <View className="relative h-40">
           <Image
             source={require("../../assets/images/hero-medical.jpg")}
@@ -100,30 +147,16 @@ const HomeScreen = () => {
           Quick Actions
         </Text>
         <View className="flex-row justify-between">
-          <TouchableOpacity onPress={() => router.push('/(tabs)/appointments')} className="items-center bg-[#2ac9de] rounded-2xl p-3 flex-1 mx-1">
+          <TouchableOpacity onPress={() => router.push('/(tabs)/chat')} className="items-center bg-[#2ac9de] rounded-2xl p-3 flex-1 mx-1">
             <Feather name={"video"} size={20} color="#d5fcfe" />
             <Text className="text-[#d5fcfe] text-sm font-medium mt-1">
-              {"Video Call"}
+              {"Call Now"}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => router.push('/(tabs)/appointments')} className="items-center bg-[#2ac9de] rounded-2xl p-3 flex-1 mx-1">
+          <TouchableOpacity onPress={() => router.push('/(tabs)/chat')} className="items-center bg-[#2ac9de] rounded-2xl p-3 flex-1 mx-1">
             <Feather name={"calendar"} size={20} color="#d5fcfe" />
             <Text className="text-[#d5fcfe] text-sm font-medium mt-1">
               {"Book"}
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View className="flex-row justify-between mt-2">
-          <TouchableOpacity onPress={() => router.push('/(tabs)/chat')} className="items-center bg-[#2ac9de] rounded-2xl p-3 flex-1 mx-1">
-            <Feather name={"message-circle"} size={20} color="#d5fcfe" />
-            <Text className="text-[#d5fcfe] text-sm font-medium mt-1">
-              {"Chat"}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => router.push('/(tabs)/records')} className="items-center bg-[#2ac9de] rounded-2xl p-3 flex-1 mx-1">
-            <Feather name={"file-text"} size={20} color="#d5fcfe" />
-            <Text className="text-[#d5fcfe] text-sm font-medium mt-1">
-              {"Records"}
             </Text>
           </TouchableOpacity>
         </View>
@@ -133,39 +166,47 @@ const HomeScreen = () => {
       <View className="mt-8 px-5 mb-10">
         <View className="flex-row justify-between items-center mb-3">
           <Text className="text-lg font-semibold text-gray-900">
-            Available Doctors
+            {selectedSpecialty && selectedSpecialty !== "All"
+              ? `${selectedSpecialty} Doctors`
+              : "Available Doctors"}
           </Text>
-          <TouchableOpacity>
-            <Text className="text-[#23a9ba] text-sm font-medium">See All</Text>
-          </TouchableOpacity>
         </View>
 
-        {doctors.map((doctor) => (
-          <View
-            key={doctor.name}
-            className="flex-row items-center bg-white rounded-2xl p-3 mb-3 shadow-sm"
-          >
+        {loading ? (
+          <ActivityIndicator size="large" color="#23a9ba" className="mt-4" />
+        ) : doctors.length > 0 ? (
+          doctors.map((doctor) => (
+            <TouchableOpacity
+              key={doctor.id}
+              onPress={() => router.push(`/chat/${doctor.id}` as any)}
+              className="flex-row items-center bg-white rounded-2xl p-3 mb-3 shadow-sm border border-gray-100"
+            >
               <View className="w-14 h-14 rounded-full bg-[#eaf7fb] justify-center items-center mr-4">
                 <Feather name="user" size={24} color="#23a9ba" />
               </View>
 
-            <View className="flex-1">
-              <Text className="text-base font-semibold text-gray-900">
-                {doctor.name}
-              </Text>
-              <Text className="text-sm text-gray-600">{doctor.specialty}</Text>
-              <Text className="text-xs text-gray-500">
-                ⭐ {doctor.rating} · {doctor.distance}
-              </Text>
-            </View>
+              <View className="flex-1">
+                <Text className="text-base font-semibold text-gray-900">
+                  {doctor.fullname}
+                </Text>
+                <Text className="text-sm text-gray-600">{doctor.specialization}</Text>
+                <Text className="text-xs text-[#23a9ba] font-bold mt-1">
+                  Fee: ${doctor.consultationfee}
+                </Text>
+              </View>
 
-            <View
-              className={`w-3 h-3 rounded-full ${
-                doctor.available ? "bg-green-400" : "bg-gray-300"
-              }`}
-            />
-          </View>
-        ))}
+              <View
+                className={`w-3 h-3 rounded-full ${
+                  doctor.isVerified ? "bg-green-400" : "bg-gray-300"
+                }`}
+              />
+            </TouchableOpacity>
+          ))
+        ) : (
+          <Text className="text-center text-gray-500 mt-10">
+            No verified doctors found for this specialty.
+          </Text>
+        )}
       </View>
     </ScrollView>
   );

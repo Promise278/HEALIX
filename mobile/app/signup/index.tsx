@@ -6,10 +6,12 @@ import {
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import { router } from "expo-router";
-import { FontAwesome, Feather, MaterialIcons } from "@expo/vector-icons";
+import { Feather, MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { Config } from "../../constants/Config";
 
 export default function Signup() {
   const [activeTab, setActiveTab] = useState<"patient" | "doctor">("patient");
@@ -24,41 +26,96 @@ export default function Signup() {
   const [medicalSchool, setMedicalSchool] = useState("");
   const [graduationYear, setGraduationYear] = useState("");
   const [yearsExperience, setYearsExperience] = useState("");
+  const [consultationFee, setConsultationFee] = useState("");
 
 const handleNextDoctorStep = () => {
   setDoctorStep(2);
 };
 
-  const handleRegister = () => {
-    if (!name || !email || !password) {
-      alert("Please fill all fields");
+  const handleRegister = async () => {
+    if (activeTab === "patient") {
+      if (!name || !email || !password) {
+        Alert.alert("Error", "Please fill all fields");
+        return;
+      }
+
+      setIsLoading(true);
+      try {
+        const response = await fetch(`${Config.API_URL}/api/auth/patientregister`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            fullname: name,
+            username: name.toLowerCase().replace(/\s/g, ""),
+            email: email,
+            password: password,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || "Registration failed");
+        }
+
+        Alert.alert("Success", "Patient registered successfully!");
+        router.replace("/signin");
+      } catch (error: any) {
+        Alert.alert("Registration Error", error.message || "An unexpected error occurred");
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
+
+  const handleDoctorRegister = async () => {
+    if (
+      !licenseNumber ||
+      !licenseCountry ||
+      !specialization ||
+      !medicalSchool ||
+      !graduationYear ||
+      !yearsExperience ||
+      !consultationFee
+    ) {
+      Alert.alert("Error", "Please fill all verification fields");
       return;
     }
 
-    // fetch("https://test.blockfuselabs.com/api/register", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     name: name,
-    //     email: email,
-    //     password: password,
-    //   }),
-    // })
-    //   .then((res) =>
-    //     res.json().then((data) => {
-    //       if (res.ok) {
-    //         alert("Registration successful!");
-    //         router.replace("/signin");
-    //       } else {
-    //         alert(data.message || "Something went wrong");
-    //       }
-    //     })
-    //   )
-    //   .catch(() => {
-    //     alert("Network error, please try again.");
-    //   });
+    setIsLoading(true);
+    try {
+      const response = await fetch(`${Config.API_URL}/api/doctors/doctorregister`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fullname: name,
+          email: email,
+          password: password,
+          medicallicensenumber: licenseNumber,
+          yearsofexperience: parseInt(yearsExperience),
+          specialization: specialization,
+          consultationfee: parseFloat(consultationFee),
+          bio: `Medical School: ${medicalSchool}, Country: ${licenseCountry}, Grad Year: ${graduationYear}`,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Doctor registration failed");
+      }
+
+      Alert.alert("Success", "Doctor registration submitted successfully!");
+      router.replace("/signin");
+    } catch (error: any) {
+      Alert.alert("Registration Error", error.message || "An unexpected error occurred");
+    } finally {
+      setIsLoading(false);
+    }
   };
   return (
     <View className="flex-1 items-center px-4">
@@ -313,6 +370,17 @@ const handleNextDoctorStep = () => {
                   />
                 </View>
               </View>
+
+              <View className="flex-row items-center border border-gray-300 rounded-lg px-3 py-2">
+                <Feather name="dollar-sign" size={18} color="#888" />
+                <TextInput
+                  placeholder="Consultation Fee (e.g. 50)"
+                  keyboardType="numeric"
+                  className="flex-1 ml-2"
+                  value={consultationFee}
+                  onChangeText={setConsultationFee}
+                />
+              </View>
               </View>
 
 
@@ -323,11 +391,26 @@ const handleNextDoctorStep = () => {
                 </Text>
               </View>
 
-              {/* <GradientButton
-                // onPress={handleDoctorStep2}
-                text="Submit Application"
-                loading={isLoading}
-              /> */}
+              <TouchableOpacity
+                onPress={handleDoctorRegister}
+                disabled={isLoading}
+                className="rounded-full w-72 ml-10 mb-2 overflow-hidden mt-4"
+              >
+                <LinearGradient
+                  colors={["#19c3ee", "#0cd660"]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                  className="py-3"
+                >
+                  {isLoading ? (
+                    <ActivityIndicator color="#fff" />
+                  ) : (
+                    <Text className="text-center text-white font-semibold text-lg">
+                      Submit Application
+                    </Text>
+                  )}
+                </LinearGradient>
+              </TouchableOpacity>
 
               <TouchableOpacity
                 onPress={() => setDoctorStep(1)}

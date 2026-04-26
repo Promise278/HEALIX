@@ -41,7 +41,7 @@ const Home = () => {
               <div className="space-y-8 animate-fade-in">
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
                   Healthcare
-                  <span className="bg-gradient-to-r from-[#19c3ee] to-[#0cd660] bg-clip-text text-transparent">
+                  <span className="bg-linear-to-r from-[#19c3ee] to-[#0cd660] bg-clip-text text-transparent">
                     {" "}
                     at Your Fingertips
                   </span>
@@ -53,7 +53,7 @@ const Home = () => {
                 </p>
                 <div className="flex flex-wrap gap-4">
                   <Link href="/pages/doctors">
-                    <button className="cursor-pointer bg-gradient-to-r from-[#19c3ee] to-[#0cd660] text-white w-38 h-12 shadow-md rounded-md">
+                    <button className="cursor-pointer bg-linear-to-r from-[#19c3ee] to-[#0cd660] text-white w-38 h-12 shadow-md rounded-md">
                       Find a Doctor
                     </button>
                   </Link>
@@ -83,7 +83,7 @@ const Home = () => {
                 </div>
               </div>
               <div className="relative animate-fade-in">
-                <div className="absolute -inset-4 bg-gradient-to-r from-blue-600 to-blue-700 opacity-20 blur-3xl rounded-full" />
+                <div className="absolute -inset-4 bg-linear-to-r from-blue-600 to-blue-700 opacity-20 blur-3xl rounded-full" />
                 <Image
                   src={heroImage}
                   alt="Doctor consultation"
@@ -195,7 +195,7 @@ const Home = () => {
 
             <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
               <div className="text-center space-y-4">
-                <div className="w-16 h-16 bg-gradient-to-r from-[#19c3ee] to-[#0cd660] rounded-full flex items-center justify-center mx-auto text-2xl font-bold text-white shadow-lg">
+                <div className="w-16 h-16 bg-linear-to-r from-[#19c3ee] to-[#0cd660] rounded-full flex items-center justify-center mx-auto text-2xl font-bold text-white shadow-lg">
                   1
                 </div>
                 <h3 className="text-xl font-semibold">Choose Your Doctor</h3>
@@ -206,7 +206,7 @@ const Home = () => {
               </div>
 
               <div className="text-center space-y-4">
-                <div className="w-16 h-16 bg-gradient-to-r from-[#19c3ee] to-[#0cd660] rounded-full flex items-center justify-center mx-auto text-2xl font-bold text-white shadow-lg">
+                <div className="w-16 h-16 bg-linear-to-r from-[#19c3ee] to-[#0cd660] rounded-full flex items-center justify-center mx-auto text-2xl font-bold text-white shadow-lg">
                   2
                 </div>
                 <h3 className="text-xl font-semibold">Book Appointment</h3>
@@ -217,7 +217,7 @@ const Home = () => {
               </div>
 
               <div className="text-center space-y-4">
-                <div className="w-16 h-16 bg-gradient-to-r from-[#19c3ee] to-[#0cd660] rounded-full flex items-center justify-center mx-auto text-2xl font-bold text-white shadow-lg">
+                <div className="w-16 h-16 bg-linear-to-r from-[#19c3ee] to-[#0cd660] rounded-full flex items-center justify-center mx-auto text-2xl font-bold text-white shadow-lg">
                   3
                 </div>
                 <h3 className="text-xl font-semibold">Get Treatment</h3>

@@ -27,7 +27,7 @@ export default function PatientRegisterForm({ onClose }: Props) {
     setIsLoading(true);
     try {
       const res = await fetch(
-        "http://10.252.178.237:5000/api/patientregister",
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/patientregister`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

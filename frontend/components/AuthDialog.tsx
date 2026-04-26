@@ -1,13 +1,36 @@
 "use client";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Mail, Lock, User, FileText, GraduationCap, Calendar, Award, Building, Eye, EyeOff, } from "lucide-react";
+import {
+  Mail,
+  Lock,
+  User,
+  FileText,
+  GraduationCap,
+  Calendar,
+  Award,
+  Building,
+  Eye,
+  EyeOff,
+} from "lucide-react";
 import healixLogo from "@/public/healix-logo.png";
 import { useState } from "react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
@@ -18,9 +41,15 @@ interface AuthDialogProps {
   initialTab?: "login" | "signup";
 }
 
-const AuthDialog = ({ open, onOpenChange, initialTab = "login" }: AuthDialogProps) => {
+const AuthDialog = ({
+  open,
+  onOpenChange,
+  initialTab = "login",
+}: AuthDialogProps) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [userType, setUserType] = useState<"patient" | "doctor" | null>(null);
+  const [userType, setUserType] = useState<
+    "patient" | "doctor" | "admin" | null
+  >(null);
   const [doctorStep, setDoctorStep] = useState(1);
   const [showPassword, setShowPassword] = useState(false);
   const [showPatientPassword, setShowPatientPassword] = useState(false);
@@ -88,7 +117,7 @@ const AuthDialog = ({ open, onOpenChange, initialTab = "login" }: AuthDialogProp
             email: patientEmail,
             password: patientPassword,
           }),
-        }
+        },
       );
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Registration failed");
@@ -148,7 +177,7 @@ const AuthDialog = ({ open, onOpenChange, initialTab = "login" }: AuthDialogProp
             specialization: specialization,
             bio: `Medicall School: ${medicalSchool}, Issued Country: ${licenseCountry}, Graduation Year: ${graduationYear}`,
           }),
-        }
+        },
       );
 
       const data = await res.json();
@@ -177,12 +206,8 @@ const AuthDialog = ({ open, onOpenChange, initialTab = "login" }: AuthDialogProp
     }
     setIsLoading(true);
     try {
-      let url = "";
-      if (userType === "patient") {
-        url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/patientlogin`;
-      } else if (userType === "doctor") {
-        url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/doctorlogin`;
-      }
+      const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/login`;
+      
       const res = await fetch(url, {
         method: "POST",
         headers: {
@@ -191,27 +216,30 @@ const AuthDialog = ({ open, onOpenChange, initialTab = "login" }: AuthDialogProp
         body: JSON.stringify({ email, password }),
       });
 
+      const data = await res.json();
+
       if (!res.ok) {
-        console.error(`Error ${res.status}: ${res.statusText}`);
-        const data = await res.json();
         throw new Error(data.message || `Error ${res.status}: ${res.statusText}`);
       }
 
-      const data = await res.json();
       sessionStorage.setItem("token", data.token);
       sessionStorage.setItem("email", email);
-      sessionStorage.setItem("userType", userType || "");
+      sessionStorage.setItem("userType", data.user.role);
       localStorage.setItem("user", JSON.stringify(data.user));
-      toast.success("Login successful!");
+      
+      toast.success(data.message || "Login successful!");
       resetForm();
       onOpenChange(false);
-      // redirect based on role
-      if (userType === "patient") {
+
+      // Redirect based on role from backend
+      const role = data.user.role;
+      if (role === "patient") {
         router.push("/pages/dashboard");
-      } else if (userType === "doctor") {
+      } else if (role === "doctor") {
         router.push("/pages/docsdashboard");
+      } else if (role === "admin") {
+        router.push("/pages/admin");
       } else {
-        // fallback to generic home
         router.push("/pages/home");
       }
     } catch (err: unknown) {
@@ -248,103 +276,68 @@ const AuthDialog = ({ open, onOpenChange, initialTab = "login" }: AuthDialogProp
             </DialogHeader>
           </div>
 
-          <Tabs defaultValue="login" value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <Tabs
+            defaultValue="login"
+            value={activeTab}
+            onValueChange={setActiveTab}
+            className="w-full"
+          >
             <TabsList className="grid w-full grid-cols-2 mb-6">
               <TabsTrigger value="login">Login</TabsTrigger>
               <TabsTrigger value="signup">Sign Up</TabsTrigger>
             </TabsList>
 
             <TabsContent value="login" className="space-y-4 animate-fade-in">
-              {!userType && (
-                <div className="space-y-4">
-                  <p className="text-sm text-muted-foreground text-center">
-                    Login as:
-                  </p>
-                  <div className="grid grid-cols-2 gap-4">
-                    <Button
-                      variant="outline"
-                      className="h-24 flex flex-col gap-2"
-                      onClick={() => setUserType("patient")}
-                    >
-                      <User className="w-8 h-8 text-[#19c3ee]" />
-                      <span>Patient</span>
-                    </Button>
-                    <Button
-                      variant="outline"
-                      className="h-24 flex flex-col gap-2"
-                      onClick={() => setUserType("doctor")}
-                    >
-                      <FileText className="w-8 h-8 text-[#0cd660]" />
-                      <span>Doctor</span>
-                    </Button>
+              <form onSubmit={handleLogin} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="login-email">Email</Label>
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      id="login-email"
+                      type="email"
+                      placeholder="your@email.com"
+                      className="pl-10"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                    />
                   </div>
                 </div>
-              )}
-              {userType && (
-                <form onSubmit={handleLogin} className="space-y-4">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold">
-                      {userType === "patient" ? "Patient" : "Doctor"} Login
-                    </h3>
-                    <Button
+                <div className="space-y-2">
+                  <Label htmlFor="login-password">Password</Label>
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      id="login-password"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="••••••••"
+                      className="pl-10"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                    />
+                    <button
                       type="button"
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setUserType(null)}
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-2.5 text-gray-500 hover:text-gray-700"
                     >
-                      Change
-                    </Button>
+                      {showPassword ? (
+                        <EyeOff className="h-4 w-4" />
+                      ) : (
+                        <Eye className="h-4 w-4" />
+                      )}
+                    </button>
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="login-email">Email</Label>
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        id="login-email"
-                        type="email"
-                        placeholder="your@email.com"
-                        className="pl-10"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="login-password">Password</Label>
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        id="login-password"
-                        type={showPassword ? "text" : "password"}
-                        placeholder="••••••••"
-                        className="pl-10"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-2.5 text-gray-500 hover:text-gray-700"
-                      >
-                        {showPassword ? (
-                          <EyeOff className="h-4 w-4" />
-                        ) : (
-                          <Eye className="h-4 w-4" />
-                        )}
-                      </button>
-                    </div>
-                  </div>
-                  <Button
-                    type="submit"
-                    className="w-full bg-gradient-to-r from-[#19c3ee] to-[#0cd660] hover:opacity-90"
-                    disabled={isLoading}
-                  >
-                    {isLoading ? "Logging in..." : "Login"}
-                  </Button>
-                </form>
-              )}
+                </div>
+                <Button
+                  type="submit"
+                  className="w-full bg-linear-to-r from-[#19c3ee] to-[#0cd660] hover:opacity-90"
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Logging in..." : "Login"}
+                </Button>
+              </form>
             </TabsContent>
 
             {/* Signup Tab */}
@@ -469,7 +462,7 @@ const AuthDialog = ({ open, onOpenChange, initialTab = "login" }: AuthDialogProp
 
                   <Button
                     type="submit"
-                    className="w-full bg-gradient-to-r from-[#19c3ee] to-[#0cd660] hover:opacity-90"
+                    className="w-full bg-linear-to-r from-[#19c3ee] to-[#0cd660] hover:opacity-90"
                     disabled={isLoading}
                   >
                     {isLoading ? "Creating account..." : "Sign Up as Patient"}
@@ -561,7 +554,7 @@ const AuthDialog = ({ open, onOpenChange, initialTab = "login" }: AuthDialogProp
 
                   <Button
                     type="submit"
-                    className="w-full bg-gradient-to-r from-[#19c3ee] to-[#0cd660] hover:opacity-90"
+                    className="w-full bg-linear-to-r from-[#19c3ee] to-[#0cd660] hover:opacity-90"
                   >
                     Continue to Verification
                   </Button>
@@ -706,7 +699,7 @@ const AuthDialog = ({ open, onOpenChange, initialTab = "login" }: AuthDialogProp
 
                   <Button
                     type="submit"
-                    className="w-full bg-gradient-to-r from-[#19c3ee] to-[#0cd660] hover:opacity-90"
+                    className="w-full bg-linear-to-r from-[#19c3ee] to-[#0cd660] hover:opacity-90"
                     disabled={isLoading}
                   >
                     {isLoading ? "Submitting..." : "Submit Application"}

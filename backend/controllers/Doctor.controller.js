@@ -114,6 +114,7 @@ async function login(req, res) {
         "password",
         "specialization",
         "consultationfee",
+        "isVerified",
       ],
     });
     if (!doctor) {
@@ -137,6 +138,7 @@ async function login(req, res) {
       fullname: doctor.fullname,
       email: doctor.email,
       role: "doctor",
+      isVerified: doctor.isVerified,
       time: Date.now(),
     };
 
@@ -146,7 +148,9 @@ async function login(req, res) {
       success: true,
       token,
       user: payload,
-      message: "Doctor Login successfully",
+      message: doctor.isVerified
+        ? "Doctor Login successfully"
+        : "Doctor Login successfully. Account pending verification.",
     });
   } catch (error) {
     console.error("Login Error:", error);
@@ -200,7 +204,22 @@ async function addConsultationFee(req, res) {
 
 async function getalldoctors(req, res) {
   try {
+    const { specialization, all } = req.query;
+    
+    const where = {};
+    
+    // By default, only show verified doctors to patients
+    // If all=true is passed (e.g. from admin), show all
+    if (all !== "true") {
+      where.isVerified = true;
+    }
+    
+    if (specialization) {
+      where.specialization = specialization;
+    }
+
     const doctors = await Doctors.findAll({
+      where,
       attributes: { exclude: ["password"] },
     });
 

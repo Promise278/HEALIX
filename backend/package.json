@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@getbrevo/brevo": "^3.0.1",
+    "@stream-io/node-sdk": "^0.7.44",
     "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
@@ -20,7 +21,8 @@
     "openai": "^6.7.0",
     "pg": "^8.19.0",
     "pg-hstore": "^2.3.4",
-    "sequelize": "^6.37.7"
+    "sequelize": "^6.37.7",
+    "socket.io": "^4.8.3"
   },
   "devDependencies": {
     "sequelize-cli": "^6.6.5"

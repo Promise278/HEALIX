@@ -1,13 +1,31 @@
-"use client"
-import React from "react";
-import { useState, useEffect } from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-// import Image from "next/image";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Calendar, Video, MessageSquare, FileText, Clock, Activity } from "lucide-react";
+import {
+  Calendar,
+  MessageSquare,
+  FileText,
+  Activity,
+  Search,
+  Bell,
+  LogOut,
+  LayoutDashboard,
+  Pill,
+  CheckCircle2,
+  Clock,
+  Video,
+  User,
+} from "lucide-react";
 import HealixChatbot from "@/components/HealixAi";
 import { useRouter } from "next/navigation";
+import {
+  GlassCard,
+  SidebarItem,
+  StatCard,
+  SectionHeader,
+} from "@/components/Dashboard/DashboardComponents";
+import { motion } from "framer-motion";
 
 interface User {
   fullname?: string;
@@ -15,221 +33,329 @@ interface User {
   email: string;
 }
 
-function Dashboard() {
+export default function Dashboard() {
   const router = useRouter();
-  // ensure only patients access this
-  React.useEffect(() => {
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
     if (typeof window === "undefined") return;
     const type = sessionStorage.getItem("userType");
     const token = sessionStorage.getItem("token");
     if (!token || type !== "patient") {
       router.push("/");
     }
-  }, [router]);
-  const upcomingAppointments = [
-    {
-      id: 1,
-      doctor: "Dr. Sarah Johnson",
-      specialty: "General Practitioner",
-      date: "Today, 2:00 PM",
-      type: "Video Call",
-    },
-    {
-      id: 2,
-      doctor: "Dr. Michael Chen",
-      specialty: "Cardiologist",
-      date: "Tomorrow, 10:30 AM",
-      type: "Chat Consultation",
-    },
-  ];
-
-  const healthStats = [
-    { label: "Blood Pressure", value: "120/80", status: "Normal", icon: Activity },
-    { label: "Heart Rate", value: "72 bpm", status: "Good", icon: Activity },
-    { label: "Last Checkup", value: "2 weeks ago", status: "Recent", icon: Clock },
-  ];
-  const [user, setUser] = useState<User | null>(null);
-
-  useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
-  }, []);
-    
+  }, [router]);
+
+  const handleLogout = () => {
+    sessionStorage.clear();
+    localStorage.clear();
+    router.push("/");
+  };
+
+  const navItems = [
+    {
+      label: "Overview",
+      icon: LayoutDashboard,
+      path: "/pages/dashboard",
+      active: true,
+    },
+    {
+      label: "Appointments",
+      icon: Calendar,
+      path: "/pages/dashboard",
+      active: false,
+    },
+    {
+      label: "Messages",
+      icon: MessageSquare,
+      path: "/pages/chat",
+      active: false,
+    },
+    {
+      label: "Medical Records",
+      icon: FileText,
+      path: "/pages/dashboard",
+      active: false,
+    },
+    {
+      label: "Prescriptions",
+      icon: Pill,
+      path: "/pages/dashboard",
+      active: false,
+    },
+  ];
+
   return (
-    <>
-      <div className="min-h-screen bg-white">      
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Welcome Section */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Welcome back, {user ? (user.fullname || user.username) : "Patient"}!</h1>
-          <p className="text-gray-600">Heres your health overview</p>
+    <div className="flex h-screen bg-[#fbfcfd] overflow-hidden font-sans text-slate-800">
+      {/* Sidebar */}
+      <aside className="w-64 bg-[#f8fafc] flex flex-col h-full z-20 border-r border-slate-100">
+        <div className="p-6">
+          <Link href="/pages/home" className="flex items-center gap-2.5">
+            <div className="w-8 h-8 bg-[#0d9488] rounded-md flex items-center justify-center text-white font-black text-sm">
+              Hx
+            </div>
+            <div>
+              <h2 className="font-bold text-base text-slate-800 tracking-tight leading-none mb-0.5">
+                HeaLix
+              </h2>
+              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
+                Patient Portal
+              </p>
+            </div>
+          </Link>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-6">
-          {/* Main Content */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Quick Actions */}
-            <div className="grid sm:grid-cols-2 gap-4">
-              <Link href="/pages/doctors">
-                <Card className="p-6 hover:shadow-lg transition-all cursor-pointer bg-white border-gray-200 h-full">
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Video className="w-6 h-6 text-blue-600" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold mb-1">New Consultation</h3>
-                      <p className="text-sm text-gray-600">Book a video call with a doctor</p>
-                    </div>
-                  </div>
-                </Card>
-              </Link>
+        <nav className="flex-1 px-3 mt-6 space-y-1">
+          {navItems.map((item, index) => (
+            <SidebarItem
+              key={index}
+              label={item.label}
+              icon={item.icon}
+              href={item.path}
+              active={item.active}
+            />
+          ))}
+        </nav>
 
+        <div className="p-4 border-t border-slate-100">
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-3 px-4 py-2 w-full text-slate-400 hover:text-red-500 rounded-lg transition-all duration-200 font-bold text-[10px] uppercase tracking-widest"
+          >
+            <LogOut className="w-3.5 h-3.5" />
+            Sign Out
+          </button>
+        </div>
+      </aside>
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col h-full overflow-hidden">
+        {/* Top Header */}
+        <header className="bg-white px-8 py-4 items-center justify-between border-b border-slate-100 flex h-16">
+          <div className="relative w-64">
+            <Search className="w-3.5 h-3.5 text-slate-300 absolute left-3 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              placeholder="Search..."
+              className="w-full pl-9 pr-4 py-1.5 bg-[#f8fafc] border-none rounded-md text-[11px] placeholder:text-slate-300 focus:ring-1 focus:ring-teal-500/10 outline-none transition-all"
+            />
+          </div>
+          
+          <div className="flex items-center gap-5">
+            <button className="relative w-8 h-8 flex items-center justify-center text-slate-300 hover:text-teal-600 transition-all">
+              <Bell className="w-4 h-4" />
+              <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-red-400 rounded-full border border-white"></span>
+            </button>
+            <div className="flex items-center gap-3 pl-5 border-l border-slate-100">
+              <div className="text-right">
+                <p className="text-[11px] font-bold text-slate-700 leading-tight">
+                  {user?.fullname || user?.username || "Patient Account"}
+                </p>
+                <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest leading-none">
+                  Healthcare User
+                </p>
+              </div>
+              <div className="w-8 h-8 rounded-full bg-teal-50 flex items-center justify-center font-black text-teal-600 text-[10px] border border-teal-100 uppercase">
+                {user?.fullname?.[0] || user?.username?.[0] || "P"}
+              </div>
+            </div>
+          </div>
+        </header>
+
+        {/* Dashboard Body */}
+        <main className="flex-1 overflow-y-auto px-10 py-8 scrollbar-hide">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-8 gap-4">
+            <div>
+              <h1 className="text-[22px] font-bold text-slate-800 tracking-tight mb-1">
+                Patient Dashboard
+              </h1>
+              <p className="text-slate-400 text-[11px] font-medium tracking-tight">Overview of health metrics and upcoming sessions</p>
+            </div>
+            
+            <div className="flex gap-2.5">
               <Link href="/pages/doctors">
-                <Card className="p-6 hover:shadow-lg transition-all cursor-pointer bg-white border-gray-200 h-full">
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-emerald-50 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <MessageSquare className="w-6 h-6 text-emerald-600" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold mb-1">Quick Chat</h3>
-                      <p className="text-sm text-gray-600">Message your doctor instantly</p>
-                    </div>
-                  </div>
-                </Card>
+                <Button className="bg-[#0d9488] hover:bg-[#0f766e] text-white shadow-xs rounded-md px-5 h-9 font-bold text-[11px] transition-all">
+                  Book Session
+                </Button>
               </Link>
             </div>
+          </div>
 
-            {/* Upcoming Appointments */}
-            <Card className="p-6 bg-white border-gray-200">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-semibold flex items-center gap-2">
-                  <Calendar className="w-5 h-5 text-blue-600" />
-                  Upcoming Appointments
-                </h2>
-                <Button variant="outline" size="sm">View All</Button>
-              </div>
+          {/* Top Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <StatCard 
+              label="Next Session" 
+              value="Today" 
+              icon={Calendar} 
+              trend="15:49" 
+              color="teal"
+              delay={0.1}
+            />
+            <StatCard 
+              label="Prescriptions" 
+              value="3" 
+              icon={Pill} 
+              trend="+1 new" 
+              color="blue"
+              delay={0.2}
+            />
+            <StatCard 
+              label="Health Score" 
+              value="85%" 
+              icon={CheckCircle2} 
+              trend="Good" 
+              color="purple"
+              delay={0.3}
+            />
+             <StatCard 
+              label="Avg. Steps" 
+              value="8.4k" 
+              icon={Activity} 
+              trend="+12%" 
+              color="amber"
+              delay={0.4}
+            />
+          </div>
 
-              <div className="space-y-4">
-                {upcomingAppointments.map((appointment) => (
-                  <div
-                    key={appointment.id}
-                    className="flex items-center justify-between p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-400 transition-colors"
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-gradient-to-r from-[#19c3ee] to-[#0cd660] rounded-full flex items-center justify-center text-white font-semibold">
-                        {appointment.doctor.split(' ')[1][0]}
+          {/* Content Rows */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div className="lg:col-span-8 space-y-6">
+              {/* Active Consultation */}
+              <section>
+                <SectionHeader title="Active Consultation" />
+                <GlassCard className="p-0 border-slate-100 shadow-xs">
+                  <div className="bg-white p-6 flex flex-col sm:flex-row items-center justify-between gap-6">
+                    <div className="flex items-center gap-5">
+                      <div className="w-12 h-12 rounded-md bg-[#f8fafc] flex items-center justify-center font-black text-base text-slate-300 border border-slate-100 italic">
+                         Hx
                       </div>
                       <div>
-                        <h3 className="font-semibold">{appointment.doctor}</h3>
-                        <p className="text-sm text-gray-600">{appointment.specialty}</p>
-                        <p className="text-sm text-gray-600 flex items-center gap-1 mt-1">
-                          <Clock className="w-3 h-3" />
-                          {appointment.date}
+                        <div className="flex items-center gap-2 mb-0.5">
+                          <h3 className="font-bold text-slate-800 text-lg tracking-tight">
+                            Dr. Bashir Olamide
+                          </h3>
+                          <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+                        </div>
+                        <p className="text-[#0d9488] text-[11px] font-bold uppercase tracking-wider mb-2">
+                          Specialist Physician
                         </p>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <div className="items-center gap-2 text-[9px] text-slate-500 font-bold bg-[#f8fafc] border border-slate-100 px-2.5 py-1.5 rounded-md inline-flex">
+                            <Clock className="w-3 h-3 text-teal-600" />
+                            REMAINING: 28 MINS
+                          </div>
+                   
+                        </div>
                       </div>
                     </div>
-                    <Link href={appointment.type === "Video Call" ? "/video-call" : "/chat"}>
-                      <Button className="bg-gradient-to-r from-[#19c3ee] to-[#0cd660] text-white hover:from-blue-700 hover:to-blue-800">
-                        {appointment.type === "Video Call" ? (
-                          <>
-                            <Video className="w-4 h-4 mr-2" />
-                            Join Call
-                          </>
-                        ) : (
-                          <>
-                            <MessageSquare className="w-4 h-4 mr-2" />
-                            Start Chat
-                          </>
-                        )}
+                    <div className="flex items-center gap-2 w-full sm:w-auto">
+                      <Link href="/pages/chat/1" className="w-full sm:w-auto">
+                        <Button
+                          variant="outline"
+                          className="w-full border-slate-100 text-slate-500 hover:text-teal-600 hover:bg-teal-50/50 h-8 px-5 rounded-md font-bold text-[10px] uppercase tracking-wider"
+                        >
+                          Message
+                        </Button>
+                      </Link>
+                      <Link href="/pages/video-call/1" className="w-full sm:w-auto">
+                        <Button
+                          className="w-full bg-[#0d9488] hover:bg-[#0f766e] text-white shadow-xs h-8 px-5 rounded-md font-bold text-[10px] uppercase tracking-wider"
+                        >
+                          Join Now
+                        </Button>
+                      </Link>
+                    </div>
+                  </div>
+                </GlassCard>
+              </section>
+
+              {/* Recommended Doctors */}
+              <section>
+                <div className="flex items-center justify-between mb-3">
+                   <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
+                    <User className="w-4 h-4 text-teal-600" />
+                    Available Doctors
+                  </h3>
+                  <Link href="/pages/doctors" className="text-teal-600 text-[10px] font-black uppercase tracking-widest hover:underline">View All</Link>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {[1, 2].map((i) => (
+                    <GlassCard key={i} className="p-4 border-slate-100">
+                      <div className="flex gap-3 items-center mb-4">
+                        <div className="w-10 h-10 bg-slate-50 rounded-md flex items-center justify-center text-xs font-black text-slate-300 border border-slate-100">
+                          {i === 1 ? "AS" : "RM"}
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="font-bold text-slate-800 text-xs tracking-tight">
+                            {i === 1 ? "Dr. Amina S." : "Dr. Richard M."}
+                          </h3>
+                          <p className="text-slate-400 text-[9px] font-bold uppercase tracking-widest">
+                            {i === 1 ? "Dermatology" : "Neurology"}
+                          </p>
+                        </div>
+                      </div>
+                       <Button variant="outline" className="w-full border-slate-100 text-teal-600 rounded-md h-8 font-black text-[9px] uppercase tracking-widest hover:bg-teal-50 transition-all">
+                        Consult
                       </Button>
-                    </Link>
-                  </div>
-                ))}
-              </div>
-            </Card>
-
-            {/* Health Records */}
-            <Card className="p-6 bg-white border-gray-200">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-semibold flex items-center gap-2">
-                  <FileText className="w-5 h-5 text-blue-600" />
-                  Recent Health Records
-                </h2>
-                <Button variant="outline" size="sm">View All</Button>
-              </div>
-
-              <div className="space-y-3">
-                <div className="flex items-center justify-between p-3 bg-white rounded-lg border border-gray-200">
-                  <div>
-                    <h3 className="font-medium">General Checkup Report</h3>
-                    <p className="text-sm text-gray-600">Dr. Sarah Johnson • 2 weeks ago</p>
-                  </div>
-                  <Button variant="ghost" size="sm">View</Button>
+                    </GlassCard>
+                  ))}
                 </div>
-                <div className="flex items-center justify-between p-3 bg-white rounded-lg border border-gray-200">
-                  <div>
-                    <h3 className="font-medium">Blood Test Results</h3>
-                    <p className="text-sm text-gray-600">Lab Test • 1 month ago</p>
-                  </div>
-                  <Button variant="ghost" size="sm">View</Button>
-                </div>
-              </div>
-            </Card>
-          </div>
+              </section>
+            </div>
 
-          {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Health Stats */}
-            <Card className="p-6 bg-white border-gray-200">
-              <h2 className="text-xl font-semibold mb-6">Health Overview</h2>
-              <div className="space-y-4">
-                {healthStats.map((stat, index) => (
-                  <div key={index} className="p-4 bg-white rounded-lg border border-gray-200">
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
-                        <stat.icon className="w-4 h-4 text-blue-600" />
+            {/* Right Column */}
+            <div className="lg:col-span-4 space-y-6">
+               <section>
+                <SectionHeader title="Quick Actions" />
+                <GlassCard className="divide-y divide-slate-50">
+                  <Link href="/pages/chat" className="p-3.5 flex items-center gap-3 hover:bg-[#f8fafc] transition-all group">
+                    <MessageSquare className="w-4 h-4 text-slate-300 group-hover:text-teal-600" />
+                    <span className="text-[11px] font-bold text-slate-600 group-hover:text-slate-800">Review Messages</span>
+                  </Link>
+                  <Link href="/pages/dashboard" className="p-3.5 flex items-center gap-3 hover:bg-[#f8fafc] transition-all group">
+                    <FileText className="w-4 h-4 text-slate-300 group-hover:text-teal-600" />
+                    <span className="text-[11px] font-bold text-slate-600 group-hover:text-slate-800">Health Reports</span>
+                  </Link>
+                </GlassCard>
+              </section>
+
+              <section>
+                <GlassCard className="p-5 bg-slate-800 border-none rounded-lg relative overflow-hidden">
+                  <h3 className="text-[10px] font-black text-white uppercase tracking-widest mb-1 relative z-10">
+                    System Hub
+                  </h3>
+                  <p className="text-slate-400 text-[10px] mb-4 font-bold uppercase tracking-tight leading-relaxed relative z-10">
+                    Verified Diagnostics • HLX-X
+                  </p>
+                  <Button className="w-full bg-white/10 hover:bg-white/20 text-white border border-white/10 rounded-md h-8 font-black text-[9px] uppercase tracking-widest transition-all relative z-10">
+                    Access Portal
+                  </Button>
+                </GlassCard>
+              </section>
+
+              <section>
+                <SectionHeader title="Status Updates" />
+                <div className="space-y-3">
+                   {[1, 2].map(i => (
+                    <div key={i} className="flex gap-3 p-3 rounded-lg bg-white border border-slate-100">
+                      <div className="w-1 bg-[#0d9488] rounded-full h-auto" />
+                      <div>
+                        <h4 className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Platform Update</h4>
+                        <p className="text-[10px] font-bold text-slate-700 leading-snug">Service Status: Active</p>
                       </div>
-                      <span className="text-sm font-medium">{stat.label}</span>
                     </div>
-                    <div className="flex items-baseline justify-between">
-                      <span className="text-2xl font-bold">{stat.value}</span>
-                      <span className="text-sm text-emerald-600">{stat.status}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </Card>
-
-            {/* Quick Info */}
-            <Card className="p-6 bg-gradient-to-r from-[#19c3ee] to-[#0cd660] text-white overflow-hidden relative">
-              <div className="absolute -right-8 -bottom-8 w-32 h-32 bg-white/10 rounded-full" />
-              <div className="absolute -right-4 -top-4 w-24 h-24 bg-white/10 rounded-full" />
-              <div className="relative z-10">
-                <h3 className="font-semibold mb-2">Need Help?</h3>
-                <p className="text-sm text-white/90 mb-4">
-                  Our support team is available 24/7 to assist you
-                </p>
-                <Button variant="secondary" size="sm">Contact Support</Button>
-              </div>
-            </Card>
-
-            {/* Medical Illustration */}
-            {/* <Card className="p-0 overflow-hidden border-gray-200">
-              <Image 
-                src={dashboardIllustration} 
-                alt="Healthcare Dashboard" 
-                className="w-full h-auto"
-              />
-            </Card> */}
+                  ))}
+                </div>
+              </section>
+            </div>
           </div>
-        </div>
+        </main>
       </div>
+      <HealixChatbot />
     </div>
-    <HealixChatbot />
-    </>
   );
 }
-
-export default Dashboard;

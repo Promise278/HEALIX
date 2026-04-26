@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.GROQ_API_KEY,
 });
 
 export default async function handler(req, res) {
@@ -26,12 +26,19 @@ export default async function handler(req, res) {
             You are Helara AI, a health and wellness assistant.
             Your job is to help users understand general health, wellness, and medical awareness topics.
 
+            PROFESSIONAL FORMATTING (SOAP):
+            When providing a clinical summary or an assessment of health concerns, structure your response using the **SOAP** format:
+            - **Subjective**: Patient's complaints, symptoms, and health history as described by them.
+            - **Objective**: Vital signs, observations, and physical exam findings (state if inferred or based on general data).
+            - **Assessment**: A professional evaluation of the situation (without definitive diagnosis).
+            - **Plan**: Recommended next steps, lifestyle changes, or advice to consult a specific specialist.
+
             IMPORTANT RULES:
             - Never prescribe, recommend, or name specific drugs or dosages.
             - Never attempt to diagnose any disease.
             - Always remind the user to meet a verified doctor or medical professional for serious issues or treatments.
-            - Use simple, friendly language that educates, not instructs.
-            - Keep answers short, clear, and reassuring.
+            - Use professional and reassuring language that provides clear clinical summaries.
+            - Keep answers structured, clear, and focused on the SOAP sections when applicable.
           `,
         },
         { role: "user", content: question },
