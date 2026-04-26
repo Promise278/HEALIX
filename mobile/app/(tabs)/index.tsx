@@ -147,15 +147,21 @@ const HomeScreen = () => {
           Quick Actions
         </Text>
         <View className="flex-row justify-between">
+          <TouchableOpacity onPress={() => router.push('/ai/chat' as any)} className="items-center bg-[#2ac9de] rounded-2xl p-3 flex-1 mx-1">
+            <Feather name={"cpu"} size={20} color="#d5fcfe" />
+            <Text className="text-[#d5fcfe] text-xs font-medium mt-1 text-center">
+              {"Helara AI"}
+            </Text>
+          </TouchableOpacity>
           <TouchableOpacity onPress={() => router.push('/(tabs)/chat')} className="items-center bg-[#2ac9de] rounded-2xl p-3 flex-1 mx-1">
             <Feather name={"video"} size={20} color="#d5fcfe" />
-            <Text className="text-[#d5fcfe] text-sm font-medium mt-1">
+            <Text className="text-[#d5fcfe] text-xs font-medium mt-1 text-center">
               {"Call Now"}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => router.push('/(tabs)/chat')} className="items-center bg-[#2ac9de] rounded-2xl p-3 flex-1 mx-1">
             <Feather name={"calendar"} size={20} color="#d5fcfe" />
-            <Text className="text-[#d5fcfe] text-sm font-medium mt-1">
+            <Text className="text-[#d5fcfe] text-xs font-medium mt-1 text-center">
               {"Book"}
             </Text>
           </TouchableOpacity>

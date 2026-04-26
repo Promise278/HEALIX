@@ -1,4 +1,4 @@
-const { Message, sequelize } = require("../models");
+const { Message, sequelize, Doctors } = require("../models");
 const { Op } = require("sequelize");
 
 async function getMessages(req, res) {
@@ -65,11 +65,20 @@ async function getConversations(req, res) {
           where: { conversationId: conv.conversationId },
           order: [["timestamp", "DESC"]],
         });
+
+        // Try to find a doctor with this ID (assuming conversationId is doctorId for now)
+        const doctor = await Doctors.findByPk(conv.conversationId, {
+          attributes: ["fullname", "specialization"],
+        });
+
         return {
           conversationId: conv.conversationId,
           lastMessage: lastMsg.content,
           timestamp: lastMsg.timestamp,
           senderModel: lastMsg.senderModel,
+          doctorName: doctor ? doctor.fullname : "Medical Team",
+          specialty: doctor ? doctor.specialization : "Support",
+          online: true, // Placeholder
         };
       }),
     );
