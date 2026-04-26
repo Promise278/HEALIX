@@ -3,6 +3,8 @@ import { useState } from "react";
 import { MessageCircle, Send, X, Paperclip, Mic } from "lucide-react";
 import { motion } from "framer-motion";
 
+import Link from "next/link";
+
 const HealixChatbot = () => {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([
@@ -13,25 +15,40 @@ const HealixChatbot = () => {
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isFinal, setIsFinal] = useState(false);
 
   const handleSend = async () => {
-    if (!input.trim()) return;
+    if (!input.trim() || isFinal) return;
 
     const userMessage = { sender: "user", text: input };
-    setMessages((prev) => [...prev, userMessage]);
+    const newMessages = [...messages, userMessage];
+    setMessages(newMessages);
     setInput("");
     setLoading(true);
 
+    // Map internal message format to AI role format
+    const history = newMessages.map((msg) => ({
+      role: msg.sender === "bot" ? "assistant" : "user",
+      content: msg.text,
+    }));
+
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/ai/health`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ question: input }),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/ai/health`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ history }),
+        }
+      );
 
       const data = await res.json();
+
+      if (data?.turnCount >= 4) {
+        setIsFinal(true);
+      }
 
       if (data?.content) {
         setMessages((prev) => [...prev, { sender: "bot", text: data.content }]);
@@ -79,9 +96,9 @@ const HealixChatbot = () => {
         >
           {/* Header */}
           <div className="bg-gradient-to-r from-[#19c3ee] to-[#0cd660] text-white px-4 py-3 flex justify-between items-center">
-            <h3 className="font-semibold">Helara 🤖</h3>
+            <h3 className="font-semibold text-white">Helara 🤖</h3>
             <button onClick={() => setOpen(false)}>
-              <X className="w-5 h-5" />
+              <X className="w-5 h-5 text-white" />
             </button>
           </div>
 
@@ -104,45 +121,66 @@ const HealixChatbot = () => {
                 Helara is thinking...
               </div>
             )}
+            {isFinal && (
+              <div className="p-4 bg-emerald-50 rounded-xl border border-emerald-100 text-center animate-in fade-in slide-in-from-bottom-2 duration-500">
+                <p className="text-xs text-emerald-800 font-medium mb-3">
+                  Clinical assessment complete. You can now consult a verified specialist.
+                </p>
+                <Link href="/pages/doctors">
+                  <button className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-colors shadow-sm w-full">
+                    Find a Doctor
+                  </button>
+                </Link>
+              </div>
+            )}
           </div>
 
           {/* Input Area */}
-          <div className="flex items-center border-t border-gray-200">
-            <label
-              htmlFor="fileUpload"
-              className="p-3 text-[#19c3ee] hover:text-[#0cd660] cursor-pointer"
-              title="Upload health document"
-            >
-              <Paperclip className="w-5 h-5" />
-            </label>
-            <input
-              type="file"
-              id="fileUpload"
-              accept=".pdf,.jpg,.jpeg,.png"
-              className="hidden"
-            />
-            <input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask a health question..."
-              className="flex-1 p-3 outline-none text-sm"
-              onKeyDown={(e) => e.key === "Enter" && handleSend()}
-            />
+          {!isFinal && (
+            <div className="flex items-center border-t border-gray-200">
+              <label
+                htmlFor="fileUpload"
+                className="p-3 text-[#19c3ee] hover:text-[#0cd660] cursor-pointer"
+                title="Upload health document"
+              >
+                <Paperclip className="w-5 h-5" />
+              </label>
+              <input
+                type="file"
+                id="fileUpload"
+                accept=".pdf,.jpg,.jpeg,.png"
+                className="hidden"
+              />
+              <input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Ask a health question..."
+                className="flex-1 p-3 outline-none text-sm"
+                onKeyDown={(e) => e.key === "Enter" && handleSend()}
+              />
               <button
-                className={`p-3 "text-red-500" : "text-[#19c3ee]"
-                } hover:text-[#0cd660]"`}
+                className="p-3 text-[#19c3ee] hover:text-[#0cd660]"
                 disabled={loading}
               >
                 <Mic className="w-5 h-5" />
               </button>
-            <button
-              onClick={handleSend}
-              className="p-3 text-[#19c3ee] hover:text-[#0cd660]"
-              disabled={loading}
-            >
-              <Send className="w-5 h-5" />
-            </button>
-          </div>
+              <button
+                onClick={handleSend}
+                className="p-3 text-[#19c3ee] hover:text-[#0cd660]"
+                disabled={loading}
+              >
+                <Send className="w-5 h-5" />
+              </button>
+            </div>
+          )}
+          
+          {isFinal && (
+            <div className="p-3 bg-gray-50 border-t border-gray-100 text-center">
+              <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">
+                Consultation Ready
+              </p>
+            </div>
+          )}
         </motion.div>
       )}
     </>

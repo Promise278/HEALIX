@@ -8,13 +8,42 @@ const client = new OpenAI({
 
 export default async function handler(req, res) {
   try {
-    const { question } = req.body;
+    const { question, history } = req.body;
 
-    if (!question || question.trim() === "") {
+    // Maintain conversation history
+    let messages = history || [];
+    
+    // If a single question is provided (legacy or first message), add it to messages
+    if (question && (!history || history.length === 0)) {
+      messages.push({ role: "user", content: question });
+    } else if (question) {
+      // In multi-turn, question would be the latest user input
+      messages.push({ role: "user", content: question });
+    }
+
+    if (messages.length === 0) {
       return res.status(400).json({
         role: "assistant",
         content: "Please enter a valid health-related question.",
       });
+    }
+
+    // Count user turns to determine stage (Initial + 3 follow-ups = 4 turns)
+    const userTurns = messages.filter(m => m.role === "user").length;
+
+    let stageInstruction = "";
+    if (userTurns < 4) {
+      stageInstruction = `
+        CURRENT STAGE: Gathering Information (${userTurns}/4 turns)
+        Your goal is to ask exactly ONE relevant and concise follow-up question to better understand the patient's condition. 
+        Do not provide a full summary or SOAP report yet. 
+        Focus on symptoms, duration, or severity.
+      `;
+    } else {
+      stageInstruction = `
+        CURRENT STAGE: Final Assessment (SOAP Report)
+        You have gathered enough information. Provide a professional and structured clinical summary using the **SOAP** format.
+      `;
     }
 
     const response = await client.chat.completions.create({
@@ -26,8 +55,10 @@ export default async function handler(req, res) {
             You are Helara AI, a health and wellness assistant.
             Your job is to help users understand general health, wellness, and medical awareness topics.
 
+            ${stageInstruction}
+
             PROFESSIONAL FORMATTING (SOAP):
-            When providing a clinical summary or an assessment of health concerns, structure your response using the **SOAP** format:
+            When providing a clinical summary, structure your response using the **SOAP** format:
             - **Subjective**: Patient's complaints, symptoms, and health history as described by them.
             - **Objective**: Vital signs, observations, and physical exam findings (state if inferred or based on general data).
             - **Assessment**: A professional evaluation of the situation (without definitive diagnosis).
@@ -41,12 +72,12 @@ export default async function handler(req, res) {
             - Keep answers structured, clear, and focused on the SOAP sections when applicable.
           `,
         },
-        { role: "user", content: question },
+        ...messages,
       ],
     });
 
     const answer = response.choices[0].message.content;
-    res.json({ role: "assistant", content: answer });
+    res.json({ role: "assistant", content: answer, turnCount: userTurns });
   } catch (error) {
     console.error("Healix AI Error:", error);
     res.status(500).json({ error: "Error connecting to Healix AI" });
