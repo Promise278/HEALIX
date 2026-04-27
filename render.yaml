@@ -1,0 +1,38 @@
+services:
+  - type: web
+    name: healix-backend
+    env: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: PORT
+        value: 10000
+      - key: JWT_SECRET
+        sync: false
+      - key: BREVO_API_KEY
+        sync: false
+      - key: EMAIL_SENDER
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: STREAM_API_KEY
+        sync: false
+      - key: STREAM_API_SECRET
+        sync: false
+      - key: DB_URL
+        sync: false
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_NAME
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
