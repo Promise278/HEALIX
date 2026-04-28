@@ -1,4 +1,4 @@
-const { Appointment, Patients, Doctors } = require("../models");
+const { Appointments, Patients, Doctors } = require("../models");
 
 async function createAppointment(req, res) {
   try {
@@ -12,7 +12,7 @@ async function createAppointment(req, res) {
       });
     }
 
-    const appointment = await Appointment.create({
+    const appointment = await Appointments.create({
       patientId,
       doctorId,
       appointmentDate,
@@ -38,7 +38,7 @@ async function createAppointment(req, res) {
 async function getPatientAppointments(req, res) {
   try {
     const patientId = req.user.id;
-    const appointments = await Appointment.findAll({
+    const appointments = await Appointments.findAll({
       where: { patientId },
       include: [
         {
@@ -66,7 +66,7 @@ async function getPatientAppointments(req, res) {
 async function getDoctorAppointments(req, res) {
   try {
     const doctorId = req.user.id;
-    const appointments = await Appointment.findAll({
+    const appointments = await Appointments.findAll({
       where: { doctorId },
       include: [
         {
