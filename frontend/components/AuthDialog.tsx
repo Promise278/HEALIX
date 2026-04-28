@@ -107,7 +107,7 @@ const AuthDialog = ({
 
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/patientregister`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/patientregister`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -164,7 +164,7 @@ const AuthDialog = ({
     setIsLoading(true);
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/doctorregister`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/doctors/doctorregister`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -175,7 +175,7 @@ const AuthDialog = ({
             medicallicensenumber: licenseNumber,
             yearsofexperience: parseInt(yearsExperience),
             specialization: specialization,
-            bio: `Medicall School: ${medicalSchool}, Issued Country: ${licenseCountry}, Graduation Year: ${graduationYear}`,
+            bio: `Medical School: ${medicalSchool}, Issued Country: ${licenseCountry}, Graduation Year: ${graduationYear}`,
           }),
         },
       );

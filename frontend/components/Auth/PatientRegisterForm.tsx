@@ -12,6 +12,7 @@ interface Props {
 export default function PatientRegisterForm({ onClose }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [fullName, setFullName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [, setUserType] = useState<"patient" | "doctor" | null>(null);
@@ -19,7 +20,7 @@ export default function PatientRegisterForm({ onClose }: Props) {
   const handlePatientSignup = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!email || !password || !fullName) {
+    if (!email || !password || !fullName || !username) {
       alert("Please fill in all fields");
       return;
     }
@@ -32,10 +33,10 @@ export default function PatientRegisterForm({ onClose }: Props) {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            name: fullName,
+            fullname: fullName,
+            username,
             email,
             password,
-            role: "patient",
           }),
         }
       );
@@ -80,6 +81,21 @@ export default function PatientRegisterForm({ onClose }: Props) {
             className="pl-10"
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
+            required
+          />
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="patient-username">Username</Label>
+        <div className="relative">
+          <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+          <Input
+            id="patient-username"
+            placeholder="johndoe123"
+            className="pl-10"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
           />
         </div>
