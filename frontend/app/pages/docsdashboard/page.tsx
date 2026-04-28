@@ -39,13 +39,26 @@ interface User {
 export default function DoctorDashboard() {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
-  const [patientsCount, setPatientsCount] = useState(0);
+  const [appointments, setAppointments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchStats = async () => {
-    // In a real app, we would fetch these from the backend.
-    // For now, since there's no specific 'Consultations' model, we set to 0.
-    setLoading(false);
+    try {
+      const token = sessionStorage.getItem("token");
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/appointments/doctor`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await res.json();
+      if (data.success) {
+        setAppointments(data.data);
+      }
+    } catch (error) {
+      console.error("Error fetching doctor stats:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -201,33 +214,33 @@ export default function DoctorDashboard() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <StatCard 
               label="Consultations" 
-              value="0" 
+              value={appointments.length.toString()} 
               icon={User} 
-              trend="Today" 
+              trend="Total" 
               color="teal"
               delay={0.1}
             />
             <StatCard 
               label="Earning" 
-              value="$0.00" 
+              value={`$${(appointments.length * 50).toFixed(2)}`} 
               icon={TrendingUp} 
-              trend="Pending" 
+              trend="Estimated" 
               color="blue"
               delay={0.2}
             />
             <StatCard 
               label="Efficiency" 
-              value="N/A" 
+              value="100%" 
               icon={Activity} 
-              trend="Syncing" 
+              trend="Optimal" 
               color="purple"
               delay={0.3}
             />
              <StatCard 
               label="Patients" 
-              value="0" 
+              value={new Set(appointments.map(a => a.patientId)).size.toString()} 
               icon={UserPlus} 
-              trend="Total" 
+              trend="Unique" 
               color="amber"
               delay={0.4}
             />
@@ -240,17 +253,67 @@ export default function DoctorDashboard() {
                 <div className="flex items-center justify-between mb-3">
                   <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
                     <User className="w-4 h-4 text-teal-600" />
-                    Pending Consultations
+                    Incoming Consultations
                   </h3>
                 </div>
                 
                 <div className="space-y-4">
-                  <div className="bg-white p-10 rounded-lg border border-slate-100 text-center flex flex-col items-center">
-                    <div className="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center mb-4">
-                      <Clock className="w-6 h-6 text-slate-300" />
+                  {loading ? (
+                     <div className="h-32 bg-white border border-slate-100 rounded-lg animate-pulse" />
+                  ) : appointments.length > 0 ? (
+                    appointments.map((apt) => (
+                      <GlassCard key={apt.id} className="p-0 border-slate-100 shadow-xs group">
+                        <div className="bg-white p-5 flex flex-col sm:flex-row items-center justify-between gap-6">
+                          <div className="flex items-center gap-4">
+                            <div className="w-12 h-12 bg-slate-50 rounded-md flex items-center justify-center font-black text-slate-300 border border-slate-100 italic group-hover:bg-teal-500 group-hover:text-white transition-all">
+                               Hx
+                            </div>
+                            <div>
+                              <h3 className="font-bold text-slate-800 text-base tracking-tight mb-0.5">
+                                {apt.patient.fullname}
+                              </h3>
+                              <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">
+                                HLX-ID: #{apt.id.slice(0, 5).toUpperCase()}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-5">
+                            <div className="text-right hidden sm:block">
+                              <p className="text-[11px] font-bold text-slate-800">
+                                {new Date(apt.appointmentDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                              </p>
+                              <p className="text-[9px] text-[#0d9488] font-bold uppercase tracking-widest">
+                                {new Date(apt.appointmentDate).toLocaleDateString()}
+                              </p>
+                            </div>
+                            <Link href={`/pages/chat/${apt.id}`}>
+                              <Button className="bg-[#0d9488] hover:bg-[#0f766e] text-white rounded-md h-8 px-5 font-bold text-[10px] uppercase tracking-wider transition-all">
+                                Review & Message
+                              </Button>
+                            </Link>
+                          </div>
+                        </div>
+                        {apt.aiAnalysis && (
+                          <div className="px-5 py-3 bg-teal-50/20 border-t border-slate-50">
+                            <div className="flex items-center gap-2 mb-1">
+                              <Sparkles className="w-3 h-3 text-teal-600" />
+                              <span className="text-[8px] font-black text-teal-600 uppercase tracking-widest">AI Pre-Analysis</span>
+                            </div>
+                            <p className="text-[10px] text-slate-500 italic truncate">
+                              Symptoms: {apt.aiAnalysis.symptoms}
+                            </p>
+                          </div>
+                        )}
+                      </GlassCard>
+                    ))
+                  ) : (
+                    <div className="bg-white p-10 rounded-lg border border-slate-100 text-center flex flex-col items-center">
+                      <div className="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center mb-4">
+                        <Clock className="w-6 h-6 text-slate-300" />
+                      </div>
+                      <p className="text-slate-400 text-xs font-medium">No pending consultations at this time.</p>
                     </div>
-                    <p className="text-slate-400 text-xs font-medium">No pending consultations at this time.</p>
-                  </div>
+                  )}
                 </div>
               </section>
 
