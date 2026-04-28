@@ -36,6 +36,22 @@ interface User {
 export default function Dashboard() {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
+  const [availableDoctors, setAvailableDoctors] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchDoctors = async () => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/doctors/getalldoctors`);
+      const data = await res.json();
+      if (data.success) {
+        setAvailableDoctors(data.data.slice(0, 2)); // Show only 2 for dashboard preview
+      }
+    } catch (error) {
+      console.error("Error fetching doctors:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -48,6 +64,7 @@ export default function Dashboard() {
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
+    fetchDoctors();
   }, [router]);
 
   const handleLogout = () => {
@@ -189,33 +206,33 @@ export default function Dashboard() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <StatCard 
               label="Next Session" 
-              value="Today" 
+              value="None" 
               icon={Calendar} 
-              trend="15:49" 
+              trend="Scheduled" 
               color="teal"
               delay={0.1}
             />
             <StatCard 
               label="Prescriptions" 
-              value="3" 
+              value="0" 
               icon={Pill} 
-              trend="+1 new" 
+              trend="Current" 
               color="blue"
               delay={0.2}
             />
             <StatCard 
               label="Health Score" 
-              value="85%" 
+              value="N/A" 
               icon={CheckCircle2} 
-              trend="Good" 
+              trend="Updating" 
               color="purple"
               delay={0.3}
             />
              <StatCard 
               label="Avg. Steps" 
-              value="8.4k" 
+              value="0" 
               icon={Activity} 
-              trend="+12%" 
+              trend="Syncing" 
               color="amber"
               delay={0.4}
             />
@@ -224,56 +241,24 @@ export default function Dashboard() {
           {/* Content Rows */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             <div className="lg:col-span-8 space-y-6">
-              {/* Active Consultation */}
+              {/* Active Consultation - Placeholder until appointment logic is added */}
               <section>
                 <SectionHeader title="Active Consultation" />
                 <GlassCard className="p-0 border-slate-100 shadow-xs">
-                  <div className="bg-white p-6 flex flex-col sm:flex-row items-center justify-between gap-6">
-                    <div className="flex items-center gap-5">
-                      <div className="w-12 h-12 rounded-md bg-[#f8fafc] flex items-center justify-center font-black text-base text-slate-300 border border-slate-100 italic">
-                         Hx
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-2 mb-0.5">
-                          <h3 className="font-bold text-slate-800 text-lg tracking-tight">
-                            Dr. Bashir Olamide
-                          </h3>
-                          <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-                        </div>
-                        <p className="text-[#0d9488] text-[11px] font-bold uppercase tracking-wider mb-2">
-                          Specialist Physician
-                        </p>
-                        <div className="flex flex-wrap items-center gap-2">
-                          <div className="items-center gap-2 text-[9px] text-slate-500 font-bold bg-[#f8fafc] border border-slate-100 px-2.5 py-1.5 rounded-md inline-flex">
-                            <Clock className="w-3 h-3 text-teal-600" />
-                            REMAINING: 28 MINS
-                          </div>
-                   
-                        </div>
-                      </div>
+                  <div className="bg-white p-6 flex flex-col items-center justify-center text-center py-10">
+                    <div className="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center mb-3">
+                       <Clock className="w-6 h-6 text-slate-300" />
                     </div>
-                    <div className="flex items-center gap-2 w-full sm:w-auto">
-                      <Link href="/pages/chat/1" className="w-full sm:w-auto">
-                        <Button
-                          variant="outline"
-                          className="w-full border-slate-100 text-slate-500 hover:text-teal-600 hover:bg-teal-50/50 h-8 px-5 rounded-md font-bold text-[10px] uppercase tracking-wider"
-                        >
-                          Message
-                        </Button>
-                      </Link>
-                      <Link href="/pages/video-call/1" className="w-full sm:w-auto">
-                        <Button
-                          className="w-full bg-[#0d9488] hover:bg-[#0f766e] text-white shadow-xs h-8 px-5 rounded-md font-bold text-[10px] uppercase tracking-wider"
-                        >
-                          Join Now
-                        </Button>
-                      </Link>
-                    </div>
+                    <p className="text-slate-400 text-xs font-medium">No active consultations found.</p>
+                    <Link href="/pages/doctors" className="mt-4">
+                      <Button variant="outline" className="text-[10px] font-black uppercase tracking-widest h-8 px-4 rounded-md">
+                        Find a Specialist
+                      </Button>
+                    </Link>
                   </div>
                 </GlassCard>
               </section>
 
-              {/* Recommended Doctors */}
               <section>
                 <div className="flex items-center justify-between mb-3">
                    <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
@@ -282,28 +267,40 @@ export default function Dashboard() {
                   </h3>
                   <Link href="/pages/doctors" className="text-teal-600 text-[10px] font-black uppercase tracking-widest hover:underline">View All</Link>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {[1, 2].map((i) => (
-                    <GlassCard key={i} className="p-4 border-slate-100">
-                      <div className="flex gap-3 items-center mb-4">
-                        <div className="w-10 h-10 bg-slate-50 rounded-md flex items-center justify-center text-xs font-black text-slate-300 border border-slate-100">
-                          {i === 1 ? "AS" : "RM"}
+                {loading ? (
+                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                     {[1, 2].map(i => <div key={i} className="h-32 bg-white border border-slate-100 rounded-lg animate-pulse" />)}
+                   </div>
+                ) : availableDoctors.length > 0 ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {availableDoctors.map((doctor) => (
+                      <GlassCard key={doctor.id} className="p-4 border-slate-100">
+                        <div className="flex gap-3 items-center mb-4">
+                          <div className="w-10 h-10 bg-slate-50 rounded-md flex items-center justify-center text-xs font-black text-slate-300 border border-slate-100">
+                            Hx
+                          </div>
+                          <div className="flex-1">
+                            <h3 className="font-bold text-slate-800 text-xs tracking-tight">
+                              {doctor.fullname}
+                            </h3>
+                            <p className="text-slate-400 text-[9px] font-bold uppercase tracking-widest">
+                              {doctor.specialization}
+                            </p>
+                          </div>
                         </div>
-                        <div className="flex-1">
-                          <h3 className="font-bold text-slate-800 text-xs tracking-tight">
-                            {i === 1 ? "Dr. Amina S." : "Dr. Richard M."}
-                          </h3>
-                          <p className="text-slate-400 text-[9px] font-bold uppercase tracking-widest">
-                            {i === 1 ? "Dermatology" : "Neurology"}
-                          </p>
-                        </div>
-                      </div>
-                       <Button variant="outline" className="w-full border-slate-100 text-teal-600 rounded-md h-8 font-black text-[9px] uppercase tracking-widest hover:bg-teal-50 transition-all">
-                        Consult
-                      </Button>
-                    </GlassCard>
-                  ))}
-                </div>
+                         <Link href={`/pages/chat/${doctor.id}`}>
+                          <Button variant="outline" className="w-full border-slate-100 text-teal-600 rounded-md h-8 font-black text-[9px] uppercase tracking-widest hover:bg-teal-50 transition-all">
+                            Consult
+                          </Button>
+                        </Link>
+                      </GlassCard>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="bg-white p-6 rounded-lg border border-slate-100 text-center">
+                    <p className="text-slate-400 text-xs">No doctors currently available.</p>
+                  </div>
+                )}
               </section>
             </div>
 

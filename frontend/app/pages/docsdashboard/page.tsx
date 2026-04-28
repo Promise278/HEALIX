@@ -39,6 +39,14 @@ interface User {
 export default function DoctorDashboard() {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
+  const [patientsCount, setPatientsCount] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  const fetchStats = async () => {
+    // In a real app, we would fetch these from the backend.
+    // For now, since there's no specific 'Consultations' model, we set to 0.
+    setLoading(false);
+  };
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -51,6 +59,7 @@ export default function DoctorDashboard() {
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
+    fetchStats();
   }, [router]);
 
   const handleLogout = () => {
@@ -192,33 +201,33 @@ export default function DoctorDashboard() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <StatCard 
               label="Consultations" 
-              value="12" 
+              value="0" 
               icon={User} 
-              trend="+2 today" 
+              trend="Today" 
               color="teal"
               delay={0.1}
             />
             <StatCard 
               label="Earning" 
-              value="$1,240" 
+              value="$0.00" 
               icon={TrendingUp} 
-              trend="+8%" 
+              trend="Pending" 
               color="blue"
               delay={0.2}
             />
             <StatCard 
               label="Efficiency" 
-              value="94%" 
+              value="N/A" 
               icon={Activity} 
-              trend="Optimal" 
+              trend="Syncing" 
               color="purple"
               delay={0.3}
             />
              <StatCard 
               label="Patients" 
-              value="1.2k" 
+              value="0" 
               icon={UserPlus} 
-              trend="+12%" 
+              trend="Total" 
               color="amber"
               delay={0.4}
             />
@@ -236,36 +245,12 @@ export default function DoctorDashboard() {
                 </div>
                 
                 <div className="space-y-4">
-                  {[1, 2].map((i) => (
-                    <GlassCard key={i} className="p-0 border-slate-100 shadow-xs">
-                      <div className="bg-white p-5 flex flex-col sm:flex-row items-center justify-between gap-6">
-                        <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 bg-slate-50 rounded-md flex items-center justify-center font-black text-slate-300 border border-slate-100 italic">
-                             Hx
-                          </div>
-                          <div>
-                            <h3 className="font-bold text-slate-800 text-base tracking-tight mb-0.5">
-                              {i === 1 ? "Promise John" : "Sarah Connor"}
-                            </h3>
-                            <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">
-                              {i === 1 ? "HLX-ID: #829P" : "HLX-ID: #992S"}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-5">
-                          <div className="text-right hidden sm:block">
-                            <p className="text-[11px] font-bold text-slate-800">15:30 - 16:00</p>
-                            <p className="text-[9px] text-[#0d9488] font-bold uppercase tracking-widest">Session Start</p>
-                          </div>
-                          <Link href={`/pages/chat/${i}`}>
-                            <Button className="bg-[#0d9488] hover:bg-[#0f766e] text-white rounded-md h-8 px-5 font-bold text-[10px] uppercase tracking-wider transition-all">
-                              Open File
-                            </Button>
-                          </Link>
-                        </div>
-                      </div>
-                    </GlassCard>
-                  ))}
+                  <div className="bg-white p-10 rounded-lg border border-slate-100 text-center flex flex-col items-center">
+                    <div className="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center mb-4">
+                      <Clock className="w-6 h-6 text-slate-300" />
+                    </div>
+                    <p className="text-slate-400 text-xs font-medium">No pending consultations at this time.</p>
+                  </div>
                 </div>
               </section>
 
