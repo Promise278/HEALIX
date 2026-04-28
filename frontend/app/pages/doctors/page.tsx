@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { GlassCard } from "@/components/Dashboard/DashboardComponents";
+import AppointmentModal from "@/components/Appointment/AppointmentModal";
 
 interface Doctor {
   id: string;
@@ -47,6 +48,13 @@ export default function DoctorsPage() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedSpecialty, setSelectedSpecialty] = useState("All Specialist");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null);
+
+  const handleConsultClick = (doctor: Doctor) => {
+    setSelectedDoctor(doctor);
+    setIsModalOpen(true);
+  };
 
   const fetchDoctors = async () => {
     setLoading(true);
@@ -191,11 +199,12 @@ export default function DoctorsPage() {
                       <p className="text-xl font-black text-slate-800 tracking-tight">${doctor.consultationfee}</p>
                     </div>
                     
-                    <Link href={`/pages/chat/${doctor.id}`}>
-                      <Button className="bg-[#0d9488] hover:bg-[#0f766e] text-white font-black text-[10px] uppercase tracking-widest h-9 px-5 rounded-md shadow-xs">
-                        Consult
-                      </Button>
-                    </Link>
+                    <Button 
+                      onClick={() => handleConsultClick(doctor)}
+                      className="bg-[#0d9488] hover:bg-[#0f766e] text-white font-black text-[10px] uppercase tracking-widest h-9 px-5 rounded-md shadow-xs"
+                    >
+                      Consult
+                    </Button>
                   </div>
               </GlassCard>
             ))}
@@ -222,6 +231,13 @@ export default function DoctorsPage() {
           </div>
         )}
       </div>
+      {selectedDoctor && (
+        <AppointmentModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          doctor={selectedDoctor}
+        />
+      )}
     </div>
   );
 }

@@ -83,7 +83,7 @@ export default function Dashboard() {
     {
       label: "Appointments",
       icon: Calendar,
-      path: "/pages/dashboard",
+      path: "/pages/appointments",
       active: false,
     },
     {

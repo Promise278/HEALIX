@@ -11,16 +11,17 @@ const doctorRoutes = require("./routes/Doctor.routes");
 const adminRoutes = require("./routes/admin.routes");
 const aiRoutes = require("./routes/ai.routes");
 const messageRoutes = require("./routes/message.routes");
+const appointmentRoutes = require("./routes/appointment.routes");
 
 const app = express();
 
 // Middleware
-app.use(express.json());
 app.use(cors({
   origin: process.env.FRONTEND_URL || "*",
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   credentials: true
 }));
+app.use(express.json());
 
 const PORT = process.env.PORT || 5000;
 
@@ -30,6 +31,7 @@ app.use("/api/doctors", doctorRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/messages", messageRoutes);
+app.use("/api/appointments", appointmentRoutes);
 
 const server = http.createServer(app);
 const io = initSocket(server);
